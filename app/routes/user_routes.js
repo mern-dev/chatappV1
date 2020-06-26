@@ -1,56 +1,52 @@
 var User = require('../models/user_model.js');
-const isLoggedIn = require("./middleware.js");
 
 
-module.exports = function (app) {
 
-   
-
-    app.post("/postmessage/:id",isLoggedIn,function(req,res)
-    {
-    
-        const newMessage = {
-            msgBody:req.body.msgBody,
-           // senderName : req.body.senderName,
-           senderId : req.params.id,
-           //  sentTime : req.body.sentTime
-        }
-        
-          
-       const recieverId = req.body.recieverId;
-       User.updateOne(
-        { _id: recieverId },
+ module.exports = function(server)
+    {     const io = require("socket.io")(server)
+          io.on("connection",function(socket)
         {
-          $push: {
-            newMessages: {
-              $each: [
-                {
-                  msgBody: newMessage.msgBody,
-                  date: new Date(),
-                  senderId : newMessage.senderId
-                }
-              ],
-              $sort: { date: -1 }
-            }
-          }
-        }
-      )
-        .then(val => {
-          console.log(val);
-          if (val.nModified == 1) {
+               //  socket.join("room");
+                 
+                 socket.on("/postingMessage",newMessage =>
+                 { 
+                    User.updateOne(
+                    { _id: newMessage.recieverId },
+                    {
+                      $push: {
+                        newMessages: {
+                          $each: [
+                            {
+                              msgBody: newMessage.msgBody,
+                              date: new Date(),
+                              senderId : newMessage.senderId
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  )
+                    .then(val => {
+                      console.log(val);
+                      if (val.nModified == 1) {
+                       // socket.emit('/messageSent',)
+                        socket.emit(`/recievingMessage/${newMessage.recieverId}`,newMessage);
+                     
+                    }})
 
-       
-                 const io=req.app.get("io");
-                   let listenObj = `user/sent/message/${recieverId}`;
-                   //  console.log(io);
-                      io.emit(listenObj, newMessage);
-                  res.json({
-                       status:"success",
-                         message:"ur message was sent"
-                          })
-           }
-   });
-    })
+                
+                 
+               })
+
+              //  socket.on("/read", data =>{
+                   
+              //  })
+                      
+        });
+     
+      }
+
+  
 
 
   
@@ -59,4 +55,3 @@ module.exports = function (app) {
 
 
 
-}

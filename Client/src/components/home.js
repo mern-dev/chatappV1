@@ -30,10 +30,9 @@ class Home extends Component {
             window.location = '/signup'
         }
         console.log(this.id);
-        
-        this.socket = io("http://localhost:3000");
-        const msgpoint = `user/sent/message/${this.id}`;
-        this.socket.on(msgpoint,newmsg => {
+        const point = `http://localhost:3000/`;
+        this.socket = io(point);
+        this.socket.on(`/recievingMessage/${this.id}`,newmsg => {
           console.log(newmsg.msgBody);
         });
           

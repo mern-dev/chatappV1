@@ -5,6 +5,7 @@ var app      = express();
 var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var bodyParser   = require('body-parser');
+
 //var cors = require('cors');
 
 
@@ -25,8 +26,5 @@ require('./app/routes/user_routes.js')(app);
 var server = app.listen(port);
 console.log('The magic happens on port ' + port);
 
-var io = require("socket.io")(server);
-app.set("io", io);
-io.on("connection", () =>{
-    console.log("Socket Connected")
-  })
+require("./app/routes/user_routes.js")(app);
+
