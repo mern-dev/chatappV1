@@ -125,7 +125,6 @@ module.exports = function (app) {
 
   });
   app.get('/checkusername/:username', function (req, res) {
-    console.log(req);
     User.findOne({ username: req.params.username}).then(user => {
       
       if (user) {
