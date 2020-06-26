@@ -12,6 +12,7 @@ const date = {
 const message = {
          msgBody:{ type: String },
          senderId:{type:String},
+         receiverId:{type:String},
          senderName:{type:String},
          sentTime:date,
          read:{type:Boolean,default:false },

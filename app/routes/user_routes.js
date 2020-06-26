@@ -18,7 +18,7 @@ module.exports=function(io,socket){
                     console.log(val);
                    if (val.nModified == 1)
                    {
-                          socket.emit("isOnline",{id:data.id})
+                          socket.emit("isOnline",{id:data.id})  //===================Emitting the user who is come online to other users==================//
                    }})
                 })
            });
@@ -30,7 +30,7 @@ module.exports=function(io,socket){
 
         socket.on("postingMessage",function(newMessage){
                 User.updateOne(
-                        { _id: newMessage.recieverId },
+                        { _id: newMessage.receiverId },
                         {
                           $push: {
                             newMessages: {
@@ -47,12 +47,12 @@ module.exports=function(io,socket){
                         .then(val => {
                           console.log(val);
                           if (val.nModified == 1) {
-                           io.to(`${newMessage.recieverId}`).emit("recievingMessage",newMessage)
+                           io.to(`${newMessage.receiverId}`).emit("receivingMessage",newMessage) //=======Sending the message to the receiver=============//
                           }})
                  }) 
 
   // =====================================
-  //  Unread messages updation ===========
+  //   Updating Unread messages===========
   // =====================================
 
 

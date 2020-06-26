@@ -35,10 +35,10 @@ class Home extends Component {
         this.socket = io(point);
         if(this.id=="5ef5ae4eca64292fd4237602")
         {
-            this.recieverId="5ef53622c98dac7d0d7054ec"
+            this.receiverId="5ef53622c98dac7d0d7054ec"
         }
         else{
-            this.recieverId="5ef5ae4eca64292fd4237602"
+            this.receiverId="5ef5ae4eca64292fd4237602"
         }
         this.socket.emit("join",{id:this.id});
      
@@ -62,7 +62,7 @@ class Home extends Component {
         e.preventDefault();
         const newMessage = {
             msgBody: this.state.msgbody,
-            recieverId:this.recieverId,
+            receiverId:this.receiverId,
             senderId:this.id
         }
      
