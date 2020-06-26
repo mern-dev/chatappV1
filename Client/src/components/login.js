@@ -11,7 +11,7 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
 
-
+       
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.validateForm = this.validateForm.bind(this);
@@ -60,6 +60,7 @@ export default class Login extends Component {
                 }
                 else {
                     this.setState({ token: this.state.token })
+                    window.localStorage.setItem("token",res.data.token)
                     window.location = '/Home'
                 }
 
@@ -69,7 +70,7 @@ export default class Login extends Component {
                 // console.log(vari);
 
             });
-
+         
 
         this.setState({
             username: "",

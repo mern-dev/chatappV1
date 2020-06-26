@@ -14,8 +14,8 @@ const message = {
          senderId:{type:String},
          senderName:{type:String},
          sentTime:date,
-         read:{type:Boolean},
-         date:{type:Date}
+         read:{type:Boolean,default:false },
+         sent:{type:Boolean,default:false },
 }
 
 // define the schema for our user model

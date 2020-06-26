@@ -1,56 +1,64 @@
 var User = require('../models/user_model.js');
-const isLoggedIn = require("./middleware.js");
-
-
-module.exports = function (app) {
-
-   
-
-    app.post("/postmessage/:id",isLoggedIn,function(req,res)
-    {
-    
-        const newMessage = {
-            msgBody:req.body.msgBody,
-           // senderName : req.body.senderName,
-           senderId : req.params.id,
-           //  sentTime : req.body.sentTime
-        }
+module.exports=function(io,socket){
         
-          
-       const recieverId = req.body.recieverId;
-       User.updateOne(
-        { _id: recieverId },
+        
+  // =====================================
+  //  User is online =============
+  // =====================================
+        socket.on("join",function(data)
         {
-          $push: {
-            newMessages: {
-              $each: [
+          socket.join(`${data.id}`,() => {
+            console.log("into chat room")
+           User.updateOne({
+             _id:data.id
+             },{
+                 isOnline:true    
+             }).then(val => 
                 {
-                  msgBody: newMessage.msgBody,
-                  date: new Date(),
-                  senderId : newMessage.senderId
-                }
-              ],
-              $sort: { date: -1 }
-            }
-          }
-        }
-      )
-        .then(val => {
-          console.log(val);
-          if (val.nModified == 1) {
+                    console.log(val);
+                   if (val.nModified == 1)
+                   {
+                          socket.emit("isOnline",{id:data.id})
+                   }})
+                })
+           });
 
-       
-                 const io=req.app.get("io");
-                   let listenObj = `user/sent/message/${recieverId}`;
-                   //  console.log(io);
-                      io.emit(listenObj, newMessage);
-                  res.json({
-                       status:"success",
-                         message:"ur message was sent"
-                          })
-           }
-   });
-    })
+  // =====================================
+  //  User to send a message =============
+  // =====================================
+          
+
+        socket.on("postingMessage",function(newMessage){
+                User.updateOne(
+                        { _id: newMessage.recieverId },
+                        {
+                          $push: {
+                            newMessages: {
+                              $each: [
+                                {
+                                  msgBody: newMessage.msgBody,
+                                  senderId : newMessage.senderId
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      )
+                        .then(val => {
+                          console.log(val);
+                          if (val.nModified == 1) {
+                           io.to(`${newMessage.recieverId}`).emit("recievingMessage",newMessage)
+                          }})
+                 }) 
+
+  // =====================================
+  //  Unread messages updation ===========
+  // =====================================
+
+
+          
+          
+ }
 
 
   
@@ -58,5 +66,3 @@ module.exports = function (app) {
 
 
 
-
-}
