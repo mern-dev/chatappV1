@@ -1,56 +1,67 @@
 var User = require('../models/user_model.js');
-
-
-
- module.exports = function(server)
-    {     const io = require("socket.io")(server)
-          io.on("connection",function(socket)
+module.exports=function(io,socket){
+        
+        
+  // =====================================
+  //  User is online =============
+  // =====================================
+        socket.on("join",function(data)
         {
-               //  socket.join("room");
-                 
-                 socket.on("/postingMessage",newMessage =>
-                 { 
-                    User.updateOne(
-                    { _id: newMessage.recieverId },
-                    {
-                      $push: {
-                        newMessages: {
-                          $each: [
-                            {
-                              msgBody: newMessage.msgBody,
-                              date: new Date(),
-                              senderId : newMessage.senderId
+          socket.join(`${data.id}`,() => {
+            console.log("into chat room")
+           User.updateOne({
+             _id:data.id
+             },{
+                 isOnline:true    
+             }).then(val => 
+                {
+                    console.log(val);
+                   if (val.nModified == 1)
+                   {
+                          socket.emit("isOnline",{id:data.id})
+                   }})
+                })
+           });
+
+  // =====================================
+  //  User to send a message =============
+  // =====================================
+          
+
+        socket.on("postingMessage",function(newMessage){
+                User.updateOne(
+                        { _id: newMessage.recieverId },
+                        {
+                          $push: {
+                            newMessages: {
+                              $each: [
+                                {
+                                  msgBody: newMessage.msgBody,
+                                  senderId : newMessage.senderId
+                                }
+                              ]
                             }
-                          ]
+                          }
                         }
-                      }
-                    }
-                  )
-                    .then(val => {
-                      console.log(val);
-                      if (val.nModified == 1) {
-                       // socket.emit('/messageSent',)
-                        socket.emit(`/recievingMessage/${newMessage.recieverId}`,newMessage);
-                     
-                    }})
+                      )
+                        .then(val => {
+                          console.log(val);
+                          if (val.nModified == 1) {
+                           io.to(`${newMessage.recieverId}`).emit("recievingMessage",newMessage)
+                          }})
+                 }) 
 
-                
-                 
-               })
+  // =====================================
+  //  Unread messages updation ===========
+  // =====================================
 
-              //  socket.on("/read", data =>{
-                   
-              //  })
-                      
-        });
-     
-      }
 
-  
+          
+          
+ }
 
 
   
-
 
 
 
