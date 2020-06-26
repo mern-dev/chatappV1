@@ -47,10 +47,10 @@ export default class Login extends Component {
             password: this.state.password
         }
 
-        axios.post('/', userr)
+        axios.post('/login', userr)
             .then(res => {
 
-                this.setState({ token: this.state.token })
+               
 
                 // const newUser = { user: this.state.token}
 
@@ -59,6 +59,7 @@ export default class Login extends Component {
                     window.location = '/error'
                 }
                 else {
+                    this.setState({ token: this.state.token })
                     window.location = '/Home'
                 }
 
