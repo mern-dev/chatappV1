@@ -15,14 +15,18 @@ mongoose.connect('mongodb://localhost:27017/testchatappV1', {
     useNewUrlParser: true,
     }); // connect to our database
 
-//require('./config/passport')(passport); // pass passport for configuration
-
-// get information from html forms
-//app.use(cors());
+    app.use(bodyParser.urlencoded())
 app.use(bodyParser.json());
 // routes ======================================================================
-require('./app/routes/login_routes.js')(app); // load our routes and pass in our app and fully configured passport
+require('./app/routes/login_routes.js')(app); // load our routes and pass in our app 
+require('./app/routes/user_routes.js')(app); 
 
 // launch ======================================================================
-app.listen(port);
+var server = app.listen(port);
 console.log('The magic happens on port ' + port);
+
+var io = require("socket.io")(server);
+app.set("io", io);
+io.on("connection", () =>{
+    console.log("Socket Connected")
+  })

@@ -41,24 +41,28 @@ export default class Signup extends Component {
             [name]: value
 
         })
-
-        if (this.cancel) {
-            this.cancel.cancel();
+        if(name=="username")
+        {
+            if (this.cancel) {
+                this.cancel.cancel();
+            }
+            this.cancel = axios.CancelToken.source();
+            console.log(value);
+            axios.get('/checkusername/'+value, {
+                cancelToken: this.cancel.token
+            }).then(res => {
+                console.log(res.data.status);
+                if (res.data.status === 'error') {
+                    console.log("Already existing user");
+                }
+                else{
+                    console.log("valid username");
+                }
+            })
         }
-        this.cancel = axios.CancelToken.source();
-        console.log(value);
-        axios.get('/checkusername/'+value, {
-            cancelToken: this.cancel.token
-        }).then(res => {
-            console.log(res.data.status);
-            if (res.data.status === 'error') {
-                console.log("Already existing user");
-            }
-            else{
-                console.log("valid username");
-            }
-        })
-    };
+
+       
+    }
     // const CancelToken = axios.CancelToken;
     // const source = CancelToken.source();
     // axios.post('/signup', {
