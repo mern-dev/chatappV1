@@ -16,8 +16,8 @@ export default class Signup extends Component {
             confirmPassword: '',
             token: "",
             usererror: true,
-            passerror: true,
-            conerror:true
+            passerror: false
+
         }
         this.cancel = '';
 
@@ -30,7 +30,7 @@ export default class Signup extends Component {
 
 
     validateForm() {
-        return this.state.username.length > 4 && this.state.password.length > 4 && this.state.password ===this.state.confirmPassword;
+        return this.state.username.length > 4 && this.state.password.length > 4 && this.state.password === this.state.confirmPassword;
     }
 
     handleChange(e) {
@@ -42,34 +42,34 @@ export default class Signup extends Component {
             [name]: value
 
         })
-       
 
-        
 
-            //console.log("signup")
-            if (name === "username") {
-                if (this.cancel) {
-                    this.cancel.cancel();
-                }
-                this.cancel = axios.CancelToken.source();
 
-                axios.get('/checkusername/' + value, {
-                    cancelToken: this.cancel.token
-                }).then(res => {
 
-                    if (res.data.status === 'error') {
-                        this.setState({ ...this.state, usererror: true })
-                        console.log("Already existing user");
-                    }
-                    else {
-                        if (value.length > 3) {
-                            this.setState({ ...this.state, usererror: false })
-                        }
-                        console.log("valid username");
-                       
-                    }
-                }).catch((err) => console.log("error"))
+        //console.log("signup")
+        if (name === "username") {
+            if (this.cancel) {
+                this.cancel.cancel();
             }
+            this.cancel = axios.CancelToken.source();
+
+            axios.get('/checkusername/' + value, {
+                cancelToken: this.cancel.token
+            }).then(res => {
+
+                if (res.data.status === 'error') {
+                    this.setState({ ...this.state, usererror: true })
+                    console.log("Already existing user");
+                }
+                else {
+                    if (value.length > 3) {
+                        this.setState({ ...this.state, usererror: false })
+                    }
+                    console.log("valid username");
+
+                }
+            }).catch((err) => console.log("error"))
+        }
     };
 
 

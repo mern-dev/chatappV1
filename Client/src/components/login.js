@@ -17,14 +17,16 @@ export default class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            token: ""
+            token: "",
+            passerror: false
         }
+
 
     }
 
 
     validateForm() {
-        return this.state.username.length > 0 && this.state.password.length > 2;
+        return this.state.username.length > 4 && this.state.password.length > 5;
     }
 
     handleChange(e) {
@@ -35,6 +37,7 @@ export default class Login extends Component {
             ...this.state,
             [name]: value
         })
+
     }
 
     handleClick(e) {
@@ -52,27 +55,29 @@ export default class Login extends Component {
                 console.log(res.data.status);
 
                 if (res.data.status === 'error') {
-                    window.location = '/error'
+                    this.setState({ passerror: true });
+
                 }
                 else {
-                    window.location = '/Home'
+                    window.location = '/Home';
+
+                    this.setState({
+                        username: "",
+                        password: "",
+                        token: ""
+                    });
                 }
 
 
             });
 
 
-        this.setState({
-            username: "",
-            password: "",
-            token: ""
-        });
 
 
     }
     render() {
         return (
-         
+
             <div>
                 < Form tog={this.props.tog} state={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>

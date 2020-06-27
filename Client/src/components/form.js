@@ -33,10 +33,11 @@ const Form = (props) => {
                         </div>
 
                         <div className="form-group">
-                            <TextField id="standard-basic" label="Username" type="text" name="username" value={state.username} helperText={state.username.length>3?state.usererror ? "Invalid username" : "valid username" :"Invalid username"} autoComplete="off" onChange={handleChange} />
+                            {tog ? <TextField id="standard-basic" label="Username" type="text" name="username" value={state.username} helperText={state.username.length > 3 ? state.usererror ? "Invalid username" : "valid username" : "Invalid username"} autoComplete="off" onChange={handleChange} /> :
+                                <TextField id="standard-basic" label="Username" type="text" name="username" value={state.username} autoComplete="off" onChange={handleChange} />}
                         </div>
                         <div className="form-group">
-                            <TextField id="standard-basic" label="Password" type="password" name="password" value={state.password} onChange={handleChange} />
+                            <TextField id="standard-basic" label="Password" type="password" name="password" value={state.password} helperText={state.passerror && "Wrong password"} onChange={handleChange} />
                         </div>
 
                         {tog && <div className="form-group">
