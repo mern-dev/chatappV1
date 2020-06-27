@@ -1,52 +1,54 @@
 import React from 'react';
+import { TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import Navbar from './navbar';
 
 
 
 
 
 const Form = (props) => {
-    const { state, handleChange, handleClick, validateForm, toggle ,tog } = props;
+    const { state, handleChange, handleClick, validateForm, toggle, tog } = props;
     return (
         <div className="comp">
-            <div>
-                <nav className="navbar navbar-light bg-light">
-                    <span className="navbar-brand mb-0 h1">Chat-App</span>
-                </nav>
-            </div>
 
+            <Navbar />
             <div className="row">
 
                 <div className="col-6 ">
-                    <img className="app-img" src="https://www.sketchappsources.com/resources/source-image/awesome-ios-logo-becampanha.jpg" alt="img" />
+                    <img className="app-img" src="https://i.pinimg.com/originals/7e/c1/11/7ec111864f7539dce5362ccf235b61a4.png" alt="img" />
                 </div>
 
                 <div className="col-6">
-
-
-                    <form onSubmit={handleClick} className="fdiv" >
+                    <form autoComplete="off" onSubmit={handleClick} className="fdiv" >
                         <div className="row">
                             <div className="col-6">
-                                <button type="button" className="btn btn-primary" onClick={toggle}>Sign in</button>
+
+                                <Button variant="contained" color="primary" onClick={toggle}>
+                                    {tog ? "Log in" : "Sign up"}
+                                </Button>
+
                             </div>
-                            {/* <div className="col-6">
-                                <button type="button" className="btn btn-primary" onClick={toggle}>Log in</button>
-                            </div> */}
+
                         </div>
-                        <div className="form-group " >
-                            <label htmlFor="u" >Username:</label>
-                            <input id="u" className="form-control" type="text" name="username" value={state.username} onChange={handleChange} required />
+
+                        <div className="form-group">
+                            <TextField id="standard-basic" label="Username" type="text" name="username" value={state.username} helperText={state.username.length>3?state.usererror ? "Invalid username" : "valid username" :"Invalid username"} autoComplete="off" onChange={handleChange} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="p" >Password:</label>
-                            <input id="p" type="password" className="form-control" name="password" value={state.password} onChange={handleChange} />
+                            <TextField id="standard-basic" label="Password" type="password" name="password" value={state.password} onChange={handleChange} />
                         </div>
-                        {tog &&  <div className="form-group">
-                            <label htmlFor="c" >Confirm Password:</label>
-                            <input id="c" type="password" className="form-control" name="confirmPassword" value={state.confirmPassword} onChange={handleChange} />
-                        </div>}
-                         <button type="submit" className="btn btn-primary" onClick={handleClick} disabled={!(validateForm())}>{tog?"Sign up":"Log in"}</button>
-                    </form>
 
+                        {tog && <div className="form-group">
+                            <TextField id="standard-basic" label="ConfirmPassword" type="password" name="confirmPassword" value={state.confirmPassword} onChange={handleChange} />
+
+                        </div>}
+                        <Button variant="contained" color="primary" onClick={handleClick} disabled={!(validateForm())}>
+                            {tog ? "Sign up" : "Log in"}
+                        </Button>
+
+
+                    </form>
 
                 </div>
             </div>

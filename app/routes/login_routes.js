@@ -77,6 +77,7 @@ module.exports = function (app) {
   // =====================================
 
   app.post('/signup', function (req, res) {
+    console.log(req.body);
 
     const newUser = {
       username: req.body.username,
@@ -138,6 +139,7 @@ module.exports = function (app) {
         res.json({
           status: "success",
           message: "Valid username"
+          
         })
       }
     })

@@ -13,10 +13,11 @@ export default class Signup extends Component {
         this.state = {
             username: "",
             password: "",
-            confirmPassword:'',
-            token: ""
-
-
+            confirmPassword: '',
+            token: "",
+            usererror: true,
+            passerror: true,
+            conerror:true
         }
         this.cancel = '';
 
@@ -25,12 +26,11 @@ export default class Signup extends Component {
         if (window.localStorage.getItem('token')) {
             window.location = '/home'
         }
-
     }
 
 
     validateForm() {
-        return this.state.username.length > 3 && this.state.password.length > 4;
+        return this.state.username.length > 4 && this.state.password.length > 4 && this.state.password ===this.state.confirmPassword;
     }
 
     handleChange(e) {
@@ -42,23 +42,34 @@ export default class Signup extends Component {
             [name]: value
 
         })
+       
 
-        if (this.cancel) {
-            this.cancel.cancel();
-        }
-        this.cancel = axios.CancelToken.source();
         
-        axios.get('/checkusername/' + value, {
-            cancelToken: this.cancel.token
-        }).then(res => {
-            
-            if (res.data.status === 'error') {
-                console.log("Already existing user");
+
+            //console.log("signup")
+            if (name === "username") {
+                if (this.cancel) {
+                    this.cancel.cancel();
+                }
+                this.cancel = axios.CancelToken.source();
+
+                axios.get('/checkusername/' + value, {
+                    cancelToken: this.cancel.token
+                }).then(res => {
+
+                    if (res.data.status === 'error') {
+                        this.setState({ ...this.state, usererror: true })
+                        console.log("Already existing user");
+                    }
+                    else {
+                        if (value.length > 3) {
+                            this.setState({ ...this.state, usererror: false })
+                        }
+                        console.log("valid username");
+                       
+                    }
+                }).catch((err) => console.log("error"))
             }
-            else {
-                console.log("valid username");
-            }
-        })
     };
 
 
@@ -68,17 +79,20 @@ export default class Signup extends Component {
             username: this.state.username,
             password: this.state.password
         }
+        console.log("signup")
 
         axios.post('/signup', user)
             .then(res => {
+                console.log(res.data.token);
 
-                this.setState({ token: res.data.token })
-                window.localStorage.setItem('token', this.state.token);
                 if (res.data.status === 'error') {
 
                     window.location = '/error'
                 }
                 else {
+
+                    this.setState({ token: res.data.token })
+                    window.localStorage.setItem('token', this.state.token);
                     window.location = '/home'
                 }
             });
@@ -86,7 +100,7 @@ export default class Signup extends Component {
         this.setState({
             username: "",
             password: "",
-            confirmPassword:'',
+            confirmPassword: '',
             token: ''
         });
 

@@ -5,7 +5,7 @@ var app      = express();
 var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var bodyParser   = require('body-parser');
-//var cors = require('cors');
+var cors = require('cors');
 
 
 
@@ -18,7 +18,7 @@ mongoose.connect('mongodb://localhost:27017/testchatappV1', {
 //require('./config/passport')(passport); // pass passport for configuration
 
 // get information from html forms
-//app.use(cors());
+app.use(cors());
 app.use(bodyParser.json());
 // routes ======================================================================
 require('./app/routes/login_routes.js')(app); // load our routes and pass in our app and fully configured passport

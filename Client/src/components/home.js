@@ -1,23 +1,20 @@
-import React from 'react';
 
+import React, { Component } from 'react'
 
-function Home() {
-    if (window.localStorage.getItem('token')) {
+class Home extends Component {
+    
+    componentDidMount() {
+        console.log(window.localStorage.getItem('token'))
+        
+    }
+
+    render() {
         return (
             <div>
-                <h1>U Have Logged In Successfully</h1>
-                <button type="submit" onClick={(e)=>{
-                    window.localStorage.clear();
-                    window.location='/';
-                }}>Log out</button>
-            </div>
-        );
+           
+        </div>
+        )
     }
-    else{
-        window.location = '/'
-    }
-   
-    
 }
 
-export default Home;
+export default Home
