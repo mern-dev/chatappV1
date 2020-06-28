@@ -26,7 +26,9 @@ export default class Login extends Component {
 
 
     validateForm() {
-        return this.state.username.length > 4 && this.state.password.length > 5;
+        return true;
+      //  return this.state.username.length > 4 && this.state.password.length > 5;
+     //=======commented for testing purpose ===================//
     }
 
     handleChange(e) {

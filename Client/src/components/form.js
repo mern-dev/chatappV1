@@ -33,16 +33,16 @@ const Form = (props) => {
                         </div>
 
                         <div className="form-group">
-                            {tog ? <TextField id="standard-basic" label="Username" type="text" name="username" value={state.username} helperText={state.username.length > 3 ? state.usererror ? "Invalid username" : "valid username" : "Invalid username"} autoComplete="off" onChange={handleChange} /> :
+                            {tog ? <TextField id="standard-basic" label="Username" type="text" name="username" value={state.username} helperText={state.username.length > 4? state.usererror ? "Invalid username" : "valid username" : ""} autoComplete="off" onChange={handleChange} /> :
                                 <TextField id="standard-basic" label="Username" type="text" name="username" value={state.username} autoComplete="off" onChange={handleChange} />}
                         </div>
                         <div className="form-group">
-                            <TextField id="standard-basic" label="Password" type="password" name="password" value={state.password} helperText={state.passerror && "Wrong password"} onChange={handleChange} />
+                            <TextField id="standard-basic" label="Password" type="password" name="password" value={state.password} helperText={state.passerror && "username or password is incorrect"} onChange={handleChange} />
                         </div>
 
                         {tog && <div className="form-group">
-                            <TextField id="standard-basic" label="ConfirmPassword" type="password" name="confirmPassword" value={state.confirmPassword} onChange={handleChange} />
-
+                            <TextField id="standard-basic" label="ConfirmPassword" type="password" name="confirmPassword" value={state.confirmPassword} onChange={handleChange}  />
+                            
                         </div>}
                         <Button variant="contained" color="primary" onClick={handleClick} disabled={!(validateForm())}>
                             {tog ? "Sign up" : "Log in"}
