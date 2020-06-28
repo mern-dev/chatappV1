@@ -9,7 +9,7 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
 
-
+       
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.validateForm = this.validateForm.bind(this);
@@ -48,29 +48,34 @@ export default class Login extends Component {
             password: this.state.password
         }
 
-        axios.post('/', userr)
+        axios.post('/login', userr)
             .then(res => {
 
-                this.setState({ token: this.state.token })
-                console.log(res.data.status);
+
 
                 if (res.data.status === 'error') {
                     this.setState({ passerror: true });
 
                 }
                 else {
-                    window.location = '/Home';
+
+                    this.setState({ token: this.state.token })
+                    window.localStorage.setItem("token",res.data.token)
+                    window.location = '/Home'
+
+               
 
                     this.setState({
                         username: "",
                         password: "",
                         token: ""
                     });
+
                 }
 
 
             });
-
+         
 
 
 

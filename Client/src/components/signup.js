@@ -45,7 +45,6 @@ export default class Signup extends Component {
 
 
 
-
         //console.log("signup")
         if (name === "username") {
             if (this.cancel) {

@@ -5,7 +5,6 @@ var app      = express();
 var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var bodyParser   = require('body-parser');
-var cors = require('cors');
 
 
 
@@ -15,14 +14,27 @@ mongoose.connect('mongodb://localhost:27017/testchatappV1', {
     useNewUrlParser: true,
     }); // connect to our database
 
-//require('./config/passport')(passport); // pass passport for configuration
+    app.use(bodyParser.urlencoded())
 
-// get information from html forms
-app.use(cors());
 app.use(bodyParser.json());
 // routes ======================================================================
-require('./app/routes/login_routes.js')(app); // load our routes and pass in our app and fully configured passport
+require('./app/routes/login_routes.js')(app); // load our routes and pass in our app 
+
 
 // launch ======================================================================
-app.listen(port);
+var server = app.listen(port);
 console.log('The magic happens on port ' + port);
+
+
+var io = require("socket.io")(server);
+
+
+io.on("connection", (socket) =>{
+  require("./app/routes/user_routes")(io,socket) ;
+  
+   
+  })
+
+
+
+
