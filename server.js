@@ -5,10 +5,6 @@ var app      = express();
 var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var bodyParser   = require('body-parser');
-var User = require('./app/models/user_model.js');
-
-
-//var cors = require('cors');
 
 
 
@@ -19,6 +15,7 @@ mongoose.connect('mongodb://localhost:27017/testchatappV1', {
     }); // connect to our database
 
     app.use(bodyParser.urlencoded())
+
 app.use(bodyParser.json());
 // routes ======================================================================
 require('./app/routes/login_routes.js')(app); // load our routes and pass in our app 
