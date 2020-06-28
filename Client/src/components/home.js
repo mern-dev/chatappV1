@@ -1,16 +1,24 @@
-import React from 'react';
 
+import React, { Component } from 'react'
 
-function Home() {
-    return (
-        <div>
-            <h1>U Have Logged In Successfully</h1>
-            <button type="submit" onClick={(e)=>{
-                window.localStorage.clear();
-                window.location='/signup';
-            }}>Clear</button>
-        </div>
-    );
+class Home extends Component {
+
+    componentDidMount() {
+        console.log(window.localStorage.getItem('token'))
+
+    }
+
+    render() {
+        return (
+            <div>
+                <button type="submit" onClick={(e) => {
+                    window.localStorage.clear();
+                    window.location = '/';
+                }}>Clear</button>
+
+            </div>
+        )
+    }
 }
 
-export default Home;
+export default Home

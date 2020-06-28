@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Form from './form';
 import jwt_decode from 'jwt-decode';
 
 
@@ -13,8 +13,10 @@ export default class Signup extends Component {
         this.state = {
             username: "",
             password: "",
-            token: ""
-
+            confirmPassword: '',
+            token: "",
+            usererror: true,
+            passerror: false
 
         }
         this.cancel = '';
@@ -24,12 +26,11 @@ export default class Signup extends Component {
         if (window.localStorage.getItem('token')) {
             window.location = '/home'
         }
-
     }
 
 
     validateForm() {
-        return this.state.username.length > 0 && this.state.password.length > 2;
+        return this.state.username.length > 4 && this.state.password.length > 4 && this.state.password === this.state.confirmPassword;
     }
 
     handleChange(e) {
@@ -42,52 +43,34 @@ export default class Signup extends Component {
 
         })
 
-        if (this.cancel) {
-            this.cancel.cancel();
+
+
+
+        //console.log("signup")
+        if (name === "username") {
+            if (this.cancel) {
+                this.cancel.cancel();
+            }
+            this.cancel = axios.CancelToken.source();
+
+            axios.get('/checkusername/' + value, {
+                cancelToken: this.cancel.token
+            }).then(res => {
+
+                if (res.data.status === 'error') {
+                    this.setState({ ...this.state, usererror: true })
+                    console.log("Already existing user");
+                }
+                else {
+                    if (value.length > 3) {
+                        this.setState({ ...this.state, usererror: false })
+                    }
+                    console.log("valid username");
+
+                }
+            }).catch((err) => console.log("error"))
         }
-        this.cancel = axios.CancelToken.source();
-        console.log(value);
-        axios.get('/checkusername/'+value, {
-            cancelToken: this.cancel.token
-        }).then(res => {
-            console.log(res.data.status);
-            if (res.data.status === 'error') {
-                console.log("Already existing user");
-            }
-            else{
-                console.log("valid username");
-            }
-        })
     };
-    // const CancelToken = axios.CancelToken;
-    // const source = CancelToken.source();
-    // axios.post('/signup', {
-    //     username: this.state.username,
-    //     password:this.state.password
-    //   }, {
-    //     cancelToken: source.token
-    //   })
-
-
-    //   source.cancel('Operation canceled by the user.');
-
-    // const CancelToken = axios.CancelToken;
-    // let cancel;
-
-    // axios.post('/signup',{
-    //     username: this.state.username,
-    //     password: this.state.password
-    // }, {
-    //     cancelToken: new CancelToken(function executor(c) {
-    //         // An executor function receives a cancel function as a parameter
-    //         cancel = c;
-    //     })
-    // });
-
-    // // cancel the request
-    // cancel();
-
-
 
 
     handleClick(e) {
@@ -96,17 +79,20 @@ export default class Signup extends Component {
             username: this.state.username,
             password: this.state.password
         }
+        console.log("signup")
 
         axios.post('/signup', user)
             .then(res => {
+                console.log(res.data.token);
 
-                this.setState({ token: res.data.token })
-                window.localStorage.setItem('token', this.state.token);
                 if (res.data.status === 'error') {
 
                     window.location = '/error'
                 }
                 else {
+
+                    this.setState({ token: res.data.token })
+                    window.localStorage.setItem('token', this.state.token);
                     window.location = '/home'
                 }
             });
@@ -114,28 +100,16 @@ export default class Signup extends Component {
         this.setState({
             username: "",
             password: "",
+            confirmPassword: '',
             token: ''
         });
 
-        // window.location = '/'
 
     }
     render() {
         return (
             <div>
-                <form onSubmit={this.handleClick}>
-                    <div className="form-group">
-                        <label htmlFor="u" >Username:</label>
-                        <input id="u" className="form-control" type="text" name="username" value={this.state.username} onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="p" >Password:</label>
-                        <input id="p" type="password" className="form-control" name="password" value={this.state.password} onChange={this.handleChange} />
-                    </div>
-
-                    <button type="submit" className="btn btn-primary" onClick={this.handleClick} disabled={!(this.validateForm())}>Sign Up</button>
-                    {/* <a href="/" classNameName="linkk"></a> */}
-                </form>
+                < Form tog={this.props.tog} state={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
 
         );

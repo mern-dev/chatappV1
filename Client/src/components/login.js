@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Form from './form';
+
 import jwt_decode from 'jwt-decode';
-import UserContext from '../context/userContext';
 
 export default class Login extends Component {
-
-    static contextType = UserContext;
 
     constructor(props) {
         super(props);
@@ -19,14 +17,16 @@ export default class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            token: ""
+            token: "",
+            passerror: false
         }
+
 
     }
 
 
     validateForm() {
-        return this.state.username.length > 0 && this.state.password.length > 2;
+        return this.state.username.length > 4 && this.state.password.length > 5;
     }
 
     handleChange(e) {
@@ -37,11 +37,12 @@ export default class Login extends Component {
             ...this.state,
             [name]: value
         })
+
     }
 
     handleClick(e) {
         e.preventDefault();
-      //  const { user, setUser } = this.context
+
         const userr = {
             username: this.state.username,
             password: this.state.password
@@ -51,51 +52,35 @@ export default class Login extends Component {
             .then(res => {
 
                 this.setState({ token: this.state.token })
+                console.log(res.data.status);
 
-                // const newUser = { user: this.state.token}
-
-                // setUser(newUser)
                 if (res.data.status === 'error') {
-                    window.location = '/error'
+                    this.setState({ passerror: true });
+
                 }
                 else {
-                    window.location = '/Home'
+                    window.location = '/Home';
+
+                    this.setState({
+                        username: "",
+                        password: "",
+                        token: ""
+                    });
                 }
 
-                // const myStorage = window.localStorage;
-                // myStorage.setItem(id,decode.username);
-                // const vari = myStorage.getItem(id);
-                // console.log(vari);
 
             });
 
 
-        this.setState({
-            username: "",
-            password: "",
-            token: ""
-        });
 
 
     }
     render() {
         return (
+
             <div>
-                <form onSubmit={this.handleClick}>
-                    <div className="form-group">
-                        <label htmlFor="u" >Username:</label>
-                        <input id="u" className="form-control" type="text" name="username" value={this.state.username} onChange={this.handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="p" >Password:</label>
-                        <input id="p" type="password" className="form-control" name="password" value={this.state.password} onChange={this.handleChange} />
-                    </div>
-                    <button type="submit" className="btn btn-primary" onClick={this.handleClick} disabled={!(this.validateForm())}>Log in</button>
-
-                    {/* <a href="/register" className="badge badge-primary linkk" >Create new account</a> */}
-                </form>
+                < Form tog={this.props.tog} state={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
-
         );
     }
 }

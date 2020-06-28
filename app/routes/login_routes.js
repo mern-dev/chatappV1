@@ -77,6 +77,7 @@ module.exports = function (app) {
   // =====================================
 
   app.post('/signup', function (req, res) {
+    console.log(req.body);
 
     const newUser = {
       username: req.body.username,
@@ -125,7 +126,6 @@ module.exports = function (app) {
 
   });
   app.get('/checkusername/:username', function (req, res) {
-    console.log(req);
     User.findOne({ username: req.params.username}).then(user => {
       
       if (user) {
@@ -139,6 +139,7 @@ module.exports = function (app) {
         res.json({
           status: "success",
           message: "Valid username"
+          
         })
       }
     })
