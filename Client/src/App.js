@@ -18,6 +18,9 @@ function App() {
     <Router>
       <div className="container">
 
+         <Route exact path='/' component={Login} />  
+
+
         <Route path="/home" component={Home} />
         <Route exact path="/" >
           {(toggle) ? <Signup tog={toggle} toggle={onToggle} /> : <Login  toggle={onToggle} tog={toggle}/>}

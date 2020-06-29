@@ -1,4 +1,5 @@
 var User = require('../models/user_model.js');
+var Room = require('../models/room_model.js');
 const isLoggedIn = require("./middleware.js");
 const jwt = require("jsonwebtoken");
 const secret = "dingdingsjdfkdsvbdsvs8v9sdvhnksdjnvkjdsnvkjdv";
@@ -20,7 +21,7 @@ module.exports = function (app) {
   // LOGIN ===============================
   // =====================================
   app.post('/login', function (req, res) {
-
+    
 
     User.findOne({ username: req.body.username }).then(user => {
       if (user) {
@@ -81,6 +82,7 @@ module.exports = function (app) {
       username: req.body.username,
       password: req.body.password
     }
+    console.log(newUser.username);
 
     User.findOne({ username: newUser.username }).then(user => {
       if (!user) {
@@ -89,25 +91,31 @@ module.exports = function (app) {
           newUser.password = hash;
 
           User.create(newUser).then(usr => {
-            const payload = {
-              _id: usr._id,
-              username: newUser.username
-            };
-            // Authenticate using JWT
-            let token = jwt.sign(payload, secret, {
-              expiresIn: 2000
-            });
-            // send encrypted token to client
-            res.json({
-              status: "success",
-              token: token,
-              message:
-                newUser.username +
-                " is successfully registered!"
-            });
-          });
-        })
+            Room.create({_id:usr._id}).then(room =>{
 
+              // console.log(room._id,"roomid");
+              // console.log(usr._id,"userid");
+              const payload = {
+                _id: usr._id,
+                username: newUser.username
+              };
+              // Authenticate using JWT
+              let token = jwt.sign(payload, secret, {
+                expiresIn: 2000
+              });
+              // send encrypted token to client
+              res.json({
+                status: "success",
+                token: token,
+                message:
+                  newUser.username +
+                  " is successfully registered!"
+              });
+            });
+          })
+  
+            });
+            
 
       } else {
         res.json({
@@ -156,7 +164,7 @@ module.exports = function (app) {
 
     app.get("/:id/:username",isLoggedIn,function(req,res)
     {    
-        User.find( { 'username' : { '$regex' : req.params.username, '$options' : 'i' } },{
+        User.find( { 'username' : { '$regex' : new RegExp('^'+req.params.username,"i")} },{
             "username": 1
           } ).then(docs =>
             {  

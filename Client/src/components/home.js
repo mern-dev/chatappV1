@@ -34,12 +34,12 @@ class Home extends Component {
         console.log(this.id);
         const point = "http://localhost:3000/";
         this.socket = io(point);
-        if(this.id=="5ef5ae4eca64292fd4237602")
+        if(this.id=="5ef948986db38443b9949a98")
         {
-            this.receiverId="5ef53622c98dac7d0d7054ec"
+            this.receiverId="5ef948986db38443b9949a99"
         }
         else{
-            this.receiverId="5ef5ae4eca64292fd4237602"
+            this.receiverId="5ef948986db38443b9949a98"
         }
         this.socket.emit("join",{id:this.id});
      
@@ -71,7 +71,7 @@ class Home extends Component {
     }
     render() { 
         return (
-            <div>
+            <div className="home">
                 <div>
              
                 </div>
@@ -87,6 +87,7 @@ class Home extends Component {
                     </div>
 
                     <button type="submit" className="btn btn-primary" onClick={this.handleClick} >Send</button>
+
             </div>
         );
     }
