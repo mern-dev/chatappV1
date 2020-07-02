@@ -1,4 +1,5 @@
 var User = require('../models/user_model.js');
+const isLoggedIn = require("./middleware.js");
 const jwt = require("jsonwebtoken");
 const secret = "dingdingsjdfkdsvbdsvs8v9sdvhnksdjnvkjdsnvkjdv";
 var bcrypt = require('bcrypt');
@@ -18,7 +19,7 @@ module.exports = function (app) {
   // =====================================
   // LOGIN ===============================
   // =====================================
-  app.post('/', function (req, res) {
+  app.post('/login', function (req, res) {
 
 
     User.findOne({ username: req.body.username }).then(user => {
@@ -52,10 +53,7 @@ module.exports = function (app) {
             });
 
           }
-
-
-
-        });
+         });
 
       }
       else {
@@ -125,6 +123,11 @@ module.exports = function (app) {
       });
 
   });
+
+
+    // =====================================
+    // CHECK USER ROUTE =====================
+    // =====================================
   app.get('/checkusername/:username', function (req, res) {
     User.findOne({ username: req.params.username}).then(user => {
       
@@ -145,11 +148,35 @@ module.exports = function (app) {
     })
   })
 
-}
+
 
     // =====================================
-    // PROFILE SECTION =====================
+    // CHAT LIST ROUTE =====================
     // =====================================
 
+    app.get("/:id/:username",isLoggedIn,function(req,res)
+    {    
+        User.find( { 'username' : { '$regex' : req.params.username, '$options' : 'i' } },{
+            "username": 1
+          } ).then(docs =>
+            {  
+                    if(docs.length>0)
+                    {
+                        res.json({
+                            status:"success",
+                             data:docs
+                        })
+                    }
+                    else
+                    {
+                          res.json({
 
+                            status:"error",
+                            message:"No such user"
+                          })
 
+                    }
+
+            } )
+    })
+  }

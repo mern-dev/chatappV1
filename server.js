@@ -3,8 +3,9 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-const cors = require('cors');
+
+var bodyParser   = require('body-parser');
+
 
 const router   = express.Router();
 const fileUpload = require('express-fileupload')
@@ -22,6 +23,9 @@ app.use(fileUpload());
 app.use(express.static('uploads'))
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded())
+
+    app.use(bodyParser.urlencoded())
+
 
 app.use(bodyParser.json());
 
@@ -98,8 +102,23 @@ require('./app/routes/login_routes.js')(app); // load routes and pass in our app
 
 
 // routes ======================================================================
-require('./app/routes/login_routes.js')(app); // load our routes and pass in our app and fully configured passport
+require('./app/routes/login_routes.js')(app); // load our routes and pass in our app 
+
 
 // launch ======================================================================
-app.listen(port);
+var server = app.listen(port);
 console.log('The magic happens on port ' + port);
+
+
+var io = require("socket.io")(server);
+
+
+io.on("connection", (socket) =>{
+  require("./app/routes/user_routes")(io,socket) ;
+  
+   
+  })
+
+
+
+

@@ -1,7 +1,10 @@
 
 
 import React, { Component } from 'react';
-//import io from "socket.io-client";
+
+
+import io from "socket.io-client";
+
 import jwt_decode from "jwt-decode";    
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,7 +18,46 @@ class Home extends Component {
           
 
 
+
     }
+
+    componentDidMount() {
+        let token=window.localStorage.getItem("token")
+        
+        if(token)
+        {
+            const decode = jwt_decode(token);
+           this.id = decode._id;
+            this.setState({id:this.id});
+            console.log(this.state.id)
+        }
+        else{
+
+
+            window.location = '/signup'
+        }
+        console.log(this.id);
+        const point = "http://localhost:3000/";
+        this.socket = io(point);
+        if(this.id=="5ef5ae4eca64292fd4237602")
+        {
+            this.receiverId="5ef53622c98dac7d0d7054ec"
+        }
+        else{
+            this.receiverId="5ef5ae4eca64292fd4237602"
+        }
+        this.socket.emit("join",{id:this.id});
+     
+        
+        this.socket.on("recievingMessage",function(newmsg){
+          console.log(newmsg.msgBody);
+        });
+          
+    }
+    handleChange(e) {
+        var value = e.target.value;
+      
+
 
     componentDidMount() {
         let token=window.localStorage.getItem("token")
@@ -53,6 +95,7 @@ class Home extends Component {
         var value = e.target.value;
       
 
+
         this.setState({
           
             msgbody: value
@@ -71,7 +114,11 @@ class Home extends Component {
     }
     render() { 
         return (
+
             <div className="home">
+
+            <div>
+
                 <div>
              
                 </div>
@@ -90,6 +137,7 @@ class Home extends Component {
 
             </div>
   
+
         );
     }
 }

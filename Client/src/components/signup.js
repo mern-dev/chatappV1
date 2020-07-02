@@ -16,7 +16,8 @@ export default class Signup extends Component {
             confirmPassword: '',
             token: "",
             usererror: true,
-            passerror: false
+            passerror: false,
+            matcherror:false
 
         }
         this.cancel = '';
@@ -30,7 +31,11 @@ export default class Signup extends Component {
 
 
     validateForm() {
-        return this.state.username.length > 4 && this.state.password.length > 4 && this.state.password === this.state.confirmPassword;
+        
+      //  return this.state.username.length > 5 && this.state.password.length > 4 && this.state.password === this.state.confirmPassword;
+    //=======commented for testing purpose ===================//
+    
+     return true;
     }
 
     handleChange(e) {
@@ -45,9 +50,8 @@ export default class Signup extends Component {
 
 
 
-
         //console.log("signup")
-        if (name === "username") {
+        if (name === "username" && value.length>4) {
             if (this.cancel) {
                 this.cancel.cancel();
             }
