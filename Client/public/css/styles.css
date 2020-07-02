@@ -1,5 +1,4 @@
 
-
 .app-img{
     height: 300px;
     width: 300px;
@@ -11,4 +10,268 @@
 }
 .comp{
     margin: 10px;
+}
+
+/* ======================================== home styling ========================================================================*/
+
+.home
+{   
+    
+     background-image: url(/images/bg-home.jpg); 
+
+    font-family: 'Noto Sans KR', sans-serif;
+    height:90vh ;
+    width: 80%;
+    margin-top:60px ;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 25px;
+    margin-left: auto; 
+    margin-right: auto; 
+    border: none;
+    align-items: center;
+    display: flex;
+
+   justify-content: center;
+   overflow: hidden;
+   
+
+  
+}
+.chatBox
+{   
+   
+    height: 80vh;
+    display: flex;
+   
+    width:90%;
+   
+    border-radius: 10px;
+  
+    box-shadow: 0 10px 5px 1px #333; 
+    overflow: hidden;
+    
+    
+    
+    
+}
+.leftHome
+{
+    background-color:rgba(0,0,0,0.8);
+    flex:1;
+}
+.middleHome
+{   
+     background-color:rgba(0,0,0,0.72); 
+ 
+    flex:2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+   
+  
+   
+}
+.middleHomeHeader
+{
+    
+    border-bottom: 1px solid white;
+    width: 85%;
+    margin-left:7% ;
+    margin-top: 3%;
+    height: 6vh;
+    position: relative;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex:1;
+     
+}
+.chatScroll
+{   
+   
+    overflow-y: scroll;
+    flex:10;
+}
+.chatScroll::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+.chatScroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px black;
+}
+ 
+.chatScroll::-webkit-scrollbar-thumb {
+  background-color: grey;
+  outline: 1px solid slategrey;
+}
+.receiverName
+{
+    font-size: 1.2rem;
+    color: white;
+    opacity: 1;
+    flex: 1;
+}
+.lastSeen
+{
+    color:grey;
+    font-size: 0.89rem;
+    flex: 1;
+    opacity: 1;
+}
+#chatInputBox
+{
+   height:4vh;
+   display:flex;
+   
+  
+  
+    bottom: 17px; 
+    border-width:6px ;
+   border-radius: 5px;
+    flex:1;
+   
+ 
+
+}
+.messageInput
+{
+   
+    flex:5;
+   border:none;
+    padding-top: 1%;
+    outline: none;
+   
+    background-color:rgba(0,0,0,0);
+    padding-left:6%;
+    font-size: 1em;
+   
+    margin: 2%;
+    color: #5f6769;
+   
+    
+}
+.messageButton
+{
+    flex:1;
+    border: 0;
+    
+    border-width: 0;
+    margin: 2%;
+    color:grey;
+    outline: none;
+    background-color:rgba(100, 89, 89, 0); 
+  
+    font-size: 1rem;
+     
+}
+.messageButton:focus { outline: none; }
+.messageButton:active {
+    color:white;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+.rightHome
+{
+    background-color:rgba(0,0,0,0.78);
+    flex:1;
+   
+}
+@media only screen and (max-width: 1556px) {
+    #right {
+        display: none;
+    }
+}
+@media only screen and (max-width: 766px) {
+    #middle {
+        display: none;
+    }
+}
+
+/* ============================================message component styling =======================================*/
+
+.msg
+{
+   
+    padding: 1%;
+    padding-left: 3%;
+    padding-right: 2%;
+    margin: 0.5%;
+    margin-left:2%;
+    display: inline-block;
+    /* background-color:rgba(107, 107, 107, 0.671);  */
+    background-color:#282b30 ;
+     
+     max-width: 300px;
+    border-radius: 10px;
+    clear:both;
+    float:left;
+    
+   
+    
+}
+.sendmsg
+{
+   
+    padding: 1%;
+    padding-right:3%;
+    padding-left: 2%;
+    max-width: 300px;
+    margin:0.5%;
+    margin-right: 2%;
+    text-align: left;
+    display: inline-block;
+    /* background-color:rgba(107, 107, 107, 0.671);  */
+    background-color:rgba(0, 0, 0, 0.623) ;
+   float:right;
+   clear:both;
+    border-radius: 10px;
+   
+    
+   
+    
+}
+.sendmsgBody
+{     
+   
+    color:grey;
+    
+   display: inline;
+   
+   overflow-wrap:break-word;
+   font-size: 1rem;
+   
+  
+    
+    
+   
+}
+
+
+.msgBody
+{     
+   
+    color:white;
+    opacity: 0.9;
+   display: inline;
+   
+   overflow-wrap:break-word;
+   font-size: 1rem;
+   
+  
+    
+    
+   
+}
+.msgSentTime
+{ 
+    display: inline;
+    float: right;
+  font-size: 0.7rem;
+   margin-top: 1%;
+  opacity: 0.9;
+  color:grey;
+ 
+ 
+  
 }
