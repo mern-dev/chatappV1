@@ -1,7 +1,9 @@
 
+
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
+
 var mongoose = require('mongoose');
 
 var bodyParser   = require('body-parser');
@@ -102,7 +104,7 @@ require('./app/routes/login_routes.js')(app); // load routes and pass in our app
 
 
 // routes ======================================================================
-require('./app/routes/login_routes.js')(app); // load our routes and pass in our app 
+require('./app/routes/login_routes.js')(app); // load routes and pass in our app 
 
 
 // launch ======================================================================
@@ -115,7 +117,6 @@ var io = require("socket.io")(server);
 
 io.on("connection", (socket) =>{
   require("./app/routes/user_routes")(io,socket) ;
-  
    
   })
 

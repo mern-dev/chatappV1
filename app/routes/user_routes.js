@@ -1,4 +1,5 @@
 var User = require('../models/user_model.js');
+var Room = require('../models/room_model.js');
 module.exports=function(io,socket){
         
         
@@ -29,27 +30,75 @@ module.exports=function(io,socket){
           
 
         socket.on("postingMessage",function(newMessage){
-                User.updateOne(
-                        { _id: newMessage.receiverId },
-                        {
-                          $push: {
-                            newMessages: {
-                              $each: [
-                                {
-                                  msgBody: newMessage.msgBody,
-                                  senderId : newMessage.senderId
-                                }
-                              ]
-                            }
-                          }
+        const msg= {
+            msgId:newMessage.msgId,
+          msgBody:newMessage.msgBody,
+             read:false,
+         sentTime:newMessage.sentTime,
+             sent:true
+         }
+         const msgOnline= {
+          msgId:newMessage.msgId,
+        msgBody:newMessage.msgBody,
+           read:false,
+       sentTime:newMessage.sentTime,
+           sent:true,
+           senderId:newMessage.senderId
+       }
+          Room.update({_id:newMessage.senderId},
+            {$addToSet:{
+              "chats.Id":newMessage.receiverId}}).then(room =>{
+              Room.update({_id:newMessage.senderId,"chats.Id":newMessage.receiverId},{
+                $push:{
+                    "chats.$.messages":{
+                      $each:[
+                       msg 
+                      ]
+                    }
+                  }
+               })
+             }).then(val => {
+             
+              Room.update({_id:newMessage.receiverId},
+                {$addToSet:{
+                  "chats.Id":newMessage.senderId}}).then(room =>{
+                  Room.update({_id:newMessage.receiverId,"chats.Id":newMessage.senderId},{
+                    $push:{
+                        "chats.$.messages":{
+                          $each:[
+                           msg 
+                          ]
                         }
-                      )
-                        .then(val => {
-                          console.log(val);
-                          if (val.nModified == 1) {
-                           io.to(`${newMessage.receiverId}`).emit("receivingMessage",newMessage) //=======Sending the message to the receiver=============//
-                          }})
+                      }
+                   })
+                 }).then(val => {
+
+                  User.updateOne(
+                    { _id: newMessage.receiverId },
+                    {
+                      $push: {
+                        messagessActive: {
+                          $each: [
+                            {
+                              senderId : newMessage.senderId
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  )
+                    .then(val => {
+                      console.log(val);
+                      if (val.nModified == 1) {
+                        io.to(`${newMessage.senderId}`).emit("msgSent",{msgId:newMessage.msgId, sent:true, receiverId:newMessage.receiverId}) //=======Message added notification to the sender =======//
+                       io.to(`${newMessage.receiverId}`).emit("receivingMessage",msgOnline) //=======Sending the message to the receiver=============//
+                      }})
+                   }) 
                  }) 
+
+
+            })
+                
 
   // =====================================
   //   Updating Unread messages===========

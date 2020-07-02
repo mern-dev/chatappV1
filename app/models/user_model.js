@@ -1,24 +1,5 @@
 var mongoose = require('mongoose');
-const time = {
-        hours:{type:Number},
-        minutes:{type:Number},
-}
-const date = {
-        month:{type:Number},
-        day:{type:Number},
-        time:time
-
-   }
-const message = {
-         msgBody:{ type: String },
-         senderId:{type:String},
-         receiverId:{type:String},
-         senderName:{type:String},
-         sentTime:date,
-         read:{type:Boolean,default:false },
-         sent:{type:Boolean,default:false },
-}
-
+//var Room = require('../models/room_model.js');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
@@ -27,6 +8,7 @@ var userSchema = mongoose.Schema({
         password  : { type: String, required: true  },
         isOnline  : { type: Boolean, default:false },
 
+
         path : '',
         status:{type: String}
 
@@ -34,6 +16,9 @@ var userSchema = mongoose.Schema({
         oldMessages : [message],
         newMessages : [message]  
 
+
+        messagesActive :[{senderId:{type:mongoose.Types.ObjectId,required:true}}],
+  
   
    });
    

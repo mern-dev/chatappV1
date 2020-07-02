@@ -17,16 +17,30 @@ function App() {
 
   return (
     <Router>
-      <div className="container">
+      <div>
+      
 
-        <Route path="/home" component={Home} />
-        <Route exact path="/" >
-          {(toggle) ? <Signup tog={toggle} toggle={onToggle} /> : <Login  toggle={onToggle} tog={toggle}/>}
-        </Route>
+
 
         <Route path  = '/dp' component={Dp} />
         <Route path='/error' component={Error} />
       </div>
+
+
+        
+<Route exact path="/" >
+  {(toggle) ? <Signup tog={toggle} toggle={onToggle} /> : <Login  toggle={onToggle} tog={toggle}/>}
+</Route>
+<Route path='/error' component={Error} />
+
+<Route path="/home" component={Home} />
+</div>
+      
+    
+
+       
+     
+
     </Router>
   );
 }

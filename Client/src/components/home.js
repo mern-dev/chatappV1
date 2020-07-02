@@ -7,7 +7,8 @@ import io from "socket.io-client";
 
 import jwt_decode from "jwt-decode";    
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import ReceiveMessage from "./chatComponents/receivemessage"
+import SendMessage from './chatComponents/sendmessage';
 
 class Home extends Component {
     constructor(props) {
@@ -24,28 +25,23 @@ class Home extends Component {
     componentDidMount() {
         let token=window.localStorage.getItem("token")
         
-        if(token)
-        {
-            const decode = jwt_decode(token);
-           this.id = decode._id;
-            this.setState({id:this.id});
-            console.log(this.state.id)
-        }
-        else{
+        // if(token)
+        // {
+        //     const decode = jwt_decode(token);
+        //    this.id = decode._id;
+        //     this.setState({id:this.id});
+        //     console.log(this.state.id)
+        // }
+        // else{
 
 
-            window.location = '/signup'
-        }
+        //     window.location = '/signup'
+        // }
+
         console.log(this.id);
-        const point = "http://localhost:3000/";
+        const point = "http://localhost:3001/";
         this.socket = io(point);
-        if(this.id=="5ef5ae4eca64292fd4237602")
-        {
-            this.receiverId="5ef53622c98dac7d0d7054ec"
-        }
-        else{
-            this.receiverId="5ef5ae4eca64292fd4237602"
-        }
+     
         this.socket.emit("join",{id:this.id});
      
         
@@ -115,11 +111,54 @@ class Home extends Component {
     render() { 
         return (
 
+
             <div className="home">
+                
+            
+            <div className="chatBox">
 
-            <div>
 
-                <div>
+                <div className="leftHome">
+
+
+
+                </div>
+                <div className="middleHome" id="middle">
+                 < div className="middleHomeHeader">
+                    
+                   <div className="receiverName" > To: Kishore </div>
+                      <div className="lastSeen">last seen at 3:45pm</div>
+                    
+                 </div>
+                 <div className="chatScroll">
+                       <ReceiveMessage/>
+                       <SendMessage/>
+                       <SendMessage/>
+
+                     
+
+                 </div>
+                 <div id="chatInputBox">
+                     <input placeholder="Type Something..." className="messageInput" name="msgBody" />
+                     <button class="messageButton">Send</button>
+                  
+                      
+                     
+                 </div>
+
+                </div>
+
+                <div className="rightHome" id="right">
+
+
+
+                </div>
+
+
+            </div>
+           
+                {/* <div>
+
              
                 </div>
                 <h1>U Have Logged In Successfully</h1>
@@ -133,12 +172,19 @@ class Home extends Component {
                         <input id="p" type="text" className="form-control" name="msgbody" value={this.state.msgBody} onChange={this.handleChange} />
                     </div>
 
+
                     <button type="submit" className="btn btn-primary" onClick={this.handleClick} >Send</button>
 
             </div>
   
 
         );
+         <button type="submit" className="btn btn-primary" onClick={this.handleClick} >Send</button> */}
+
+            
+            
+</div>  );
+
     }
 }
  
