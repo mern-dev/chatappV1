@@ -20,7 +20,7 @@ mongoose.connect('mongodb://localhost:27017/testchatappV1', {
   useNewUrlParser: true,
 }); // connect to our database
 
-app.use(cors())
+
 app.use(fileUpload());
 app.use(express.static('uploads'))
 app.use('/uploads', express.static('uploads'));

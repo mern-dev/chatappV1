@@ -34,7 +34,7 @@ function App() {
 <Route path='/error' component={Error} />
 
 <Route path="/home" component={Home} />
-</div>
+
       
     
 

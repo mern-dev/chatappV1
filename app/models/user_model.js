@@ -10,11 +10,10 @@ var userSchema = mongoose.Schema({
 
 
         path : '',
-        status:{type: String}
+        status:{type: String},
 
 
-        oldMessages : [message],
-        newMessages : [message]  
+       
 
 
         messagesActive :[{senderId:{type:mongoose.Types.ObjectId,required:true}}],

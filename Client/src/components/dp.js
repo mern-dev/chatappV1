@@ -51,10 +51,7 @@ class Dp extends Component {
 
 
     }
-    // handlenameChange = (e) => {
-    //     const uname = e.target.value;
-    //     this.setState({ name: uname });
-    // }
+  
 
     handleClick = (e) => {
         e.preventDefault();
@@ -68,7 +65,7 @@ class Dp extends Component {
         formData.append('status', this.state.status);
 
 
-        axios.post('http://localhost:3000/dp', formData, {
+        axios.post('/dp', formData, {
             onUploadProgress: ProgressEvent => {
                 this.setState({
                     loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),

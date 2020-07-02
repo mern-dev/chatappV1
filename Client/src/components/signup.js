@@ -24,9 +24,9 @@ export default class Signup extends Component {
 
     }
     componentDidMount() {
-        if (window.localStorage.getItem('token')) {
-            window.location = '/dp'
-        }
+        // if (window.localStorage.getItem('token')) {
+        //     window.location = '/dp'
+        // }
     }
 
 
@@ -57,7 +57,7 @@ export default class Signup extends Component {
             }
             this.cancel = axios.CancelToken.source();
 
-            axios.get('http://localhost:3000/checkusername/' + value, {
+            axios.get('http://localhost:3001/checkusername/' + value, {
                 cancelToken: this.cancel.token
             }).then(res => {
 
@@ -85,7 +85,7 @@ export default class Signup extends Component {
         }
         console.log("clicked")
 
-        axios.post('http://localhost:3000/signup', user)
+        axios.post('/signup', user)
             .then(res => {
                 console.log(res.data.token);
 

@@ -18,10 +18,7 @@ class Home extends Component {
         this.state = { msgbody:"" }
           
 
-
-
-    }
-
+ }
     componentDidMount() {
         let token=window.localStorage.getItem("token")
         
@@ -34,41 +31,8 @@ class Home extends Component {
         // }
         // else{
 
-
-        //     window.location = '/signup'
+        //     window.location = '/'
         // }
-
-        console.log(this.id);
-        const point = "http://localhost:3001/";
-        this.socket = io(point);
-     
-        this.socket.emit("join",{id:this.id});
-     
-        
-        this.socket.on("recievingMessage",function(newmsg){
-          console.log(newmsg.msgBody);
-        });
-          
-    }
-    handleChange(e) {
-        var value = e.target.value;
-      
-
-
-    componentDidMount() {
-        let token=window.localStorage.getItem("token")
-        
-        if(token)
-        {
-            const decode = jwt_decode(token);
-           this.id = decode._id;
-            this.setState({id:this.id});
-            console.log(this.state.id)
-        }
-        else{
-
-            window.location = '/'
-        }
     //     console.log(this.id);
     //     const point = "http://localhost:3000/";
     //     this.socket = io(point);
