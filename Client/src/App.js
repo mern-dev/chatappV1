@@ -5,6 +5,7 @@ import Login from '../src/components/login';
 import Signup from '../src/components/signup';
 import Home from './components/home';
 import Error from './components/error';
+import Dp from './components/dp';
 
 function App() {
 
@@ -21,6 +22,10 @@ function App() {
 
 
 
+        <Route path  = '/dp' component={Dp} />
+        <Route path='/error' component={Error} />
+      </div>
+
 
         
 <Route exact path="/" >
@@ -35,6 +40,7 @@ function App() {
 
        
      
+
     </Router>
   );
 }
