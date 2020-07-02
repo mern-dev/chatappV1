@@ -8,6 +8,9 @@ var userSchema = mongoose.Schema({
         username  : { type: String,required: true  },
         password  : { type: String, required: true  },
         isOnline  : { type: Boolean, default:false },
+        path : '',
+        status:{type: String}
+
   
    });
    

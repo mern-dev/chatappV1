@@ -24,7 +24,7 @@ export default class Signup extends Component {
     }
     componentDidMount() {
         if (window.localStorage.getItem('token')) {
-            window.location = '/home'
+            window.location = '/dp'
         }
     }
 
@@ -53,7 +53,7 @@ export default class Signup extends Component {
             }
             this.cancel = axios.CancelToken.source();
 
-            axios.get('/checkusername/' + value, {
+            axios.get('http://localhost:3000/checkusername/' + value, {
                 cancelToken: this.cancel.token
             }).then(res => {
 
@@ -79,9 +79,9 @@ export default class Signup extends Component {
             username: this.state.username,
             password: this.state.password
         }
-        console.log("signup")
+        console.log("clicked")
 
-        axios.post('/signup', user)
+        axios.post('http://localhost:3000/signup', user)
             .then(res => {
                 console.log(res.data.token);
 
@@ -93,7 +93,7 @@ export default class Signup extends Component {
 
                     this.setState({ token: res.data.token })
                     window.localStorage.setItem('token', this.state.token);
-                    window.location = '/home'
+                    window.location = '/dp'
                 }
             });
 
