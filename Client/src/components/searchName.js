@@ -34,7 +34,7 @@ class SearchName extends Component {
             <div className="searchBar">
                 <button className="plusButton" onClick={this.toggle}>  <FontAwesome
           name="close" className="plusIcon"/></button>  
-            <input  maxlength="30" name="searchInput" className="searchInputBar" placeholder="Search here.."/>
+            <input   name="searchInput" className="searchInputBar" placeholder="Search here.."/>
 
             <button className="searchButton" >  <FontAwesome
           name="search" className="searchIcon"/></button>  
