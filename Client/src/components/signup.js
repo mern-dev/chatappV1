@@ -57,7 +57,7 @@ export default class Signup extends Component {
             }
             this.cancel = axios.CancelToken.source();
 
-            axios.get('http://localhost:3001/checkusername/' + value, {
+            axios.get('/checkusername/' + value, {
                 cancelToken: this.cancel.token
             }).then(res => {
 
