@@ -11,7 +11,108 @@
 .comp{
     margin: 10px;
 }
+.left-c{
+    overflow: hidden;
+    height: 10000px;
+}
 
+.img-ul{
+    width: 100%;
+    background-color:rgba(0,0,0,0.08);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+    color: #f4f6ff;
+    overflow: scroll;
+    height: 420px;
+
+}
+ul::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+.img-li{
+    display: flex;
+    padding-left: 16px;
+    padding-right: 16px;
+    align-items: flex-start;  
+    width: 100%;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    text-align: left;
+    align-items: center;
+    padding-top: 8px;
+    padding-bottom: 8px;  
+    justify-content: flex-start;
+    text-decoration: none;
+}
+  .img-div{
+    padding: 0;
+    padding-left: 1rem;
+    margin-top: 20px;
+     
+    
+}  
+.img-avatar{
+   margin-left: 20px;
+}
+.img-h{
+    font-size: 1.25rem;
+    font-family: 'Montserrat', sans-serif;
+  
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.00938em;
+}
+.img-p{
+    font-size: 0.85rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+}
+#rc{
+    background-color: black;
+    color:#f4f6ff;
+    margin: 0;
+    padding: 20px;
+}
+
+.hrr{
+    margin:0;
+    margin-left: 30px;
+    margin-right: 30px;
+    border-top: 1px solid #363636;
+}
+.nav-cl{
+    background-color:rgba(0,0,0,0.08);
+    color: #f4f6ff;
+}
+
+.time{
+    position: absolute;
+    right: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: small;
+    top: 28px;
+   
+}
+.dot{
+    margin-left: 120px;
+    margin-right: 120px;
+    border-top: 3px dotted #363636;
+}
+
+  h6:after{
+    content:"\A";
+    width:8px;
+    height:8px;
+    margin-left: 10px;
+    margin-bottom: 4px;
+    border-radius:50%;
+    background: #c4fb6d;
+    display:inline-block;
+}
 /* ======================================== home styling ========================================================================*/
 
 .home
@@ -173,11 +274,13 @@
    
 }
 @media only screen and (max-width:90em) {
+
     #right {
         display: none;
     }
 }
 @media only screen and (max-height: 41em) {
+
     #right {
         display: none;
     }
@@ -185,6 +288,7 @@
         display: none;
     }
 }
+
 
 @media only screen and (max-width:60em ) {
     #middle {
@@ -290,29 +394,34 @@
 
     margin-left:1em;
     margin-top: 0.5em;
-   
+
     height: 7.69vh;
 }
 .searchInputBar
 {
   
   border: none;
-   font-size: 1.2em;
+
+   font-size: 1em;
+
   
    position: absolute;
     background-color: inherit;
     color:white;
+
     left:2em;
     bottom: 0;
     width:70%;
-  
+
     outline: none;
     
 }
 .searchButton
 {
     position: absolute;
+
     bottom: 0.3em;
+
     right: 0;
    
     background-color: inherit;
@@ -337,8 +446,10 @@
     outline: none;
     border: none;
     position:absolute;
+
     top:0;
     left:0;
+
     
 }
 .plusButton:focus { outline: none; }
@@ -358,7 +469,9 @@ h2{
     background-color: inherit;
     bottom: 0;
     left:1em;
+
     font-size: 0.8em;
+
   
     
 }
