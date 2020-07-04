@@ -38,6 +38,8 @@ class SearchName extends Component {
 
             <button className="searchButton" >  <FontAwesome
           name="search" className="searchIcon"/></button>  
+
+         
          
             </div>
          );

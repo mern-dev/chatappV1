@@ -10,9 +10,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ReceiveMessage from "./chatComponents/receivemessage"
 import SendMessage from './chatComponents/sendmessage';
 
-import Contact from './chatComponents/contacts'
+import Contact from './chatComponents/chatBrief'
 
 import SearchName from './searchName';
+import ChatBrief from './chatComponents/chatBrief';
 
 
 class Home extends Component {
@@ -20,7 +21,8 @@ class Home extends Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.state = { msgbody: "" }
+        
+        this.state = { messages:[{_id:"1",username:"kishore",dp:"",isOnline:true,recentmsg:{msgBody:"hii da",sentTime:"3.33 pm"}},{id:"2",username:"kokoko",dp:"",isOnline:true,recentmsg:{msgBody:"hii da",sentTime:"3.33 pm"}}] }
 
 
     }
@@ -77,6 +79,7 @@ class Home extends Component {
 
         this.socket.emit("postingMessage", newMessage);
     }
+
     render() {
         return (
 
@@ -88,9 +91,8 @@ class Home extends Component {
 
                 
                     <div className="leftHome">
-                   
-                          <Contact /> 
-
+                          <SearchName />
+                     <ChatBrief messages={this.state.messages}/>
                     </div>
                     <div className="middleHome" id="middle">
                         <div className="middleHomeHeader">
@@ -106,7 +108,7 @@ class Home extends Component {
                             <SendMessage />
 
 
-                  <SearchName/>
+                 
 
 
                         </div>

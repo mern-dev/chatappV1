@@ -120,7 +120,7 @@ ul::-webkit-scrollbar {
     
      background-image: url(/images/bg-home.jpg); 
 
-    font-family: 'Noto Sans KR', sans-serif;
+     font-family: 'Montserrat', sans-serif;
     height:90vh ;
     width: 80%;
     margin-top:3.750em ;
@@ -410,7 +410,7 @@ ul::-webkit-scrollbar {
     color:white;
 
     left:2em;
-    bottom: 0;
+    bottom: 0.4em;
     width:70%;
 
     outline: none;
