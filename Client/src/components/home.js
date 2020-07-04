@@ -9,7 +9,11 @@ import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReceiveMessage from "./chatComponents/receivemessage"
 import SendMessage from './chatComponents/sendmessage';
+
 import Contact from './chatComponents/contacts'
+
+import SearchName from './searchName';
+
 
 class Home extends Component {
     constructor(props) {
@@ -94,12 +98,15 @@ class Home extends Component {
                             <div className="receiverName" > To: Kishore </div>
                             <div className="lastSeen">last seen at 3:45pm</div>
 
+
                         </div>
                         <div className="chatScroll">
                             <ReceiveMessage />
                             <SendMessage />
                             <SendMessage />
 
+
+                  <SearchName/>
 
 
                         </div>
