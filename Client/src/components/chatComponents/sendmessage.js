@@ -8,7 +8,7 @@ class SendMessage extends Component {
 
         <div className="sendmsg">
             <div className="sendmsgBody">
-         hey come onhjejcha
+            {this.props.msgBody}
             </div>
             <br/>
             <div className="msgSentTime">

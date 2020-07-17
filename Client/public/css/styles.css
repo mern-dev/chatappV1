@@ -194,6 +194,10 @@ ul::-webkit-scrollbar {
     overflow-y: scroll;
     flex:10;
 }
+.list-none 
+{
+    list-style: none;
+}
 .chatScroll::-webkit-scrollbar {
     width: 1em;
 }
@@ -228,6 +232,18 @@ ul::-webkit-scrollbar {
    
  
 
+}
+.middle-img
+{
+    width:45%;
+    height: 40%;
+  
+}
+.middleEmpty
+{
+    align-items: center;
+    justify-content: center;
+    color:grey;
 }
 .messageInput
 {
@@ -381,7 +397,7 @@ ul::-webkit-scrollbar {
   
 }
 
-/* ========================== search by name component ================= */
+/* =============================================================== Left-component styles ========================================================================= */
 
 .searchBar
 {
@@ -469,9 +485,23 @@ h2{
     background-color: inherit;
     bottom: 0;
     left:1em;
+    font-size: 0.8em;    
+}
 
-    font-size: 0.8em;
-
-  
+.search-img
+{  
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    color:grey;
+    height: 70vh;
+}
+.img-search
+{
+    width: 30%;
+    height: 30%;
+    opacity: 0.4;
     
 }

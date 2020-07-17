@@ -7,29 +7,35 @@ import ChatIcon from '@material-ui/icons/Chat';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 
-class ChatBrief extends Component {
+import  {UserContext}  from '../../contexts/userContext';
 
 
-  state = {  }
+class SimpleChatBrief extends Component {
+  static contextType = UserContext;
+
+  
+  openChat = (user) =>
+  {
+    const {currentUserUpdate} = this.context
+         currentUserUpdate(user)
+
+  }
   render() { 
+   
+   
     return ( 
       <div className='left-c' >
       <ul className="img-ul">
-    {this.props.messages.map( (newmsg) =>{ 
-   
-    return (<div>
-    <li className='img-li row ' key={newmsg.msg.senderId}>
+    {this.props.users.map( (user) =>{ 
+      
+    return (<div >
+    <li className='img-li row ' key={user._id} onClick={e => this.openChat(user)}>
     <div>
-      <Avatar alt="Cindy Baker" src={"/"+newmsg.senderPath} className='img-avatar' />
+      <Avatar alt="Cindy Baker" src={user.path} className='img-avatar' />
     </div>
     <div className='img-div '>
-      <h6 className="img-h">{newmsg.senderUsername}</h6>
- <p className='img-p'>{newmsg.msg.msgBody}</p>
+    <h4 className="img-h">{user.username}</h4>
     </div>
-    <div>
-<span className='time'>2.33 pm</span>
-     </div>
-          
     </li>
      
      <hr className='hrr' /> </div> )})}
@@ -39,4 +45,4 @@ class ChatBrief extends Component {
  }
 }
  
-export default ChatBrief;
+export default SimpleChatBrief;

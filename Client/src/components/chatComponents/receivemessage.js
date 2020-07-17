@@ -8,7 +8,7 @@ class ReceiveMessage extends Component {
 
         <div className="msg">
             <div className="msgBody">
-         hiiiiiiiii
+         {this.props.msgBody}
 
             </div>
             <br/>

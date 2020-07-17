@@ -162,17 +162,16 @@ module.exports = function (app) {
     // CHAT LIST ROUTE =====================
     // =====================================
 
-    app.get("/:id/:username",isLoggedIn,function(req,res)
+    app.get("/:id/search/:username",isLoggedIn,function(req,res)
     {    
-        User.find( { 'username' : { '$regex' : new RegExp('^'+req.params.username,"i")} },{
-            "username": 1
-          } ).then(docs =>
+        User.find( { 'username' : { '$regex' : new RegExp('^'+req.params.username,"i")},_id:{$ne:req.params.id }},{password:0} )
+        .then(docs =>
             {  
                     if(docs.length>0)
                     {
                         res.json({
                             status:"success",
-                             data:docs
+                             users:docs
                         })
                     }
                     else
@@ -186,5 +185,29 @@ module.exports = function (app) {
                     }
 
             } )
+    })
+ 
+    // =====================================
+    // USER DETAIL =====================
+    // =====================================
+
+    app.get('/getDetail/:id', function (req, res) {
+      User.findOne({ _id: req.params.id},{password:0,messagesActive:0,}).then(user => {
+        
+        if (user) {
+          res.json({
+            status: "success",
+            detail:user
+          })
+  
+        }
+        else {
+          res.json({
+            status: "error"
+            
+            
+          })
+        }
+      })
     })
   }
