@@ -30,15 +30,16 @@ module.exports=function(io,socket){
           
 
         socket.on("postingMessage",function(newMessage){
+          console.log(newMessage)
         const msg= {
-            msgId:newMessage.msgId,
+            id:newMessage.id,
           msgBody:newMessage.msgBody,
              read:false,
         // sentTime:newMessage.sentTime,
              sent:true
          }
          const msgOnline= {
-          msgId:newMessage.msgId,
+          id:newMessage.id,
         msgBody:newMessage.msgBody,
            read:false,
      //  sentTime:newMessage.sentTime,
@@ -46,24 +47,45 @@ module.exports=function(io,socket){
            senderId:newMessage.senderId
        } 
        console.log("entry")
-          Room.update({_id:newMessage.senderId},
+          Room.updateOne({_id:newMessage.senderId},
             {$addToSet:{
-              "chats.Id":newMessage.receiverId}}).then(room =>{
-              Room.update({_id:newMessage.senderId,"chats.Id":newMessage.receiverId},{
-                $push:{
-                    "chats.$.messages":{
-                      $each:[
-                       msg 
-                      ]
+              "chats":{Id:newMessage.receiverId,messages:[msg]}}}).then(room =>{ console.log(room,"lplplplpl")
+              if(room.nModified==1)
+              {
+                Room.updateOne({_id:newMessage.receiverId},
+                  {$addToSet:{
+                    "chats":{Id:newMessage.senderId,messages:[msg]}}}).then(room =>{ console.log(room,"lplplplpl")
+                    if(room.nModified==1)
+                    {
+                      User.findOne({_id:newMessage.senderId},{password:0,messagessActive:0}).then(user =>
+                        {
+                                  const newmsg = {
+                                    senderUsername:user.username,
+                                    senderPath:user.path,
+                                    msg:msgOnline
+                                  }
+                                  io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
+                        })
                     }
-                  }
-               })
-             }).then(val => {
-             
-              Room.update({_id:newMessage.receiverId},
+                })
+              }
+         else
+         {
+                Room.updateOne({_id:newMessage.senderId,"chats.Id":newMessage.receiverId},{
+                  $push:{
+                      "chats.$.messages":{
+                        $each:[
+                         msg 
+                        ]
+                      }
+                    }
+                 }).then(val=>{
+                   
+                  
+              Room.updateOne({_id:newMessage.receiverId},
                 {$addToSet:{
                   "chats.Id":newMessage.senderId}}).then(room =>{
-                  Room.update({_id:newMessage.receiverId,"chats.Id":newMessage.senderId},{
+                  Room.updateOne({_id:newMessage.receiverId,"chats.Id":newMessage.senderId},{
                     $push:{
                         "chats.$.messages":{
                           $each:[
@@ -96,7 +118,7 @@ module.exports=function(io,socket){
                       }
                       else 
                       {
-                        User.findOne({_id:newMessage.receiverId},{password:0,messagessActive:0}).then(user =>
+                        User.findOne({_id:newMessage.senderId},{password:0,messagessActive:0}).then(user =>
                           {
                                     const newmsg = {
                                       senderUsername:user.username,
@@ -109,10 +131,18 @@ module.exports=function(io,socket){
                       }
                     })
                    }) 
-                 }) 
+                 }).catch(err =>
+                  {
+                    console.log(err)
+                  })
 
-
-            })
+               }
+              
+            }).catch(err =>
+              {
+                console.log(err)
+              })
+        })  
                 
 
   // =====================================
