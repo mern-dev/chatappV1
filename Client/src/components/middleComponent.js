@@ -10,7 +10,12 @@ class MiddleComponent extends Component {
     static contextType = UserContext;
 
     send = () =>
-    {  const {postmessage} = this.context;
+    { const {postmessage,msgBody} = this.context;
+      if(msgBody=="")
+    {
+      return null;
+    } 
+      
       postmessage();
 
     }
@@ -28,27 +33,36 @@ class MiddleComponent extends Component {
                <div className="chatScroll">
                <ul className="list-none">
                    {messages.map(msg=>{
-                      
-                       if(msg.receiverId==receiver._id)
-                        {   return(  <li key={msg.id}>
-                           <SendMessage msgBody={msg.msgBody} />
+                      if(msg.Id===receiver._id)
+                     {  
+                        return( msg.messages.map(m =>{
+                             
+                        if(m.receiverId==receiver._id)
+                        { 
+                            return(  <li key={m.id}>
+                           <SendMessage msgBody={m.msgBody} />
                            </li>)
                         }
                             
                          
-                          if(msg.senderId==receiver._id)
-                         { return (<li key={msg.id}>
-                           <ReceiveMessage msgBody={msg.msgBody} />
+                          if(m.senderId==receiver._id)
+                         { return (<li key={m.id}>
+                           <ReceiveMessage msgBody={m.msgBody} />
                            </li>)
                          }  
-                        } 
+
+
+                       }))
+                    } 
+                      }
+                      
                      )} 
                </ul>
       
                  </div>
               <div id="chatInputBox">
                  <input onChange={ e => changeMsgBody(e.target.value)} placeholder="Type Something..." className="messageInput" value = {msgBody} />
-                  <button onClick={ this.send } class="messageButton">Send</button>
+                  <button onClick={this.send}  class="messageButton">Send</button>
              </div>
     </div>:
             <div className="middleHome middleEmpty" id="middle" > 

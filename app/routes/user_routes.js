@@ -30,6 +30,7 @@ module.exports=function(io,socket){
           
                     
         socket.on("postingMessage",function(newMessage){
+          console.log(newMessage)
           const msg= {
               id:newMessage.id,
             msgBody:newMessage.msgBody,
@@ -45,10 +46,19 @@ module.exports=function(io,socket){
              sent:true,
              senderId:newMessage.senderId
          }
-            Room.update({_id:newMessage.senderId},
-              {$addToSet:{
-                "chats.Id":newMessage.receiverId}}).then(room =>{
-                Room.update({_id:newMessage.senderId,"chats.Id":newMessage.receiverId},{
+         Room.updateOne({_id:newMessage.senderId,"chats.Id":newMessage.receiverId},{
+          $push:{
+              "chats.$.messages":{
+                $each:[
+                 msg 
+                ]
+              }
+            }
+         }).then(val => {
+             if(val.n)
+             {
+      
+              Room.updateOne({_id:newMessage.receiverId,"chats.Id":newMessage.senderId},{
                   $push:{
                       "chats.$.messages":{
                         $each:[
@@ -56,67 +66,121 @@ module.exports=function(io,socket){
                         ]
                       }
                     }
-                 })
-               }).then(val => {
-               
-                Room.update({_id:newMessage.receiverId},
-                  {$addToSet:{
-                    "chats.Id":newMessage.senderId}}).then(room =>{
-                    Room.update({_id:newMessage.receiverId,"chats.Id":newMessage.senderId},{
-                      $push:{
-                          "chats.$.messages":{
-                            $each:[
-                             msg 
-                            ]
+                 }).then(val => {
+      
+                User.updateOne(
+                  { _id: newMessage.receiverId,isOnline:false },
+                  {
+                    $push: {
+                      messagessActive: {
+                        $each: [
+                          {
+                            senderId : newMessage.senderId
                           }
-                        }
-                     })
-                   }).then(val => {
-  
-                    User.updateOne(
-                      { _id: newMessage.receiverId,isOnline:false },
-                      {
-                        $push: {
-                          messagessActive: {
-                            $each: [
-                              {
-                                senderId : newMessage.senderId
-                              }
-                            ]
-                          }
-                        }
+                        ]
                       }
-                    )
-                      .then(val => {
-                        console.log(val);
-                       
-                        if (val.nModified == 1) {
-                          // io.to(`${newMessage.senderId}`).emit("msgSent",{msgId:newMessage.msgId, sent:true, receiverId:newMessage.receiverId}) //=======Message added notification to the sender =======//
-                          
-                         }
-                         else 
+                    }
+                  }
+                )
+                  .then(val => {
+     
+                   
+                    if (val.nModified == 1) {
+                      // io.to(`${newMessage.senderId}`).emit("msgSent",{msgId:newMessage.msgId, sent:true, receiverId:newMessage.receiverId}) //=======Message added notification to the sender =======//
+                      
+                     }
+                     else 
+                     {
+                       User.findOne({_id:newMessage.senderId},{password:0,messagessActive:0}).then(user =>
                          {
-                           User.findOne({_id:newMessage.senderId},{password:0,messagessActive:0}).then(user =>
-                             {
-                                       const newmsg = {
-                                         senderUsername:user.username,
-                                         senderPath:user.path,
-                                         msg:msgOnline
-                                       }
-                                       io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
-                             })
-                           
-                         }
-                      
-                      
-                      
-                      
-                      })
-                     }) 
-                   }) 
+                                   const newmsg = {
+                                     senderUsername:user.username,
+                                     senderPath:user.path,
+                                     msg:msgOnline
+                                   }
+                                   console.log("message-sent")
+                                   io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
+                         })
+                       
+                     }
+                  
+                  
+                  
+                  
+                  })
+                 }).catch(err =>{
+                   console.log(err)
+                 })   
+              
+      
+             }
+             else
+             {
+              Room.updateOne({_id:newMessage.senderId},
+                  {$addToSet:{
+                    "chats":{Id:newMessage.receiverId,messages:[msg]}}}).then(room =>{
+      
+                      Room.updateOne({_id:newMessage.receiverId},
+                          {$addToSet:{
+                            "chats":{Id:newMessage.senderId,messages:[msg]}}}).then(room =>{
+                            
+                              User.updateOne(
+                                  { _id: newMessage.receiverId,isOnline:false },
+                                  {
+                                    $push: {
+                                      messagessActive: {
+                                        $each: [
+                                          {
+                                            senderId : newMessage.senderId
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                )
+                                  .then(val => {
+                                   
+                                   
+                                    if (val.nModified == 1) {
+                                      // io.to(`${newMessage.senderId}`).emit("msgSent",{msgId:newMessage.msgId, sent:true, receiverId:newMessage.receiverId}) //=======Message added notification to the sender =======//
+                                      
+                                     }
+                                     else 
+                                     {
+                                       User.findOne({_id:newMessage.senderId},{password:0,messagessActive:0}).then(user =>
+                                         {
+                                                   const newmsg = {
+                                                     senderUsername:user.username,
+                                                     senderPath:user.path,
+                                                     msg:msgOnline
+                                                   }
+                                                   console.log("message-sent")
+                                                   io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
+                                         })
+                                       
+                                     }
+                                  
+                                  
+                                  
+                                  
+                                  })
+                                 }).catch(err =>{
+                                   console.log(err)
+                                 })  
+      
+      
+      
+      
+      
+                            })
+      
+                  
+             }
+      
+         })
+      })
   
-  
-              })
+      
 
   // =====================================
   //   Updating Unread messages===========

@@ -8,7 +8,7 @@ var FontAwesome = require('react-fontawesome');
 
 
 class LeftComponent extends Component {
-    static context = UserContext;
+    static contextType = UserContext;
    constructor(props)
    {  super(props);
      this.state = { searchResults:[],isPressed:false,id:"",searchQuery:""};
@@ -58,9 +58,9 @@ class LeftComponent extends Component {
 
    }
      render() { 
-      const { newMessages } = this.context;     
+      const { messages } = this.context;     
        if(!this.state.isPressed)
-       { if(newMessages)
+       {  if(messages.length)
          {
             return(
                <div>
@@ -71,28 +71,31 @@ class LeftComponent extends Component {
          
          </div>
          <div>
-         <ChatBrief messages={newMessages}/>
+         <ChatBrief messages={messages}/>
          </div>
 
          </div>
          );
+
          }
-          else
-          {
-             return (
-                <div>
-                    <div className="searchBar">
+
+         else
+         {
+            return(
+               <div>
+             <div className="searchBar">
                   <button className="plusButton" onClick={this.toggle} >  <FontAwesome
        name="plus" className="plusIcon"/></button>  
           <h2 >Chats</h2>
          
          </div>
-                
-                </div>
-             )
-          }
+         </div>)
 
-       }
+         }
+            
+      }
+         
+         
        else
        {
 

@@ -197,6 +197,8 @@ ul::-webkit-scrollbar {
 .list-none 
 {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 .chatScroll::-webkit-scrollbar {
     width: 1em;
@@ -318,12 +320,13 @@ ul::-webkit-scrollbar {
 {
    
     padding: 0.5em;
-    padding-left: 0.75em;
+   
     padding-right: 0.6em;
-    margin-left:0.6em;
+  
     display: inline-block;
     background-color:#282b30 ;
     margin:0.15em;
+    margin-left: 0.6em;
      max-width: 18.75em;
     border-radius: 0.63em;
     clear:both;
