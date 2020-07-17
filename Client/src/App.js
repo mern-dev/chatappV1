@@ -7,6 +7,7 @@ import Home from './components/home';
 import Error from './components/error';
 import Dp from './components/dp';
 
+
 function App() {
 
   const [toggle, setToggle] = useState(false);
@@ -16,7 +17,11 @@ function App() {
   }
 
   return (
+
+
+
     <Router>
+        
       <div>
       
 
@@ -42,6 +47,7 @@ function App() {
      
 
     </Router>
+  
   );
 }
 

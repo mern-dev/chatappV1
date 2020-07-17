@@ -4,7 +4,9 @@ import Form from './form';
 import jwt_decode from 'jwt-decode';
 
 
+
 export default class Signup extends Component {
+
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -83,7 +85,8 @@ export default class Signup extends Component {
             username: this.state.username,
             password: this.state.password
         }
-        console.log("clicked")
+ 
+    
 
         axios.post('/signup', user)
             .then(res => {
@@ -97,7 +100,10 @@ export default class Signup extends Component {
 
                     this.setState({ token: res.data.token })
                     window.localStorage.setItem('token', this.state.token);
-                    window.location = '/dp'
+                    const decode = jwt_decode(res.data.token);
+                    
+                    
+                 window.location = '/dp'
                 }
             });
 

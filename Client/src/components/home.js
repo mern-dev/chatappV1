@@ -7,53 +7,52 @@ import io from "socket.io-client";
 
 import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ReceiveMessage from "./chatComponents/receivemessage"
-import SendMessage from './chatComponents/sendmessage';
 
-import Contact from './chatComponents/contacts'
+import UserContextProvider, { UserContext } from '../contexts/userContext'
+import LeftComponent from './leftComponent';
+import MiddleComponent from './middleComponent';
 
-import SearchName from './searchName';
 
 
 class Home extends Component {
+  
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.state = { msgbody: "" }
+        
+        this.state = { messages:[{_id:"1",username:"kishore",dp:"",isOnline:true,recentmsg:{msgBody:"hii da",sentTime:"3.33 pm"}},{id:"2",username:"kokoko",dp:"",isOnline:true,recentmsg:{msgBody:"hii da",sentTime:"3.33 pm"}}] }
 
 
     }
     componentDidMount() {
         let token = window.localStorage.getItem("token")
+        const decode = jwt_decode(token);
+        this.id = decode._id;
+         this.setState({id:this.id});
+        
+        if(token)
+        {
+            const decode = jwt_decode(token);
+           this.id = decode._id;
+            this.setState({id:this.id});
 
-        // if(token)
-        // {
-        //     const decode = jwt_decode(token);
-        //    this.id = decode._id;
-        //     this.setState({id:this.id});
-        //     console.log(this.state.id)
-        // }
-        // else{
+            console.log(this.state.id)
+        }
+        else{
 
-        //     window.location = '/'
-        // }
+            window.location = '/'
+        }
         //     console.log(this.id);
-        //     const point = "http://localhost:3000/";
-        //     this.socket = io(point);
-        //     if(this.id=="5ef948986db38443b9949a98")
-        //     {
-        //         this.receiverId="5ef948986db38443b9949a99"
-        //     }
-        //     else{
-        //         this.receiverId="5ef948986db38443b9949a98"
-        //     }
-        //     this.socket.emit("join",{id:this.id});
+            // const point = "http://localhost:3000/";
+            // this.socket = io(point);
+        
+            // this.socket.emit("join",{id:this.id});
 
 
-        //     this.socket.on("recievingMessage",function(newmsg){
-        //       console.log(newmsg.msgBody);
-        //     });
+            // this.socket.on("recievingMessage",function(newmsg){
+            //   console.log(newmsg.msgBody);
+            // });
 
     }
     handleChange(e) {
@@ -77,48 +76,27 @@ class Home extends Component {
 
         this.socket.emit("postingMessage", newMessage);
     }
+
     render() {
+      
         return (
 
-
+        
             <div className="home">
 
-
+          <UserContextProvider>
                 <div className="chatBox">
 
                 
                     <div className="leftHome">
-                   
-                          <Contact /> 
-
+                          <LeftComponent messages={this.state.messages}/>
+                
                     </div>
-                    <div className="middleHome" id="middle">
-                        <div className="middleHomeHeader">
+                    
+                       <MiddleComponent/>
+                       
 
-                            <div className="receiverName" > To: Kishore </div>
-                            <div className="lastSeen">last seen at 3:45pm</div>
-
-
-                        </div>
-                        <div className="chatScroll">
-                            <ReceiveMessage />
-                            <SendMessage />
-                            <SendMessage />
-
-
-                  <SearchName/>
-
-
-                        </div>
-                        <div id="chatInputBox">
-                            <input placeholder="Type Something..." className="messageInput" name="msgBody" />
-                            <button class="messageButton">Send</button>
-
-
-
-                        </div>
-
-                    </div>
+                
 
                     <div className="rightHome" id="right">
 
@@ -154,8 +132,9 @@ class Home extends Component {
          <button type="submit" className="btn btn-primary" onClick={this.handleClick} >Send</button> */}
 
 
-
-            </div>);
+</UserContextProvider>
+            </div>
+            );
 
     }
 }

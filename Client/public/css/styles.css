@@ -120,7 +120,7 @@ ul::-webkit-scrollbar {
     
      background-image: url(/images/bg-home.jpg); 
 
-    font-family: 'Noto Sans KR', sans-serif;
+     font-family: 'Montserrat', sans-serif;
     height:90vh ;
     width: 80%;
     margin-top:3.750em ;
@@ -194,6 +194,12 @@ ul::-webkit-scrollbar {
     overflow-y: scroll;
     flex:10;
 }
+.list-none 
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 .chatScroll::-webkit-scrollbar {
     width: 1em;
 }
@@ -228,6 +234,18 @@ ul::-webkit-scrollbar {
    
  
 
+}
+.middle-img
+{
+    width:45%;
+    height: 40%;
+  
+}
+.middleEmpty
+{
+    align-items: center;
+    justify-content: center;
+    color:grey;
 }
 .messageInput
 {
@@ -302,12 +320,13 @@ ul::-webkit-scrollbar {
 {
    
     padding: 0.5em;
-    padding-left: 0.75em;
+   
     padding-right: 0.6em;
-    margin-left:0.6em;
+  
     display: inline-block;
     background-color:#282b30 ;
     margin:0.15em;
+    margin-left: 0.6em;
      max-width: 18.75em;
     border-radius: 0.63em;
     clear:both;
@@ -381,7 +400,7 @@ ul::-webkit-scrollbar {
   
 }
 
-/* ========================== search by name component ================= */
+/* =============================================================== Left-component styles ========================================================================= */
 
 .searchBar
 {
@@ -410,7 +429,7 @@ ul::-webkit-scrollbar {
     color:white;
 
     left:2em;
-    bottom: 0;
+    bottom: 0.4em;
     width:70%;
 
     outline: none;
@@ -469,9 +488,23 @@ h2{
     background-color: inherit;
     bottom: 0;
     left:1em;
+    font-size: 0.8em;    
+}
 
-    font-size: 0.8em;
-
-  
+.search-img
+{  
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    color:grey;
+    height: 70vh;
+}
+.img-search
+{
+    width: 30%;
+    height: 30%;
+    opacity: 0.4;
     
 }
