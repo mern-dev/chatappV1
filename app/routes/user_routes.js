@@ -17,8 +17,16 @@ module.exports=function(io,socket){
              }).then(val => 
                 {
                     console.log(val);
-                   if (val.nModified == 1)
-                   {
+                   if (val.nModified == 1){
+                  //  {     Room.findOne({_id:data.id}).then(room =>{
+                            
+                  //            const messages = room.chats.map(chat=>{
+                               
+                  //             chats.messages[chats.messages.length-1]
+
+                  //            })
+                          
+                    //   })
                           socket.emit("isOnline",{id:data.id})  //===================Emitting the user who is come online to other users==================//
                    }})
                 })
@@ -35,14 +43,14 @@ module.exports=function(io,socket){
               id:newMessage.id,
             msgBody:newMessage.msgBody,
                read:false,
-          //  sentTime:newMessage.sentTime,
+           sentTime:newMessage.sentTime,
                sent:true
            }
            const msgOnline= {
             id:newMessage.id,
           msgBody:newMessage.msgBody,
              read:false,
-        //  sentTime:newMessage.sentTime,
+         sentTime:newMessage.sentTime,
              sent:true,
              senderId:newMessage.senderId
          }
@@ -68,46 +76,25 @@ module.exports=function(io,socket){
                     }
                  }).then(val => {
       
-                User.updateOne(
-                  { _id: newMessage.receiverId,isOnline:false },
-                  {
-                    $push: {
-                      messagessActive: {
-                        $each: [
-                          {
-                            senderId : newMessage.senderId
-                          }
-                        ]
-                      }
-                    }
-                  }
-                )
-                  .then(val => {
+               
      
                    
-                    if (val.nModified == 1) {
-                      // io.to(`${newMessage.senderId}`).emit("msgSent",{msgId:newMessage.msgId, sent:true, receiverId:newMessage.receiverId}) //=======Message added notification to the sender =======//
-                      
-                     }
-                     else 
-                     {
-                       User.findOne({_id:newMessage.senderId},{password:0,messagessActive:0}).then(user =>
-                         {
+                   
                                    const newmsg = {
-                                     senderUsername:user.username,
-                                     senderPath:user.path,
+                                    senderUsername:newMessage.senderUsername,
+                                    senderPath:newMessage.senderPath,
                                      msg:msgOnline
                                    }
                                    console.log("message-sent")
-                                   io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
-                         })
+                                  io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
+                        
                        
-                     }
+                     
                   
                   
                   
                   
-                  })
+                
                  }).catch(err =>{
                    console.log(err)
                  })   
@@ -124,46 +111,25 @@ module.exports=function(io,socket){
                           {$addToSet:{
                             "chats":{Id:newMessage.senderId,messages:[msg]}}}).then(room =>{
                             
-                              User.updateOne(
-                                  { _id: newMessage.receiverId,isOnline:false },
-                                  {
-                                    $push: {
-                                      messagessActive: {
-                                        $each: [
-                                          {
-                                            senderId : newMessage.senderId
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  }
-                                )
-                                  .then(val => {
+                              
+                                  
                                    
                                    
-                                    if (val.nModified == 1) {
-                                      // io.to(`${newMessage.senderId}`).emit("msgSent",{msgId:newMessage.msgId, sent:true, receiverId:newMessage.receiverId}) //=======Message added notification to the sender =======//
-                                      
-                                     }
-                                     else 
-                                     {
-                                       User.findOne({_id:newMessage.senderId},{password:0,messagessActive:0}).then(user =>
-                                         {
+                                   
                                                    const newmsg = {
-                                                     senderUsername:user.username,
-                                                     senderPath:user.path,
+                                                     senderUsername:newMessage.senderUsername,
+                                                     senderPath:newMessage.senderPath,
                                                      msg:msgOnline
                                                    }
                                                    console.log("message-sent")
-                                                   io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
-                                         })
+                                                io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============
+                                         
                                        
-                                     }
+                                     
                                   
                                   
                                   
-                                  
-                                  })
+                              
                                  }).catch(err =>{
                                    console.log(err)
                                  })  

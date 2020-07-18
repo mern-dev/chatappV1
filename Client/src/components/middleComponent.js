@@ -40,14 +40,14 @@ class MiddleComponent extends Component {
                         if(m.receiverId==receiver._id)
                         { 
                             return(  <li key={m.id}>
-                           <SendMessage msgBody={m.msgBody} />
+                           <SendMessage msgBody={m.msgBody} sentTime={m.sentTime}/>
                            </li>)
                         }
                             
                          
                           if(m.senderId==receiver._id)
                          { return (<li key={m.id}>
-                           <ReceiveMessage msgBody={m.msgBody} />
+                           <ReceiveMessage msgBody={m.msgBody} sentTime={m.sentTime}/>
                            </li>)
                          }  
 

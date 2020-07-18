@@ -36,6 +36,7 @@ class UserContextProvider extends Component {
         this.setState({id:this.id});
         
         axios.get('/getDetail/'+this.id).then(res =>{
+          console.log(res.data.detail)
           this.setState({user:res.data.detail})
         })
     }
@@ -86,14 +87,24 @@ class UserContextProvider extends Component {
 
  postmessage = () =>
  {   let msgid = uuidv4();
-    
+ const sentTime =  new Date();
        var newMessage = {
          id: msgid,
          senderId : this.state.id,
          receiverId : this.state.receiver._id,
-         msgBody:this.state.msgBody
+         msgBody:this.state.msgBody,   
+         sentTime: sentTime
        }
-       
+       var newmsg = {
+        id: msgid,
+        senderId : this.state.id,
+        receiverId : this.state.receiver._id,
+        msgBody:this.state.msgBody,
+        senderUsername:this.state.user.username,
+        senderPath:this.state.user.path, 
+        sentTime :sentTime   
+      }
+       console.log(sentTime)
    this.setState(state =>{
     var messages=[];
      if(state.messages.length==0)
@@ -108,7 +119,7 @@ class UserContextProvider extends Component {
         if(item.Id===newMessage.receiverId)
          { 
             flag = false;
-            return {Id:item.Id,username:item.username,path:item.username,messages:[...item.messages,newMessage]}
+            return {Id:item.Id,username:item.username,path:item.path,messages:[...item.messages,newMessage]}
          }
          else{
            
@@ -127,7 +138,8 @@ class UserContextProvider extends Component {
        messages,msgBody:""
      }
    });
-  this.socket.emit("postingMessage", newMessage);
+
+  this.socket.emit("postingMessage", newmsg);
 
  }
  changeMsgBody = (newmsgBody) =>
@@ -139,6 +151,7 @@ class UserContextProvider extends Component {
  currentUserUpdate = (details) => {
    
    this.setState({...this.state,receiver:details,middleFlag:true,msgBody:""})
+   
  }
 
 
