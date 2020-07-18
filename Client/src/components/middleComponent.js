@@ -20,7 +20,7 @@ class MiddleComponent extends Component {
 
     }
     render() { 
-         const { receiver,middleFlag,messages,changeMsgBody,msgBody } = this.context;
+         const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom } = this.context;
      
         return( 
             middleFlag ? <div  className="middleHome" id="middle">
@@ -40,14 +40,20 @@ class MiddleComponent extends Component {
                         if(m.receiverId==receiver._id)
                         { 
                             return(  <li key={m.id}>
-                           <SendMessage msgBody={m.msgBody} sentTime={m.sentTime}/>
+                           <SendMessage msgBody={m.msgBody} sentTime={m.sentTime} status={{sent:m.sent,delivered:m.delivered,seen:m.seen}}/>
                            </li>)
                         }
                             
                          
                           if(m.senderId==receiver._id)
-                         { return (<li key={m.id}>
-                           <ReceiveMessage msgBody={m.msgBody} sentTime={m.sentTime}/>
+                         { 
+                           if(!m.seen)
+                           {
+                               
+                                     seenOnRoom(m);
+                           }
+                           return (<li key={m.id}>
+                           <ReceiveMessage msgBody={m.msgBody} sentTime={m.sentTime} />
                            </li>)
                          }  
 

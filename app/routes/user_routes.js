@@ -38,21 +38,26 @@ module.exports=function(io,socket){
           
                     
         socket.on("postingMessage",function(newMessage){
-          console.log(newMessage)
+          
           const msg= {
               id:newMessage.id,
             msgBody:newMessage.msgBody,
-               read:false,
+            senderId:newMessage.senderId,
+            receiverId:newMessage.receiverId,
            sentTime:newMessage.sentTime,
-               sent:true
+               sent:true,
+               delivered:false,
+               seen:false
            }
            const msgOnline= {
             id:newMessage.id,
           msgBody:newMessage.msgBody,
-             read:false,
          sentTime:newMessage.sentTime,
+             senderId:newMessage.senderId,
+             receiverId:newMessage.receiverId,
              sent:true,
-             senderId:newMessage.senderId
+             delivered:false,
+             seen:false
          }
          Room.updateOne({_id:newMessage.senderId,"chats.Id":newMessage.receiverId},{
           $push:{
@@ -86,6 +91,7 @@ module.exports=function(io,socket){
                                      msg:msgOnline
                                    }
                                    console.log("message-sent")
+                                   io.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})   //===============sent success to sender ===============//
                                   io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
                         
                        
@@ -122,6 +128,7 @@ module.exports=function(io,socket){
                                                      msg:msgOnline
                                                    }
                                                    console.log("message-sent")
+                                                io.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})  //===============sent success to sender ===============//
                                                 io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============
                                          
                                        
@@ -149,10 +156,39 @@ module.exports=function(io,socket){
       
 
   // =====================================
-  //   Updating Unread messages===========
+  //   Updating delivered messages========
   // =====================================
 
+      socket.on("deliverUpdate",function(data){
+            
+        Room.updateOne({_id:data.receiverId,"chats.Id":data.senderId},{$set:{"chats.$.messages.$[elem].delivered":true}},{arrayFilters: [ { "elem.id": { $eq:data.id } } ]}).then(val=>{
+                         
+         
+          Room.updateOne({_id:data.senderId,"chats.Id":data.receiverId,},{$set:{"chats.$.messages.$[elem].delivered":true}},{arrayFilters: [ { "elem.id": { $eq:data.id } } ]}).then(val=>{
+   
+            io.to(`${data.senderId}`).emit("deliverSuccess",data)  //===== deliver success message to sender =====================================
+          })
+                    
+        })
+      })
+        
+ // =====================================
+ //    Updating seen messages============
+ // =====================================
 
+
+      socket.on("seenUpdate",function(data){
+
+        Room.updateOne({_id:data.receiverId,"chats.Id":data.senderId},{$set:{"chats.$.messages.$[elem].seen":true}},{arrayFilters: [ { "elem.id": { $eq:data.id }}]} ).then(val=>{
+                       
+          Room.updateOne({_id:data.senderId,"chats.Id":data.receiverId},{$set:{"chats.$.messages.$[elem].seen":true}},{arrayFilters: [ { "elem.id": { $eq:data.id } }]}).then(val=>{
+              
+            io.to(`${data.senderId}`).emit("seenSuccess",data)  //===== seen success message to sender =====================================
+          })
+                    
+        })
+      })
+      
   
           
  }

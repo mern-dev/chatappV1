@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 class ReceiveMessage extends Component {
 
      formatAMPM =(date) => {
-       
         var hours = date.getHours();
         var minutes = date.getMinutes();
         var ampm = hours >= 12 ? 'pm' : 'am';
@@ -12,8 +11,11 @@ class ReceiveMessage extends Component {
         hours = hours ? hours : 12; // the hour '0' should be '12'
         minutes = minutes < 10 ? '0'+minutes : minutes;
         var strTime = hours + ':' + minutes + ' ' + ampm;
+     
         return strTime;
+     
       }
+     
     render() { 
         return (
 
@@ -25,7 +27,8 @@ class ReceiveMessage extends Component {
             <br/>
             <div className="msgSentTime">
            
-                {this.formatAMPM(this.props.sentTime)}
+                {this.formatAMPM(new Date(this.props.sentTime))}
+              
             </div>
          
            

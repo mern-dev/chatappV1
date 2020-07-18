@@ -393,11 +393,26 @@ ul::-webkit-scrollbar {
     float: right;
   font-size: 0.7em;
    margin-top: 0.1em;
+   
   opacity: 0.9;
   color:grey;
+
  
  
   
+}
+.msg-status
+{
+    margin-left: 0.5em;
+    width:1.8em;
+   
+  
+    
+}
+.msg-status-sent
+{
+    margin-left: 0.5em;
+    width:1em;
 }
 
 /* =============================================================== Left-component styles ========================================================================= */

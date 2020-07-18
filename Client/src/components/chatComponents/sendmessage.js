@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 class SendMessage extends Component {
     formatAMPM =(date) => {
-        
+       
         var hours = date.getHours();
         var minutes = date.getMinutes();
         var ampm = hours >= 12 ? 'pm' : 'am';
@@ -15,6 +15,19 @@ class SendMessage extends Component {
         return strTime;
         
       }
+
+      status = (msg) =>
+      {  
+          if(msg.seen)
+            return (<img src="images/seen-tick.png" className="msg-status"/>)
+         else if(msg.delivered)
+          return (<img src="images/double-tick.png" className="msg-status"/>)
+         else if(msg.sent)
+      return (<img src="images/single-tick.png" className="msg-status-sent"/>)
+       
+         else
+           return (<img src="images/loading-sending.gif" className="msg-status-sent"/>)
+      }
     render() { 
         return (
 
@@ -24,8 +37,12 @@ class SendMessage extends Component {
             </div>
             <br/>
             <div className="msgSentTime">
-                      {this.formatAMPM(this.props.sentTime)}
+                      {this.formatAMPM(new Date(this.props.sentTime))}
+                      {this.status(this.props.status)}
+                      
             </div>
+         
+         
         
         </div>
 
