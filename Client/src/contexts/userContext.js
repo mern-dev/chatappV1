@@ -44,6 +44,15 @@ class UserContextProvider extends Component {
     this.socket = io(point);
    
     this.socket.emit("join",{id:this.id})
+    this.socket.on("chat",function(chat){
+     
+      addChats(chat)
+      
+     
+     });
+    const addChats =(chat) =>{
+      this.setState({messages:[...this.state.messages,chat]})
+    }
     this.socket.on("receivingMessage",function(newmsg){
      addmessage(newmsg);
       
@@ -67,7 +76,7 @@ class UserContextProvider extends Component {
       messages = state.messages.map(chat =>{
         if(chat.Id === msg.receiverId)
         {
-          return  {Id:chat.Id,username:chat.username,path:chat.path, messages:chat.messages.map(message=>{
+          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:chat.messages.map(message=>{
              if(msg.id===message.id)
              {
                return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -97,7 +106,7 @@ class UserContextProvider extends Component {
       messages = state.messages.map(chat =>{
         if(chat.Id === msg.receiverId)
         {
-          return  {Id:chat.Id,username:chat.username,path:chat.path, messages:chat.messages.map(message=>{
+          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline,messages:chat.messages.map(message=>{
              if(msg.id===message.id)
              {
                return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:true,seen:message.seen,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -126,7 +135,7 @@ class UserContextProvider extends Component {
           messages = state.messages.map(chat =>{
             if(chat.Id === msg.receiverId)
             {
-              return  {Id:chat.Id,username:chat.username,path:chat.path, messages:chat.messages.map(message=>{
+              return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline,messages:chat.messages.map(message=>{
                  if(msg.id===message.id)
                  {
                    return {sentTime:message.sentTime,id:message.id,sent:true,delivered:message.delivered,seen:message.seen,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -149,20 +158,22 @@ class UserContextProvider extends Component {
 
    }
    const addmessage= (newmsg)=>{
-      
-      var messages=[];
+    var messages=[];
+    var temp = {};
     
       this.setState(state =>{
+      
         if(state.messages.length==0)
         {
           newmsg.msg.delivered=true;
-          messages = [...state.messages,{Id:newmsg.msg.senderId,username:newmsg.senderUsername,path:newmsg.senderPath,messages:[newmsg.msg]}]
+          messages = [{Id:newmsg.msg.senderId,username:newmsg.username,path:newmsg.path,isOnline:newmsg.isOnline,messages:[newmsg.msg]},...state.messages]
            this.socket.emit("deliverUpdate", newmsg.msg);
           
         }
         else{
           let flag = true;
-          messages = state.messages.map((item)=>{
+        
+          state.messages.map((item)=>{
             if(item.Id===newmsg.msg.senderId)
             {  flag = false;
               
@@ -171,18 +182,26 @@ class UserContextProvider extends Component {
                  newmsg.msg.delivered=true;
                   this.socket.emit("deliverUpdate", newmsg.msg);
               }
-               return {Id:item.Id,username:item.username,path:item.path,messages:[...item.messages,newmsg.msg]}
-            }
-            else{
-              return {...item}
+
+               temp = {Id:item.Id,username:item.username,path:item.path,isOnline:item.isOnline,messages:[...item.messages,newmsg.msg]}
               
+
             }
+            else
+            {
+              messages.push(item)
+            }
+           
           });
           if(flag)
           {
             newmsg.msg.delivered=true;
-            messages = [...state.messages,{Id:newmsg.msg.senderId,username:newmsg.senderUsername,path:newmsg.senderPath,messages:[newmsg.msg]}]
+            messages = [{Id:newmsg.msg.senderId,username:newmsg.username,path:newmsg.path,isOnline:newmsg.isOnline,messages:[newmsg.msg]},...state.messages]
             this.socket.emit("deliverUpdate", newmsg.msg);
+          }
+          else
+          {
+            messages=[temp,...messages]
           }
 
         }
@@ -217,6 +236,7 @@ class UserContextProvider extends Component {
         msgBody:this.state.msgBody,
         senderUsername:this.state.user.username,
         senderPath:this.state.user.path, 
+        senderisOnline:this.state.user.isOnline,
         sentTime :sentTime,
         sent:false,
         delivered:false,
@@ -225,29 +245,33 @@ class UserContextProvider extends Component {
       
    this.setState(state =>{
     var messages=[];
+    var temp={}
      if(state.messages.length==0)
      {
-       messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,messages:[newMessage]}]
+       messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,isOnline:state.receiver.isOnline,messages:[newMessage]}]
      }
      else
      {
       let flag = true;
-      messages = state.messages.map((item)=>{
+      state.messages.map((item)=>{
        
         if(item.Id===newMessage.receiverId)
          { 
             flag = false;
-            return {Id:item.Id,username:item.username,path:item.path,messages:[...item.messages,newMessage]}
+            temp = {Id:item.Id,username:item.username,path:item.path,messages:[...item.messages,newMessage]}
          }
          else{
            
-           return {...item}
+           messages.push(item)
           
          }
        });
        if(flag)
        {
-        messages = [...state.messages,{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,messages:[newMessage],len:1}]
+        messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,messages:[newMessage]},...state.messages]
+       }
+       else{
+         messages.unshift(temp)
        }
 
      }
@@ -273,7 +297,7 @@ class UserContextProvider extends Component {
     messages = state.messages.map(chat =>{
       if(chat.Id === msg.senderId)
       {
-        return  {Id:chat.Id,username:chat.username,path:chat.path, messages:chat.messages.map(message=>{
+        return  {Id:chat.Id,username:chat.username,path:chat.path,  isOnline:chat.isOnline,messages:chat.messages.map(message=>{
            if(message.id===msg.id&&message.senderId===chat.Id)
            { this.socket.emit("seenUpdate",message)
              return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -303,7 +327,7 @@ class UserContextProvider extends Component {
      messages = state.messages.map(chat =>{
        if(chat.Id === details._id)
        {
-         return  {Id:chat.Id,username:chat.username,path:chat.path, messages:chat.messages.map(message=>{
+         return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:chat.messages.map(message=>{
             if(!message.seen&&message.senderId===details._id)
             { this.socket.emit("seenUpdate",message)
               return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}

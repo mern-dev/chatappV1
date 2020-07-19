@@ -71,7 +71,7 @@ class LeftComponent extends Component {
          
          </div>
          <div>
-         <ChatBrief messages={messages}/>
+        <ChatBrief messages={messages}/>  
          </div>
 
          </div>

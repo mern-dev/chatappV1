@@ -33,7 +33,7 @@ ul::-webkit-scrollbar {
     height: 0;
   }
 .img-li{
-    display: flex;
+    
     padding-left: 16px;
     padding-right: 16px;
     align-items: flex-start;  
@@ -57,6 +57,8 @@ ul::-webkit-scrollbar {
 }  
 .img-avatar{
    margin-left: 20px;
+  
+   
 }
 .img-h{
     font-size: 1.25rem;
@@ -70,6 +72,7 @@ ul::-webkit-scrollbar {
     font-size: 0.85rem;
     font-family: 'Montserrat', sans-serif;
     font-weight: 100;
+    color: grey;
 }
 #rc{
     background-color: black;
@@ -95,7 +98,37 @@ ul::-webkit-scrollbar {
     font-family: 'Montserrat', sans-serif;
     font-size: small;
     top: 28px;
+    color: grey;
    
+}
+.unseen-msg
+{
+    position: absolute;
+    right: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9em;
+    width: auto;
+    min-width: 20px;
+    height: 20px;
+  
+    background: #27be8b;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    
+    text-align: center;
+   
+   
+    
+}
+.center-cnt
+{  
+  color:white;
+  padding-left: 2px;
+  padding-right:2px ;
+
+  
+ 
 }
 .dot{
     margin-left: 120px;
@@ -103,14 +136,24 @@ ul::-webkit-scrollbar {
     border-top: 3px dotted #363636;
 }
 
-  h6:after{
+  h6::after{
     content:"\A";
     width:8px;
     height:8px;
     margin-left: 10px;
     margin-bottom: 4px;
     border-radius:50%;
-    background: #c4fb6d;
+    background: #27be8b;
+    display:inline-block;
+}
+h5::after{
+    content:"\A";
+    width:8px;
+    height:8px;
+    margin-left: 10px;
+    margin-bottom: 4px;
+    border-radius:50%;
+    background: #fffd41;
     display:inline-block;
 }
 /* ======================================== home styling ========================================================================*/
@@ -180,19 +223,31 @@ ul::-webkit-scrollbar {
     width: 85%;
     margin-left:1em ;
     margin-top: 1em;
+    margin-bottom: 0.5em;
     height: 6vh;
     position: relative;
     display:flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     flex:1;
      
+}
+
+
+.header-username-section
+{
+    display: flex;
+    flex-direction: column;
+    flex:2;
+    margin-left: 20px;
 }
 .chatScroll
 {   
    
     overflow-y: scroll;
     flex:10;
+      
 }
 .list-none 
 {
@@ -209,12 +264,12 @@ ul::-webkit-scrollbar {
 }
  
 .chatScroll::-webkit-scrollbar-thumb {
-  background-color: grey;
+  background-color:rgba(128, 128, 128, 0.233);
   outline: 0.06em solid slategrey;
 }
 .receiverName
 {
-    font-size: 1.2em;
+    font-size: 1.5em;
     color: white;
     opacity: 1;
     flex: 1;
@@ -305,6 +360,24 @@ ul::-webkit-scrollbar {
     #middle {
         display: none;
     }
+    
+}
+@media only screen and (max-height: 55em) {
+
+    .header-username-section
+    {
+        
+        flex-direction: row;
+        align-items: center;
+       
+       }
+    .lastSeen
+    {
+        flex:10;
+     
+    }
+    
+    
 }
 
 
@@ -325,8 +398,8 @@ ul::-webkit-scrollbar {
   
     display: inline-block;
     background-color:#282b30 ;
-    margin:0.15em;
-    margin-left: 0.6em;
+    margin:0.1em;
+    margin-left: 0.9em;
      max-width: 18.75em;
     border-radius: 0.63em;
     clear:both;
@@ -342,8 +415,8 @@ ul::-webkit-scrollbar {
     padding-right:0.75em;
     padding-left: 0.6em;
     max-width: 18.75em;
-    margin:0.15em;
-    margin-right: 0.6em;
+    margin:0.1em;
+    margin-right: 0.9em;
     text-align: left;
     display: inline-block;
     background-color:rgba(0, 0, 0, 0.623) ;

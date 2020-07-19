@@ -24,6 +24,20 @@ class ChatBrief extends Component {
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
   }
+  unseenMsg = (newmsg) =>{
+    var cnt = 0;
+    newmsg.messages.map(m =>{
+      if(!m.seen && m.senderId == newmsg.Id)
+      {
+        cnt=cnt+1;
+      }
+    })
+    if(cnt)
+    {
+      return <div className='unseen-msg'><p className="center-cnt">{cnt}</p></div>
+    }
+
+  }
   openChat = (user) =>
  { const {currentUserUpdate} = this.context
    axios.get("/getDetail/"+user.id).then(res=>{
@@ -32,6 +46,13 @@ class ChatBrief extends Component {
       })
   
 
+  }
+  lastMessage = (newmsg) =>
+  {
+    if(newmsg.Id==newmsg.messages[newmsg.messages.length-1].senderId)
+     return newmsg.messages[newmsg.messages.length-1].msgBody.length<=9?newmsg.messages[newmsg.messages.length-1].msgBody:newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,9)+"..."
+    else
+  return newmsg.messages[newmsg.messages.length-1].msgBody.length<=9?"You: "+newmsg.messages[newmsg.messages.length-1].msgBody :"You: "+newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,9)+"..."
   }
   render() { 
     return ( 
@@ -45,11 +66,13 @@ class ChatBrief extends Component {
       <Avatar alt="Cindy Baker" src={newmsg.path} className='img-avatar' />
     </div>
     <div className='img-div '>
-      <h6 className="img-h">{newmsg.username.length<7?newmsg.username:newmsg.username.substr(0,7)+".."}</h6>
-    <p className='img-p'>{newmsg.messages[newmsg.messages.length-1].msgBody.length<=9?newmsg.messages[newmsg.messages.length-1].msgBody:newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,9)+"..."}</p>
+      {newmsg.isOnline?<h6 className="img-h">{newmsg.username.length<6?newmsg.username:newmsg.username.substr(0,6)+".."}</h6>:<h5 className="img-h">{newmsg.username.length<6?newmsg.username:newmsg.username.substr(0,6)+".."}</h5>}
+      
+   <p className="img-p">  {this.lastMessage(newmsg)}</p>
     </div>
     <div>
 <span className='time'>{this.formatAMPM(new Date(newmsg.messages[newmsg.messages.length-1].sentTime))}</span>
+{this.unseenMsg(newmsg)}
      </div>
           
     </li>

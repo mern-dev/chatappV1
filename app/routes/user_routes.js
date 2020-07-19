@@ -1,5 +1,6 @@
 var User = require('../models/user_model.js');
 var Room = require('../models/room_model.js');
+var mongoose = require('mongoose');
 module.exports=function(io,socket){
         
         
@@ -12,26 +13,74 @@ module.exports=function(io,socket){
             console.log("into chat room")
            User.updateOne({
              _id:data.id
-             },{
-                 isOnline:true    
-             }).then(val => 
+             },
+             {$set:{
+                 isOnline:true 
+             }}).then(val => 
                 {
-                    console.log(val);
-                   if (val.nModified == 1){
-                  //  {     Room.findOne({_id:data.id}).then(room =>{
+                   
+                      
+                         Room.aggregate([
+                          {
+                            $match: {
+                              "_id" : mongoose.Types.ObjectId(data.id)
+                            }
+                          },
+                        
+                          {
+                            $unwind: "$chats"
+                          },
+                           {
+                            $sort: {
+                               'chats.messages.sentTime':-1                           
+                            }
+                          }
+	
+                             
+                         ]).then(res=>{
                             
-                  //            const messages = room.chats.map(chat=>{
-                               
-                  //             chats.messages[chats.messages.length-1]
+                         
+                           res.forEach(item =>
+                              {
+                                   User.findOne({_id:item.chats.Id},{_id:0,username:1,path:1,isOnline:1}).then(detail=>{
+                                             let len=item.chats.messages.length;
+                                            
+                                             let latestmsg=[]
+                                             if(len<10)
+                                             {
+                                               latestmsg= item.chats.messages;
+                                             }
+                                             else{
+                                              latestmsg = item.chats.messages.slice(-10);
+                                              item.chats.messages.forEach(msg=>{
+                                                if(msg.seen)
+                                                   {
+                                                      return 0;
+                                                   }
+                                                   else
+                                                   {
+                                                      latestmsg.unshift(msg)
+                                                   }
 
-                  //            })
+                                                 
+                                              });
+                                             }
+                                            let chat = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,messages:latestmsg}
+                                            io.to(`${data.id}`).emit("chat",chat);
+                                             
+                                   })
+                                   
+                              })
+                             
+                              
+                         })
                           
-                    //   })
+                      
                           socket.emit("isOnline",{id:data.id})  //===================Emitting the user who is come online to other users==================//
-                   }})
-                })
-           });
-
+                   
+                });
+              })
+            })
   // =====================================
   //  User to send a message =============
   // =====================================
@@ -44,7 +93,7 @@ module.exports=function(io,socket){
             msgBody:newMessage.msgBody,
             senderId:newMessage.senderId,
             receiverId:newMessage.receiverId,
-           sentTime:newMessage.sentTime,
+           sentTime:new Date(newMessage.sentTime),
                sent:true,
                delivered:false,
                seen:false
@@ -52,7 +101,7 @@ module.exports=function(io,socket){
            const msgOnline= {
             id:newMessage.id,
           msgBody:newMessage.msgBody,
-         sentTime:newMessage.sentTime,
+         sentTime:new Date(newMessage.sentTime),
              senderId:newMessage.senderId,
              receiverId:newMessage.receiverId,
              sent:true,
@@ -123,8 +172,9 @@ module.exports=function(io,socket){
                                    
                                    
                                                    const newmsg = {
-                                                     senderUsername:newMessage.senderUsername,
-                                                     senderPath:newMessage.senderPath,
+                                                     username:newMessage.senderUsername,
+                                                     path:newMessage.senderPath,
+                                                     isOnline:newMessage.senderisOnline,
                                                      msg:msgOnline
                                                    }
                                                    console.log("message-sent")
