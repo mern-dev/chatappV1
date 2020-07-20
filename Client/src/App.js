@@ -6,10 +6,12 @@ import Signup from '../src/components/signup';
 import Home from './components/home';
 import Error from './components/error';
 import Dp from './components/dp';
+import UserContextProvider from './contexts/userContext.js';
 
 
 function App() {
 
+  
   const [toggle, setToggle] = useState(false);
 
   const onToggle=()=>{
@@ -37,9 +39,10 @@ function App() {
   {(toggle) ? <Signup tog={toggle} toggle={onToggle} /> : <Login  toggle={onToggle} tog={toggle}/>}
 </Route>
 <Route path='/error' component={Error} />
+<UserContextProvider>
 
 <Route path="/home" component={Home} />
-
+</UserContextProvider>
       
     
 

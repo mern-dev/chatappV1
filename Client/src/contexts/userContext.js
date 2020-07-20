@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import axios from 'axios';
 import io from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
+import $ from "jquery";
 export const UserContext = createContext()
 
 class UserContextProvider extends Component {
@@ -22,7 +23,7 @@ class UserContextProvider extends Component {
    }
   
       }
-     
+  
   
    
   componentDidMount ()
@@ -42,7 +43,72 @@ class UserContextProvider extends Component {
     }
     const point = "http://localhost:3000/";
     this.socket = io(point);
-   
+    window.addEventListener("beforeunload", (event)=> {
+          
+      this.socket.emit("offline",{id:this.state.id,lastSeen:new Date});
+        return undefined;
+    })
+    
+    this.socket.on("isOnline",function(data){
+       onlineUpdate(data)
+    })
+  const onlineUpdate  = (data) =>
+  {  
+    var messages = [];
+    if(this.state.receiver._id==data.id)
+    {
+      this.setState({receiver:{_id:this.state.receiver._id,username:this.state.receiver.username,path:this.state.receiver.path,isOnline:true,status:this.state.receiver.status,lastSeen:this.state.receiver.lastSeen}})
+    }
+    this.setState(state =>{
+      
+      messages = state.messages.map(chat =>{
+        if(chat.Id === data.id)
+        {
+          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:true,messages:chat.messages}  
+         }
+        
+        else{
+          return {...chat}
+        }
+      })
+      
+        return {messages,}
+      
+    })
+
+    
+  } 
+  this.socket.on("lastSeen",function(data){
+       console.log(data,"lastseen")
+    lastSeenUpdate(data)
+    
+
+
+  })
+  const lastSeenUpdate = (data) =>
+  {  var messages = [];
+    if(this.state.receiver._id==data.id)
+    {
+      this.setState({receiver:{_id:this.state.receiver._id,username:this.state.receiver.username,path:this.state.receiver.path,isOnline:false,status:this.state.receiver.status,lastSeen:data.lastSeen}})
+    }
+    this.setState(state =>{
+      
+      messages = state.messages.map(chat =>{
+
+        if(chat.Id === data.id)
+        {
+          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:false,messages:chat.messages}  
+         }
+        
+        else{
+          return {...chat}
+        }
+      })
+      
+        return {messages,}
+      
+    })
+  }
     this.socket.emit("join",{id:this.id})
     this.socket.on("chat",function(chat){
      
@@ -51,6 +117,13 @@ class UserContextProvider extends Component {
      
      });
     const addChats =(chat) =>{
+      chat.messages.map(msg=>{
+        if(!msg.delivered)
+        {
+          msg.delivered=true;
+          this.socket.emit("deliverUpdate", msg);
+        }
+      })
       this.setState({messages:[...this.state.messages,chat]})
     }
     this.socket.on("receivingMessage",function(newmsg){
@@ -218,7 +291,7 @@ class UserContextProvider extends Component {
  postmessage = () =>
  {   let msgid = uuidv4();
  const sentTime =  new Date();
- 
+    
        var newMessage = {
          id: msgid,
          senderId : this.state.id,
@@ -242,6 +315,8 @@ class UserContextProvider extends Component {
         delivered:false,
         seen:false
       }
+      this.socket.emit("postingMessage", newmsg);
+      
       
    this.setState(state =>{
     var messages=[];
@@ -281,7 +356,7 @@ class UserContextProvider extends Component {
      }
    });
 
-  this.socket.emit("postingMessage", newmsg);
+  
 
  }
  changeMsgBody = (newmsgBody) =>
@@ -349,6 +424,13 @@ class UserContextProvider extends Component {
    })
    
  }
+ componentWillUnmount() {
+  window.removeEventListener("beforeunload", (event)=>
+  {
+   
+      return undefined
+  });
+}
 
 
   render() {
@@ -356,7 +438,7 @@ class UserContextProvider extends Component {
    
     return (
       <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom}}>
+        seenOnRoom:this.seenOnRoom,offline:this.offline}}>
         {this.props.children}
       </UserContext.Provider>
     )

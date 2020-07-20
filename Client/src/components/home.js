@@ -8,36 +8,49 @@ import io from "socket.io-client";
 import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import UserContextProvider, { UserContext } from '../contexts/userContext'
+import  { UserContext } from '../contexts/userContext'
 import LeftComponent from './leftComponent';
 import MiddleComponent from './middleComponent';
 
 
 
 class Home extends Component {
-  
+     static contextType = UserContext
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         
-        this.state = { messages:[{_id:"1",username:"kishore",dp:"",isOnline:true,recentmsg:{msgBody:"hii da",sentTime:"3.33 pm"}},{id:"2",username:"kokoko",dp:"",isOnline:true,recentmsg:{msgBody:"hii da",sentTime:"3.33 pm"}}] }
-
+        
+       
 
     }
+   
+    
     componentDidMount() {
+       
+       
+       const homeOffline= () =>
+        {  
+   
+           const {offline} = this.context
+           offline();
+           return undefined
+           
+        }
         let token = window.localStorage.getItem("token")
         const decode = jwt_decode(token);
         this.id = decode._id;
-         this.setState({id:this.id});
+         
+        
         
         if(token)
         {
             const decode = jwt_decode(token);
            this.id = decode._id;
-            this.setState({id:this.id});
+         
 
-            console.log(this.state.id)
+          
         }
         else{
 
@@ -78,18 +91,18 @@ class Home extends Component {
     }
 
     render() {
-      
-        return (
+        const messages = this.context 
+               return (
 
-        
+            
             <div className="home">
 
-          <UserContextProvider>
+          
                 <div className="chatBox">
 
                 
                     <div className="leftHome">
-                          <LeftComponent messages={this.state.messages}/>
+                          <LeftComponent messages={messages}/>
                 
                     </div>
                     
@@ -132,7 +145,6 @@ class Home extends Component {
          <button type="submit" className="btn btn-primary" onClick={this.handleClick} >Send</button> */}
 
 
-</UserContextProvider>
             </div>
             );
 

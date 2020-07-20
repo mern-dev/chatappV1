@@ -34,6 +34,54 @@ class MiddleComponent extends Component {
       postmessage();
 
     }
+    formatSeen = (lastSeen) =>
+    {  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+       var temp_now = new Date;
+       let month= months[lastSeen.getMonth()];
+       let day = lastSeen.getDate();
+       let year = lastSeen.getFullYear();
+       
+       if(temp_now.getFullYear()!=lastSeen.getFullYear()||temp_now.getMonth()!==lastSeen.getMonth())
+        {
+              
+               return "Last seen "+day+"/"+month+"/"+year
+        }
+        if(temp_now.getMonth()==lastSeen.getMonth())
+        {
+            if((temp_now.getDate() - day) == 0)
+              {
+                var hours = lastSeen.getHours();
+                var minutes = lastSeen.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ' ' + ampm;
+                return "Last seen at "+strTime;
+              }
+              else if((temp_now.getDate() - day) == 1)
+              {var hours = lastSeen.getHours();
+                var minutes = lastSeen.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ' ' + ampm;
+                return "Last seen Yesterday,at "+strTime
+              }
+              else{
+                return "Last seen "+day+"/"+lastSeen.getMonth()+"/"+year
+              }
+        }
+      var hours = lastSeen.getHours();
+      var minutes = lastSeen.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+    }
     render() { 
          const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom } = this.context;
      
@@ -43,7 +91,7 @@ class MiddleComponent extends Component {
               <Avatar alt="Cindy Baker" src={receiver.path}  />
                 <div className="header-username-section">
                 <div className="receiverName" >{receiver.username} </div>
-                   <div className="lastSeen">last seen at 3:45pm</div>
+        <div className="lastSeen">{receiver.isOnline? "Online" : this.formatSeen(new Date(receiver.lastSeen))  }</div>
   
                 </div>
   

@@ -6,8 +6,8 @@ var userSchema = mongoose.Schema({
    
         username  : { type: String,required: true  },
         password  : { type: String, required: true  },
-        isOnline  : { type: Boolean, default:false },
-
+        isOnline  : { type: Boolean, default:true },
+        lastSeen  : { type: Date,default:0},
 
         path : '',
         status:{type: String},

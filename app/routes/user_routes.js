@@ -5,12 +5,14 @@ module.exports=function(io,socket){
         
         
   // =====================================
-  //  User is online =============
+  //  User is online =====================
   // =====================================
         socket.on("join",function(data)
         { console.log(data);
+          socket.join("commonRoom");
           socket.join(`${data.id}`,() => {
             console.log("into chat room")
+            io.to("commonRoom").emit("isOnline",{id:data.id})  //===================Emitting the user who is come online to other users==================//
            User.updateOne({
              _id:data.id
              },
@@ -76,7 +78,7 @@ module.exports=function(io,socket){
                          })
                           
                       
-                          socket.emit("isOnline",{id:data.id})  //===================Emitting the user who is come online to other users==================//
+                         
                    
                 });
               })
@@ -239,6 +241,26 @@ module.exports=function(io,socket){
         })
       })
       
+  // =====================================
+  //  User is offline ====================
+  // =====================================
+
+  socket.on("offline",function(data){
+   console.log("data-offline",data)
+    User.updateOne({
+      _id:data.id
+      },
+      {$set:{
+          isOnline:false,
+          lastSeen:data.lastSeen,
+      }}).then(val => 
+         {
+          io.to("commonRoom").emit("lastSeen",{id:data.id,lastSeen:data.lastSeen})
+         })
+
+  })    
+
+
   
           
  }
