@@ -210,4 +210,35 @@ module.exports = function (app) {
         }
       })
     })
-  }
+  
+
+      // =====================================
+    // last 10 messages ======================
+    // =======================================
+
+    app.get('/:id/getmsg/:rid/:msgid',function(req,resp){
+       
+      Room.find({_id:req.params.id,"chats.Id":req.params.rid},{"chats.$.messages":1,_id:0}).then(res=>{
+
+       var messages=[]
+        for(let i=0;res[0].chats[0].messages[i].id!=req.params.msgid;i++)
+        {
+               messages.push(res[0].chats[0].messages[i])
+        }
+        
+        if(messages.length<10)
+          resp.json(
+            {
+              messages:messages
+            }
+          )
+          else
+          {
+            resp.json({
+              messages:messages.slice(-10)
+            })
+          }
+      })
+    })
+
+  }    

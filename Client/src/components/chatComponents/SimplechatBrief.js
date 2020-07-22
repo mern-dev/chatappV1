@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import 'bootstrap/dist/css/bootstrap.css';
 import Avatar from '@material-ui/core/Avatar';
-import { Divider } from '@material-ui/core/';
-import ChatIcon from '@material-ui/icons/Chat';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
+
 
 
 import  {UserContext}  from '../../contexts/userContext';

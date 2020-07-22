@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Form from './form';
 
-import jwt_decode from 'jwt-decode';
+
 
 export default class Login extends Component {
 

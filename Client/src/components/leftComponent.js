@@ -17,7 +17,7 @@ class LeftComponent extends Component {
    }
    
   componentDidMount()
-  {
+  { 
    let token = window.localStorage.getItem("token")
    const decode = jwt_decode(token);
    this.id = decode._id;
@@ -44,7 +44,7 @@ class LeftComponent extends Component {
      axios.get(`/${this.state.id}/search/` + value, {
          cancelToken: this.cancel.token
      }).then(res => {
-       if(res.data.status=="success")
+       if(res.data.status==="success")
         {
          this.setState({...this.state,searchResults:res.data.users})
          
@@ -63,14 +63,14 @@ class LeftComponent extends Component {
        {  if(messages.length)
          {
             return(
-               <div>
+               <div >
              <div className="searchBar">
                   <button className="plusButton" onClick={this.toggle} >  <FontAwesome
        name="plus" className="plusIcon"/></button>  
           <h2 >Chats</h2>
          
          </div>
-         <div>
+         <div className="left-chat">
         <ChatBrief messages={messages}/>  
          </div>
 
@@ -101,7 +101,7 @@ class LeftComponent extends Component {
 
        
         return ( 
-             <div>
+             <div >
             <div className="searchBar">
                 <button className="plusButton" onClick={this.toggle}>  <FontAwesome
           name="close" className="plusIcon"/></button>  
@@ -111,11 +111,11 @@ class LeftComponent extends Component {
           name="search" className="searchIcon"/></button>  
          </div>
 
-            { this.state.searchResults.length==0? <div className="search-img">
+            { this.state.searchResults.length===0? <div className="search-img">
         <h3> {this.state.searchQuery?`"${this.state.searchQuery}" not found`:"Search results"}</h3>
-                <img className="img-search" src="./images/search--v2.png"/>
+                <img className="img-search" alt="#" src="./images/search--v2.png"/>
               </div>:
-              <div>
+              <div className="left-chat">
 
               {/* <ChatBrief messages={this.state.searchResults}/> */}
               <SimpleChatBrief users={this.state.searchResults}/>

@@ -47,35 +47,41 @@ module.exports=function(io,socket){
                                    User.findOne({_id:item.chats.Id},{_id:0,username:1,path:1,isOnline:1}).then(detail=>{
                                              let len=item.chats.messages.length;
                                             
-                                             let latestmsg=[]
+                                             var latestmsg=[]
                                              if(len<10)
                                              {
                                                latestmsg= item.chats.messages;
                                              }
                                              else{
                                               latestmsg = item.chats.messages.slice(-10);
-                                              item.chats.messages.forEach(msg=>{
-                                                if(msg.seen)
-                                                   {
-                                                      return 0;
-                                                   }
-                                                   else
-                                                   {
-                                                      latestmsg.unshift(msg)
-                                                   }
+                                               if(!latestmsg[0].seen)
+                                               { let temp=[]
+                                                 for(let i=0;item.chats.messages[i].id!=latestmsg[0].id;i++)
+                                                    {
+                                                      if(!item.chats.messages[i].seen)
+                                                      {
+                                                         temp.push(item.chats.messages[i])
+                                                      }
+                                                    }
+                                                    if(temp.length)
+                                                    {
+                                                      latestmsg=[...temp,...latestmsg]
+                                                    }
+                                               }
 
                                                  
-                                              });
-                                             }
-                                            let chat = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,messages:latestmsg}
-                                            io.to(`${data.id}`).emit("chat",chat);
+                                              }
+                                              let chat = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,messages:latestmsg}
+                                              io.to(`${data.id}`).emit("chat",chat);                            
+                                            
+                                            })
+                                           
                                              
                                    })
                                    
                               })
                              
-                              
-                         })
+                        
                           
                       
                          
@@ -91,6 +97,7 @@ module.exports=function(io,socket){
         socket.on("postingMessage",function(newMessage){
           
           const msg= {
+             
               id:newMessage.id,
             msgBody:newMessage.msgBody,
             senderId:newMessage.senderId,
@@ -246,6 +253,8 @@ module.exports=function(io,socket){
   // =====================================
 
   socket.on("offline",function(data){
+    socket.leave(data.id);
+    socket.leave("commonRoom")
    console.log("data-offline",data)
     User.updateOne({
       _id:data.id

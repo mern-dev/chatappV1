@@ -13,7 +13,14 @@
 }
 .left-c{
     overflow: hidden;
-    height: 10000px;
+    display: flex;
+    flex:1
+}
+ 
+.left-chat
+{
+    display: flex;
+    
 }
 
 .img-ul{
@@ -24,8 +31,9 @@
     position: relative;
     list-style: none;
     color: #f4f6ff;
-    overflow: scroll;
-    height: 420px;
+    overflow-y: scroll;
+    flex:1;
+    
 
 }
 ul::-webkit-scrollbar {
@@ -117,9 +125,7 @@ ul::-webkit-scrollbar {
     border-radius: 50px;
     
     text-align: center;
-   
-   
-    
+        
 }
 .center-cnt
 {  
@@ -203,6 +209,7 @@ h5::after{
 {
     background-color:rgba(0,0,0,0.8);
     flex:1;
+    min-width: 20em;
 }
 .middleHome
 {   
@@ -257,6 +264,7 @@ h5::after{
 }
 .chatScroll::-webkit-scrollbar {
     width: 1em;
+    
 }
  
 .chatScroll::-webkit-scrollbar-track {
@@ -343,7 +351,7 @@ h5::after{
 .rightHome
 {
     background-color:rgba(0,0,0,0.78);
-    flex:1;
+    flex:2;
    
 }
 @media only screen and (max-width:90em) {
@@ -351,7 +359,10 @@ h5::after{
     #right {
         display: none;
     }
+  
+ 
 }
+
 @media only screen and (max-height: 41em) {
 
     #right {
@@ -360,8 +371,18 @@ h5::after{
     #middle {
         display: none;
     }
+  
+    .home{
+        height:100vh ;
+    width: 100%;
+    margin:0 ;
+  
+    }
     
+  
 }
+
+
 @media only screen and (max-height: 55em) {
 
     .header-username-section
@@ -385,6 +406,46 @@ h5::after{
     #middle {
         display: none;
     }
+    
+  
+  
+    .home{
+        height:100vh ;
+    width: 100%;
+    margin-top:0 ;
+    }
+    
+}
+.back-button-right
+{
+    align-items: center;
+    padding: 0.5em;
+}
+.back-button
+{
+    width: 2em;
+    margin-right: 10px;
+    display:none ;
+    
+}
+.date-main
+{   clear: both;
+      
+    position:sticky;
+    color :white;
+    text-align: center;
+    background-color:rgba(0, 0, 0, 0.199); 
+    width: fit-content;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+    padding:0.4em;
+    border-radius: 5px;
+   font-size: small;
+    
+  
+   
 }
 
 /* ============================================message component styling =======================================*/
@@ -398,7 +459,7 @@ h5::after{
   
     display: inline-block;
     background-color:#282b30 ;
-    margin:0.1em;
+     margin:0.1em;
     margin-left: 0.9em;
      max-width: 18.75em;
     border-radius: 0.63em;

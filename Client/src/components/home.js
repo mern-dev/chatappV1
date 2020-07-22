@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 
 
-import io from "socket.io-client";
 
 import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,19 +24,18 @@ class Home extends Component {
        
 
     }
+    backtomiddle = ()=>
+    { const {clickOpenSearchUpdate} = this.context
+         clickOpenSearchUpdate(false)
+        document.getElementById("right").style.display="none";
+      document.getElementById("middle").style.display="flex";
+    }
    
     
     componentDidMount() {
        
        
-       const homeOffline= () =>
-        {  
-   
-           const {offline} = this.context
-           offline();
-           return undefined
-           
-        }
+     
         let token = window.localStorage.getItem("token")
         const decode = jwt_decode(token);
         this.id = decode._id;
@@ -56,16 +54,7 @@ class Home extends Component {
 
             window.location = '/'
         }
-        //     console.log(this.id);
-            // const point = "http://localhost:3000/";
-            // this.socket = io(point);
-        
-            // this.socket.emit("join",{id:this.id});
-
-
-            // this.socket.on("recievingMessage",function(newmsg){
-            //   console.log(newmsg.msgBody);
-            // });
+       
 
     }
     handleChange(e) {
@@ -91,59 +80,39 @@ class Home extends Component {
     }
 
     render() {
-        const messages = this.context 
+        const {messages,middleFlag} = this.context 
                return (
-
+              
             
             <div className="home">
-
+                  
           
                 <div className="chatBox">
 
                 
-                    <div className="leftHome">
+                    <div className="leftHome" id="left">
+                        
                           <LeftComponent messages={messages}/>
                 
                     </div>
                     
-                       <MiddleComponent/>
+                       <MiddleComponent />
                        
 
                 
 
-                    <div className="rightHome" id="right">
+                    {middleFlag?<div className="rightHome" id="right">
+                         <div className="back-button-right">
+                         <img alt="#" src="images/back-button.png"  id="back-button-right"  onClick={this.backtomiddle} className="back-button"/>
+                         </div>
+                    
 
-
-
-                    </div>
+                    </div>:<span></span>}
 
 
                 </div>
 
-                {/* <div>
-
-             
-                </div>
-                <h1>U Have Logged In Successfully</h1>
-                <button type="submit" onClick={(e)=>{
-                    window.localStorage.clear();
-                    window.location='/';
-                }}>Clear</button>
-
-      <div className="form-group">
-                       
-                        <input id="p" type="text" className="form-control" name="msgbody" value={this.state.msgBody} onChange={this.handleChange} />
-                    </div>
-
-
-                    <button type="submit" className="btn btn-primary" onClick={this.handleClick} >Send</button>
-
-            </div>
-  
-
-        );
-         <button type="submit" className="btn btn-primary" onClick={this.handleClick} >Send</button> */}
-
+                
 
             </div>
             );

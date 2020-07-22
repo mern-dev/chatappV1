@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Form from './form';
-import jwt_decode from 'jwt-decode';
+
 
 
 
@@ -100,7 +100,7 @@ export default class Signup extends Component {
 
                     this.setState({ token: res.data.token })
                     window.localStorage.setItem('token', this.state.token);
-                    const decode = jwt_decode(res.data.token);
+                    //const decode = jwt_decode(res.data.token);
                     
                     
                  window.location = '/dp'

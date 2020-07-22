@@ -60,47 +60,6 @@ app.post('/dp',(req,res)=>{
      }
    })
  })
- 
-
-
-
-
-
- 
-
-
-// routes ======================================================================
-require('./app/routes/login_routes.js')(app); // load routes and pass in our app 
-// app.use('/',router);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // routes ======================================================================
 require('./app/routes/login_routes.js')(app); // load routes and pass in our app 
