@@ -87,22 +87,13 @@ class MiddleComponent extends Component {
   
 componentDidUpdate()
 {
-  const {receiver,messages,middleFlag} = this.context
-      var msg;
-      if(middleFlag&&messages.length)
-      {
-        messages.map(chat=>{
-          if(chat.Id===receiver._id)
-          {
-             msg = chat.messages[chat.messages.length-1]
-          }
-          return 0;
-        })
+  
+      
        
           this.autoScroll()
         
        
-      }
+      
 }
 
 backtoleft = () =>

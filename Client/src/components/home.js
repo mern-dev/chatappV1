@@ -166,7 +166,7 @@ class Home extends Component {
     }
 
     render() {
-        const {messages,middleFlag,receiver} = this.context 
+        const {messages,middleFlag} = this.context 
                return (
               
             
