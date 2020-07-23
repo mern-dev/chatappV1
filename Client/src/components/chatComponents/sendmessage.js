@@ -29,6 +29,7 @@ class SendMessage extends Component {
            return (<img src="images/loading-sending.gif"alt="#" className="msg-status-sent"/>)
       }
     render() { 
+
         return (
 
         <div className="sendmsg">
@@ -42,7 +43,7 @@ class SendMessage extends Component {
                       
             </div>
          
-         
+            <div className="bubble-arrow-right"></div>
         
         </div>
 

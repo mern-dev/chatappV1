@@ -146,6 +146,7 @@ module.exports=function(io,socket){
                                    const newmsg = {
                                     senderUsername:newMessage.senderUsername,
                                     senderPath:newMessage.senderPath,
+                                    isOnline:newMessage.senderisOnline,
                                      msg:msgOnline
                                    }
                                    console.log("message-sent")

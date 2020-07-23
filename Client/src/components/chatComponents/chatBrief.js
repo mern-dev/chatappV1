@@ -8,7 +8,7 @@ import axios from 'axios';
 
 class ChatBrief extends Component {
     static contextType = UserContext;
-
+ 
   state = {  }
   formatAMPM = (lastSeen) =>
     { // var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -68,73 +68,16 @@ class ChatBrief extends Component {
 
   }
   openChat = (user) =>
- { const {currentUserUpdate,middleFlag} = this.context
- 
- const mq_wt2 = window.matchMedia( "(min-width:  90em)" );
- const mq_wt = window.matchMedia( "(min-width:  60em)" );
- 
- 
+ { const {currentUserUpdate} = this.context
+    let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+    let width = window.innerWidth / em
+    let height = window.innerHeight/ em
 
- const WidthChange = (mq_wt)=>
-  {
-      if(!mq_wt.matches)
-      { document.getElementById("left").style.display="none";
-          document.getElementById("middle").style.display="flex";
-         
-       
-         
-          document.getElementById("back-button").style.display="block"
-        
-        
-       
-      }
-    
-    
-    else{
-      document.getElementById("left").style.display="block";
-      document.getElementById("middle").style.display="flex";
-          
-    document.getElementById("back-button").style.display="none"
-    
-     
+    if(width<60||height<41)
+    { 
+      document.querySelector(".middleHome").style.display="flex";
+      document.querySelector(".leftHome").style.display="none";
     }
-   }
-   const WidthChange2 = (mq_wt2)=>
-   {  if(middleFlag)
-    {
-      if(!mq_wt2.matches)
-      { 
-             document.getElementById("middle").style.display="flex";  
-           document.getElementById("right").style.display="none";
-         
-
-          document.getElementById("back-button-right").style.display="block"
-         
-      }
-    
-    
-    else{
-     
-      document.getElementById("right").style.display="flex";
-      document.getElementById("middle").style.display="flex";   
-      document.getElementById("back-button-right").style.display="none"
-      document.getElementById("back-button").style.display="none"
-    
-     
-    }
-    }
-      
-    }
-   
-  
-   if(matchMedia)
-   {
-   mq_wt.addListener(WidthChange);
-   WidthChange(mq_wt);
-
-   mq_wt2.addListener(WidthChange2)
-   WidthChange2(mq_wt2)
-   }
   
    
    axios.get("/getDetail/"+user.id).then(res=>{
@@ -158,7 +101,7 @@ class ChatBrief extends Component {
       <ul className="img-ul">
     {this.props.messages.map( (newmsg) =>{ 
       
-    return (<div >
+    return (<div className="chat-brief" >
     
     <li className='img-li row ' key={newmsg.Id} onClick={e => {clickOpenSearchUpdate(false);this.openChat({id:newmsg.Id})}}>
     <div>

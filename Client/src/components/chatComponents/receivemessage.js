@@ -31,7 +31,7 @@ class ReceiveMessage extends Component {
               
             </div>
          
-           
+            <div className="bubble-arrow-left"></div>
         </div>
 
           );

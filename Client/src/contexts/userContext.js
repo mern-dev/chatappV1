@@ -62,6 +62,7 @@ class UserContextProvider extends Component {
         
         axios.get('/getDetail/'+this.id).then(res =>{
           console.log(res.data.detail)
+          res.data.detail.isOnline=true
           this.setState({user:res.data.detail})
         })
     }
@@ -283,7 +284,7 @@ class UserContextProvider extends Component {
                   this.socket.emit("deliverUpdate", newmsg.msg);
               }
 
-               temp = {Id:item.Id,username:item.username,path:item.path,isOnline:item.isOnline,messages:[...item.messages,newmsg.msg]}
+               temp = {Id:item.Id,username:item.username,path:item.path,isOnline:newmsg.isOnline,messages:[...item.messages,newmsg.msg]}
               
 
             }
@@ -336,7 +337,7 @@ class UserContextProvider extends Component {
         msgBody:this.state.msgBody,
         senderUsername:this.state.user.username,
         senderPath:this.state.user.path, 
-        senderisOnline:this.state.user.isOnline,
+        senderisOnline:true,
         sentTime :sentTime,
         sent:false,
         delivered:false,
@@ -360,7 +361,7 @@ class UserContextProvider extends Component {
         if(item.Id===newMessage.receiverId)
          { 
             flag = false;
-            temp = {Id:item.Id,username:item.username,path:item.path,messages:[...item.messages,newMessage]}
+            temp = {Id:item.Id,username:item.username,path:item.path,isOnline:item.isOnline,messages:[...item.messages,newMessage]}
          }
          else{
            
@@ -371,7 +372,7 @@ class UserContextProvider extends Component {
        });
        if(flag)
        {
-        messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,messages:[newMessage]},...state.messages]
+        messages = [{Id:newMessage.receiverId,username:state.receiver.username,isOnline:state.receiver.isOnline,path:state.receiver.path,messages:[newMessage]},...state.messages]
        }
        else{
          messages.unshift(temp)

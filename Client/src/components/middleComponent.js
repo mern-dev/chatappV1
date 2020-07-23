@@ -7,23 +7,17 @@ import axios from 'axios';
 
 class MiddleComponent extends Component {
   static contextType = UserContext;
+  
     state = {
-      responsive_flag:false,
-      click:false,
+  
+    
       lastmsg:null
     }
  
   componentDidMount()
   { this.autoScroll();
     
-    const mq_ht = window.matchMedia( "(min-height:  41em)" );
-    const mq_wt = window.matchMedia( "(min-width:  60em)" );
-    if(!mq_wt.matches||!mq_ht.matches)
-    {
-     
-        this.setState({responsive_flag:true});
-    }
-   
+    
    
     
   }
@@ -104,72 +98,35 @@ componentDidUpdate()
           }
           return 0;
         })
-        if(msg.senderId!==receiver._id)
-        {
-              this.autoScroll()
-        }
-        else{
+       
           this.autoScroll()
-        }
+        
        
       }
 }
 
-  
-  
-  
-
-openSearch = (flag) =>{
-  const {clickOpenSearch,clickOpenSearchUpdate} = this.context;
-  const mq_wt2 = window.matchMedia( "(min-width:  90em)" );
-
-  
-  
+backtoleft = () =>
+{ const {clickOpenSearchUpdate} = this.context
+clickOpenSearchUpdate(false)
+  document.querySelector(".leftHome").style.display="block";
+  document.querySelector(".middleHome").style.display="none";
  
-
-    const WidthChange2 = (mq_wt2)=>
-    { 
-       if(!mq_wt2.matches)
-       {    
-          
-        if(clickOpenSearch)
-        {
-          document.getElementById("right").style.display="flex";
-          document.getElementById("middle").style.display="none";
-          clickOpenSearchUpdate(false)
-        }
-          else{
-            document.getElementById("right").style.display="none";
-       
-           
-          } 
- 
-           document.getElementById("back-button-right").style.display="block"
-        
-       }
-     
-     
-     else{
-      
-      document.getElementById("right").style.display="flex";
-       document.getElementById("middle").style.display="flex";
-       document.getElementById("back-button-right").style.display="none"
-       document.getElementById("back-button").style.display="none"
-     
-      
-     
-     }
-       
-     }
-    
+}
   
-    if(matchMedia)
+  
+
+openSearch = () =>{
+  let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+    let width = window.innerWidth / em;
+    let height = window.innerHeight/ em;
+   
+    if(width<90||height<41)
     {
-  
- 
-    mq_wt2.addListener(WidthChange2)
-    WidthChange2(mq_wt2)
+      document.querySelector(".middleHome").style.display="none";
+      document.querySelector(".rightHome").style.display="flex";
     }
+
+  
 
 }
 handleScroll = e =>{
@@ -265,29 +222,25 @@ handleScroll = e =>{
       var strTime = hours + ':' + minutes + ' ' + ampm;
       return strTime;
     }
-    backtoleft = () =>
-    { 
-      document.getElementById("left").style.display="block";
-      document.getElementById("middle").style.display="none";
-      document.getElementById("right").style.display="none";
-      this.setState({click:false})
-    
-
-    }
+   
     render() { 
-         const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom,clickOpenSearchUpdate } = this.context;
+         const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom } = this.context;
         
       
      
         return( 
-            middleFlag||this.state.responsive_flag ? <div  className="middleHome" id="middle">
-              <div className="middleHomeHeader" onClick={e=>{clickOpenSearchUpdate(true);this.openSearch(true);}}>
+            middleFlag? <div className="middleHome" id="middle" >
+              <div className="middleHomeHeader" >
                
            
               <img src="images/back-button.png" alt="#"  id="back-button"  onClick={this.backtoleft} className="back-button"/>
               <Avatar alt="Cindy Baker" src={receiver.path}  />
-                <div className="header-username-section">
+       
+            
+                <div className="header-username-section" onClick={this.openSearch}>
                 <div className="receiverName" >{receiver.username} </div>
+          
+              
         <div className="lastSeen">{receiver.isOnline? "Online" : this.formatSeen(new Date(receiver.lastSeen))  }</div>
   
                 </div>
@@ -308,8 +261,8 @@ handleScroll = e =>{
                              {  lastmsg=m;
                               return( 
                                 
-                                <li key={m.id}>
-                               
+                                <li key={m.id}id="send" >
+                               <br/>
                                 <p className="date-main">{this.formatDisplay(m)}</p>
                                 <br/>
                              <SendMessage msgBody={m.msgBody} sentTime={m.sentTime} status={{sent:m.sent,delivered:m.delivered,seen:m.seen}}/>
@@ -320,9 +273,9 @@ handleScroll = e =>{
                              {  lastmsg=m;
                               return( 
                             
-                                <li key={m.id}>
+                                <li key={m.id} id="send">
                              
-                             <SendMessage msgBody={m.msgBody} sentTime={m.sentTime} status={{sent:m.sent,delivered:m.delivered,seen:m.seen}}/>
+                             <SendMessage msgBody={m.msgBody}  sentTime={m.sentTime} status={{sent:m.sent,delivered:m.delivered,seen:m.seen}}/>
                              </li>)
                              }
                             
@@ -331,7 +284,7 @@ handleScroll = e =>{
                          
                           if(m.senderId===receiver._id)
                          { 
-                           if(!m.seen)
+                           if((!m.seen&&document.querySelector(".middleHome").style.display!=="none")||(!m.seen&&document.querySelector(".rightHome").style.display!=="none"))
                            {
                                
                                      seenOnRoom(m);
@@ -342,22 +295,22 @@ handleScroll = e =>{
                             return (
                               
                              
-                               
+                             
                                 
-                                  <li key={m.id}>
-                              
+                                  <li key={m.id} id="receive">
+                            
                                   <p className="date-main">{this.formatDisplay(m)}</p> 
                                   <br/>
                           
-                              <ReceiveMessage msgBody={m.msgBody} sentTime={m.sentTime} />
+                              <ReceiveMessage msgBody={m.msgBody}  sentTime={m.sentTime} />
                               </li>
                               )
                            }
                            else{
                             lastmsg=m;
-                            return (<li key={m.id}>
+                            return (<li key={m.id}id="receive" >
                           
-                              <ReceiveMessage msgBody={m.msgBody} sentTime={m.sentTime} />
+                              <ReceiveMessage msgBody={m.msgBody}  sentTime={m.sentTime} />
                               </li>)
 
                            }
@@ -380,7 +333,7 @@ handleScroll = e =>{
                   <button onClick={this.send}  className="messageButton">Send</button>
              </div>
     </div>:
-            <div className="middleHome middleEmpty" id="middle" > 
+            <div className="middleHome middleEmpty"  id="middle"> 
            
                <span  id="back-button" /> 
              

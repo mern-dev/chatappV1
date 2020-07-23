@@ -73,7 +73,7 @@ ul::-webkit-scrollbar {
     font-family: 'Montserrat', sans-serif;
   
     font-weight: 400;
-    line-height: 1;
+  
     letter-spacing: 0.00938em;
 }
 .img-p{
@@ -211,6 +211,7 @@ h5::after{
     flex:1;
     min-width: 20em;
 }
+
 .middleHome
 {   
      background-color:rgba(0,0,0,0.72); 
@@ -354,11 +355,37 @@ h5::after{
     flex:2;
    
 }
+span[id="right"]
+{
+    align-items: center;
+    
+    color: rgb(197, 157, 157);
+    justify-content: center;
+
+}
+.back-button-right
+{
+    width: 2em;
+    margin: 0.5em;
+   display: none;
+   
+}
+.back-button
+{
+    width: 2em;
+    margin-right: 10px;
+    display: none;
+    
+}
 @media only screen and (max-width:90em) {
 
     #right {
         display: none;
     }
+  .back-button-right
+  {
+      display:block;
+  }
   
  
 }
@@ -371,7 +398,18 @@ h5::after{
     #middle {
         display: none;
     }
+    .back-button-right
+    {
+        display: block;
+    }
+    .back-button
+    {
+        display: block;
+    }
+ 
+ 
   
+
     .home{
         height:100vh ;
     width: 100%;
@@ -401,13 +439,26 @@ h5::after{
     
 }
 
+.chat-brief:hover
+{
+   background-color: #f4f6ff17;
+   border-radius: 5px;
+
+}
 
 @media only screen and (max-width:60em ) {
     #middle {
         display: none;
     }
-    
   
+    .back-button-right
+    {
+        display: block;
+    }
+    .back-button
+    {
+        display: block;
+    }
   
     .home{
         height:100vh ;
@@ -416,37 +467,29 @@ h5::after{
     }
     
 }
-.back-button-right
-{
-    align-items: center;
-    padding: 0.5em;
-}
-.back-button
-{
-    width: 2em;
-    margin-right: 10px;
-    display:none ;
-    
-}
+
 .date-main
 {   clear: both;
       
-    position:sticky;
+    position: relative;
+   
     color :white;
     text-align: center;
     background-color:rgba(0, 0, 0, 0.199); 
-    width: fit-content;
-    left: 0; 
-    right: 0; 
+    width: max-content;
+     
     margin-left: auto; 
+    margin-top: 0.3em;
     margin-right: auto;
     padding:0.4em;
     border-radius: 5px;
    font-size: small;
+ 
     
   
    
 }
+
 
 /* ============================================message component styling =======================================*/
 
@@ -456,22 +499,25 @@ h5::after{
     padding: 0.5em;
    
     padding-right: 0.6em;
-  
+   
     display: inline-block;
-    background-color:#282b30 ;
+    background-color:white ;
      margin:0.1em;
     margin-left: 0.9em;
      max-width: 18.75em;
     border-radius: 0.63em;
     clear:both;
     float:left;
+     min-width: 5em;
+   position: relative;
     
    
     
 }
+
 .sendmsg
 {
-   
+    
     padding: 0.5em;
     padding-right:0.75em;
     padding-left: 0.6em;
@@ -480,8 +526,9 @@ h5::after{
     margin-right: 0.9em;
     text-align: left;
     display: inline-block;
-    background-color:rgba(0, 0, 0, 0.623) ;
+    background-color:#000000 ;
    float:right;
+   position: relative;
    clear:both;
     border-radius: 0.63em;
    
@@ -489,10 +536,47 @@ h5::after{
    
     
 }
+li .sendmsg + li .date-main
+{
+    margin: 0.1em;
+}
+
+.bubble-arrow-left {
+    position: absolute;
+   
+    bottom:0px;
+    left: -10px;
+  
+    border: 10px solid white;
+    border-top-color: transparent;
+    border-left-color: transparent;
+   
+    width: 0;
+    height: 0;
+    
+}
+
+  .bubble-arrow-right {
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom:0px;
+   
+    right: -10px; 
+   
+    border: 10px solid #000000;   
+
+ border-right-color:transparent ;
+ border-top-color:transparent ;
+ border-left-color:transparent ;
+   
+}
+ 
+
 .sendmsgBody
 {     
    
-    color:grey;
+    color:rgba(255, 255, 255, 0.692);
     
    display: inline;
    
@@ -509,7 +593,7 @@ h5::after{
 .msgBody
 {     
    
-    color:white;
+    color:rgba(0, 0, 0, 0.76);
     opacity: 0.9;
    display: inline;
    
@@ -527,7 +611,7 @@ h5::after{
     float: right;
   font-size: 0.7em;
    margin-top: 0.1em;
-   
+ 
   opacity: 0.9;
   color:grey;
 
@@ -564,6 +648,14 @@ h5::after{
     margin-top: 0.5em;
 
     height: 7.69vh;
+}
+.username-simple-chat-brief
+{
+    margin-left: 1em;
+   align-items: baseline;
+   
+   display: block;
+  
 }
 .searchInputBar
 {

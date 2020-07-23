@@ -15,7 +15,15 @@ class SimpleChatBrief extends Component {
   {
     const {currentUserUpdate} = this.context
          currentUserUpdate(user)
-
+         let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+         let width = window.innerWidth / em
+         let height = window.innerHeight/ em
+     
+         if(width<60||height<41)
+         { 
+           document.querySelector(".middleHome").style.display="flex";
+           document.querySelector(".leftHome").style.display="none";
+         }
   }
   render() { 
    
@@ -29,10 +37,13 @@ class SimpleChatBrief extends Component {
     <li className='img-li row ' key={user._id} onClick={e => this.openChat(user)}>
     <div>
       <Avatar alt="Cindy Baker" src={user.path} className='img-avatar' />
+      
     </div>
-    <div className='img-div '>
-    <h4 className="img-h">{user.username}</h4>
-    </div>
+     <div className="username-simple-chat-brief">
+     <h4 className="img-h">{user.username}</h4>
+     </div>
+   
+  
     </li>
      
      <hr className='hrr' /> </div> )})}

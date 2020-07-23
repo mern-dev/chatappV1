@@ -20,27 +20,26 @@ class Home extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         
-        
-       
-
-    }
+      
+   }
     backtomiddle = ()=>
-    { const {clickOpenSearchUpdate} = this.context
-         clickOpenSearchUpdate(false)
-        document.getElementById("right").style.display="none";
-      document.getElementById("middle").style.display="flex";
+    {
+     
+        document.querySelector(".rightHome").style.display="none";
+      document.querySelector(".middleHome").style.display="flex";
+
     }
    
     
     componentDidMount() {
        
        
-     
+      
         let token = window.localStorage.getItem("token")
         const decode = jwt_decode(token);
         this.id = decode._id;
          
-        
+       
         
         if(token)
         {
@@ -54,10 +53,97 @@ class Home extends Component {
 
             window.location = '/'
         }
+        
        
+        const mq_wt = window.matchMedia( "(min-width: 0em) and (max-width: 59em)" );
+        const mq_wt2 = window.matchMedia( "(min-width: 61em) and (max-width: 89em)" );
+        const mq_wt3 = window.matchMedia( "(min-width: 90em) and (max-width: 200em)" );
+        //const mq_ht = window.matchMedia( "(min-height:  41em)" );
+        
+    
+    
+    
+        
+        const WidthChange = (mq_wt)=>
+        {    
+                   
+            if(mq_wt.matches)
+            { 
+                console.log("inside-mobile-view",mq_wt.matches)
+              document.querySelector(".leftHome").style.display="block"
+              document.querySelector(".middleHome").style.display="none"
+              document.querySelector(".rightHome").style.display="none"
+             
+            }
+          
+         }
+         const WidthChange2 = (mq_wt2)=>
+         { 
+            if(mq_wt2.matches)
+            { 
+             
+                console.log("inside-tab-view",mq_wt2.matches)
+              document.querySelector(".leftHome").style.display="block"
+              document.querySelector(".middleHome").style.display="flex"
+              document.querySelector(".rightHome").style.display="none"
+               
+            }
+           
+         
+          }
+          const WidthChange3 = (mq_wt3)=>
+         {   
+            if(mq_wt3.matches)
+            { 
+                console.log("inside-web-view",mq_wt3.matches)
+               
+              document.querySelector(".leftHome").style.display="block"
+              document.querySelector(".middleHome").style.display="flex"
+              
+              document.querySelector(".rightHome").style.display="flex"
+               
+            }
+           
+         
+          }
+    
+          //   const HeightChange = (mq_ht)=>
+        //  {  
+        //     if(!mq_ht.matches)
+        //     { 
+        //       document.querySelector(".middleHome").style.display="none"
+        //       document.querySelector(".leftHome").style.display="block"
+        //       document.querySelector(".rightHome").style.display="none"
+               
+        //     }
+          
+         
+        //   }
+         
+        
+         if(mq_wt)
+         {
+         mq_wt.addListener(WidthChange);
+         WidthChange(mq_wt);
+      
+         }
+         if(mq_wt2)
+         {
+         mq_wt2.addListener(WidthChange2);
+         WidthChange2(mq_wt2);
 
-    }
-    handleChange(e) {
+         }
+         if(mq_wt3)
+         {
+         mq_wt3.addListener(WidthChange3);
+         WidthChange3(mq_wt3);
+
+         }
+
+ 
+ }
+   
+ handleChange(e) {
         var value = e.target.value;
 
 
@@ -80,7 +166,7 @@ class Home extends Component {
     }
 
     render() {
-        const {messages,middleFlag} = this.context 
+        const {messages,middleFlag,receiver} = this.context 
                return (
               
             
@@ -96,18 +182,17 @@ class Home extends Component {
                 
                     </div>
                     
+                
                        <MiddleComponent />
                        
 
-                
-
                     {middleFlag?<div className="rightHome" id="right">
                          <div className="back-button-right">
-                         <img alt="#" src="images/back-button.png"  id="back-button-right"  onClick={this.backtomiddle} className="back-button"/>
+                         <img alt="#" src="images/back-button.png"  id="back-button-right" className="back-button-right"  onClick={this.backtomiddle} />
                          </div>
                     
 
-                    </div>:<span></span>}
+                    </div>:<span className="rightHome" id="right"><h4>Receiver-Profile</h4></span>}
 
 
                 </div>
