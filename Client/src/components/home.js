@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import  { UserContext } from '../contexts/userContext'
 import LeftComponent from './leftComponent';
 import MiddleComponent from './middleComponent';
+import RightComponent from './rightComponent';
 
 
 
@@ -177,13 +178,11 @@ class Home extends Component {
                        <MiddleComponent />
                        
 
-                    {middleFlag?<div className="rightHome" id="right">
-                         <div className="back-button-right">
-                         <img alt="#" src="images/back-button.png"  id="back-button-right" className="back-button-right"  onClick={this.backtomiddle} />
-                         </div>
-                    
+                    {middleFlag?
+                        
+                    <RightComponent />
 
-                    </div>:<span className="rightHome" id="right"><h4>Receiver-Profile</h4></span>}
+                    :<span className="rightHome" id="right"><h4>Receiver-Profile</h4></span>}
 
 
                 </div>
