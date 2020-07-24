@@ -17,22 +17,26 @@ class UserContextProvider extends Component {
       middleFlag:false,
       receiver:{},
       messages:[],
-      clickOpenSearch:false,
+      cnt:0,
       msgBody:"",
+    
       
    }
    
 
    }
-
-  
+ 
+  updatecnt = (cnt) =>
+  {
+    this.setState({cnt:cnt})
+  }
       
-      scrollUpdate=(messagesw)=>
-   { 
+scrollUpdate =(messagesw)=>
+   {  
      this.setState(state=>{
      var  messages = state.messages.map(chat=>{
-        if(chat.Id===this.state.receiver._id)
-        {
+        if(chat.Id===state.receiver._id)
+        {  
           return {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline,messages:[...messagesw,...chat.messages]}
         }
         else{
@@ -44,15 +48,12 @@ class UserContextProvider extends Component {
       }
     })
    }
-      clickOpenSearchUpdate = (data) =>
-      {
-        this.setState({clickOpenSearch:data})
-      }
+     
    
   componentDidMount ()
   {
     let token = window.localStorage.getItem("token")
-
+     
     
     if(token)
     {
@@ -62,7 +63,7 @@ class UserContextProvider extends Component {
         
         axios.get('/getDetail/'+this.id).then(res =>{
           console.log(res.data.detail)
-          res.data.detail.isOnline=true
+         res.data.detail.isOnline=true
           this.setState({user:res.data.detail})
         })
     }
@@ -104,7 +105,7 @@ class UserContextProvider extends Component {
     
   } 
   this.socket.on("lastSeen",function(data){
-       console.log(data,"lastseen")
+      
     lastSeenUpdate(data)
     
 
@@ -144,7 +145,7 @@ class UserContextProvider extends Component {
 
     const addChats =(chat) =>{
       chat.messages.map(msg=>{
-        if(!msg.delivered)
+        if(!msg.delivered&&msg.senderId!==this.state.user._id)
         {
           msg.delivered=true;
           this.socket.emit("deliverUpdate", msg);
@@ -281,7 +282,14 @@ class UserContextProvider extends Component {
               if(newmsg.msg.receiverId===state.id&&!newmsg.msg.delivered)
               { 
                  newmsg.msg.delivered=true;
-                  this.socket.emit("deliverUpdate", newmsg.msg);
+                 this.socket.emit("deliverUpdate", newmsg.msg);
+                     if(state.receiver._id===newmsg.msg.senderId)
+                      {
+                        
+                            this.setState({cnt:state.cnt+1});
+                        
+                      }
+                  
               }
 
                temp = {Id:item.Id,username:item.username,path:item.path,isOnline:newmsg.isOnline,messages:[...item.messages,newmsg.msg]}
@@ -461,7 +469,7 @@ class UserContextProvider extends Component {
     
     return (
       <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,clickOpenSearchUpdate:this.clickOpenSearchUpdate,scrollUpdate:this.scrollUpdate}}>
+        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt}}>
         {this.props.children}
       </UserContext.Provider>
     )
