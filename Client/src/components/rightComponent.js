@@ -26,7 +26,45 @@ class RightComponent extends Component {
         this.handleScroll = this.handleScroll.bind(this);
 
     }
-
+    formatDisplay = (msg) =>
+    { 
+      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var msg_sent = new Date(msg.sentTime)
+       
+        var t_now = new Date()
+        let month = months[msg_sent.getMonth()].slice(0,3)
+        let day  = days[msg_sent.getDay()].slice(0,3)
+        let date = msg_sent.getDate()
+    
+      if(msg_sent.getFullYear()===t_now.getFullYear())
+      {
+        if(msg_sent.getMonth()===t_now.getMonth())
+        {
+          if(msg_sent.getDate()===t_now.getDate())
+          {
+            return "Today"
+          }
+          if(t_now.getDate()-msg_sent.getDate()===1)
+           return "Yesterday"
+          if(t_now.getDate()-msg_sent.getDate()<=7)
+           return  days[msg_sent.getDay()]
+          else
+           {
+            
+  
+             return day +","+date+" "+month
+           } 
+        }
+        else
+        {
+          return day +","+date+" "+month
+        }
+      }
+      else{
+        return day +","+date+" "+month+","+msg_sent.getFullYear().toString().slice(-2);
+      }
+    }
 
     handleChange(e) {
 
@@ -96,13 +134,20 @@ class RightComponent extends Component {
         if (this.state.tog) {
             return (
                 <div className='rightHome' id='right' >
-                    <div className='rc-header' >
-
-                        <div className="back-button-right">
+                   
+                      <div className="rc-header">
+                      <div className="back-button-right">
                             <img alt="#" src="images/back-button.png" id="back-button-right" className="back-button-right" onClick={this.backtomiddle} />
                         </div>
-                        <p>Contact info</p>
-                        <img src={receiver.path} alt='aaa' className='rc-img' />
+                        <h4 >Contact info</h4>
+                      </div>
+                       
+
+                       
+
+                       
+                     <div className="contact-info">
+                     <img src={receiver.path} alt='aaa' className='rc-img' />
                         <h4>{receiver.username}</h4>
                         <button type='button' onClick={
                             () => {
@@ -112,8 +157,16 @@ class RightComponent extends Component {
                             }
                         }>Filter</button>
 
+                     </div>
+                       
+                        
+                     
+                       
+                        
+                      
+
                     </div>
-                </div>
+                
             )
         }
         else {
@@ -121,14 +174,15 @@ class RightComponent extends Component {
 
                 <div className='rightHome' >
                     <div className='rc-header'>
-
+                       
+                      
                         <input type="text" name="word" value={this.state.word} onChange={this.handleChange} />
                         <button type='submit' onClick={this.handleSubmit}>Search</button>
                         <button type='button' onClick={(e) => {
                             this.setState({ ...this.state, tog: !this.state.tog })
                         }}>Filter</button>
                     </div>
-                    <div className="chatScroll-right" onScroll={this.handleScroll}>
+                    <div className="chatScroll" onScroll={this.handleScroll}>
                         <ul className="list-none">
                             {
                                 this.state.arrMsg.map(m => {

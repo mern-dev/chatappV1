@@ -82,12 +82,7 @@ ul::-webkit-scrollbar {
     font-weight: 100;
     color: grey;
 }
-#rc{
-    background-color: black;
-    color:#f4f6ff;
-    margin: 0;
-    padding: 20px;
-}
+
 
 .hrr{
     margin:0;
@@ -265,13 +260,10 @@ h5::after{
     flex:10;
     scroll-behavior: smooth;
   
-      
+    height: auto;
+    margin-bottom: 0.5em;
 }
-.chatScroll-right{
-    flex:10;
-    overflow-y: scroll;
-   background-color: red;
-}
+
 .list-none 
 {
     list-style: none;
@@ -804,10 +796,7 @@ h2{
 
 /*=============================================================== Right-component styles ========================================================================= */
 
-.rc{
-    display: flex;
-    flex-direction: column;
-}
+
 
 .rc-img{
     width: 120px;
@@ -819,10 +808,24 @@ h2{
     margin-left: 120px;
     margin-top: 20px;
     margin-bottom: 20px;
+    background-color: #fffd41;
 
 }
 .rc-header{
     flex: 1;
-    background-color: green;
+   
+  
+   min-height: 2em; 
+   display: flex;
+   align-items:center;
+
+   
+  
+}
+
+.contact-info
+{
+    flex:10;
+    
     
 }
