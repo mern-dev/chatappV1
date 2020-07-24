@@ -33,7 +33,7 @@ class SimpleChatBrief extends Component {
       <ul className="img-ul">
     {this.props.users.map( (user) =>{ 
       
-    return (<div >
+    return (<div>
     <li className='img-li row ' key={user._id} onClick={e => this.openChat(user)}>
     <div>
       <Avatar alt="Cindy Baker" src={user.path} className='img-avatar' />

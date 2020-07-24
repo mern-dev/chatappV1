@@ -2,9 +2,6 @@
 
 import React, { Component } from 'react';
 
-
-
-import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import  { UserContext } from '../contexts/userContext'
@@ -26,7 +23,7 @@ class Home extends Component {
     backtomiddle = ()=>
     {
      
-        document.querySelector(".rightHome").style.display="none";
+      document.querySelector(".rightHome").style.display="none";
       document.querySelector(".middleHome").style.display="flex";
 
     }
@@ -37,24 +34,17 @@ class Home extends Component {
        
       
         let token = window.localStorage.getItem("token")
-        const decode = jwt_decode(token);
-        this.id = decode._id;
-         
+       
        
         
-        if(token)
+        if(!token)
         {
-            const decode = jwt_decode(token);
-           this.id = decode._id;
+           
          
-
+            window.location = '/'
           
         }
-        else{
-
-            window.location = '/'
-        }
-        
+       
        
         const mq_wt = window.matchMedia( "(min-width: 0em) and (max-width: 59em)" );
         const mq_wt2 = window.matchMedia( "(min-width: 61em) and (max-width: 89em)" );
@@ -143,6 +133,7 @@ class Home extends Component {
 
  
  }
+
    
  handleChange(e) {
         var value = e.target.value;
@@ -177,11 +168,11 @@ class Home extends Component {
                 <div className="chatBox">
 
                 
-                    <div className="leftHome" id="left">
+                
                         
                           <LeftComponent messages={messages}/>
                 
-                    </div>
+                 
                     
                 
                        <MiddleComponent />

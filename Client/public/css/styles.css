@@ -127,6 +127,12 @@ ul::-webkit-scrollbar {
     text-align: center;
         
 }
+.new-cnt
+{
+    bottom:23%; 
+    right: 3%;
+    
+}
 .center-cnt
 {  
   color:white;
@@ -181,7 +187,7 @@ h5::after{
     border: none;
     align-items: center;
     display: flex;
-
+    
    justify-content: center;
    overflow: hidden;
    
@@ -230,6 +236,7 @@ h5::after{
     border-bottom: 0.063em solid white;
     width: 85%;
     margin-left:1em ;
+    min-height: 4em;
     margin-top: 1em;
     margin-bottom: 0.5em;
     height: 6vh;
@@ -253,8 +260,11 @@ h5::after{
 .chatScroll
 {   
    
-    overflow-y: scroll;
+    overflow-y:scroll;
+    overflow-x: hidden;
     flex:10;
+    scroll-behavior: smooth;
+  
       
 }
 .chatScroll-right{
@@ -300,9 +310,14 @@ h5::after{
    
    display:flex;
    flex:1;
+   min-height: 3em;
    
  
 
+}
+#chatInputBox:active
+{
+    background-color: #f4f6ff17;
 }
 .middle-img
 {
@@ -405,7 +420,7 @@ span[id="right"]
     #middle {
         display: none;
     }
-   
+
  
   
 
@@ -420,23 +435,6 @@ span[id="right"]
 }
 
 
-@media only screen and (max-height: 55em) {
-
-    .header-username-section
-    {
-        
-        flex-direction: row;
-        align-items: center;
-       
-       }
-    .lastSeen
-    {
-        flex:10;
-     
-    }
-    
-    
-}
 
 .chat-brief:hover
 {
@@ -487,6 +485,60 @@ span[id="right"]
     
   
    
+}
+.loading-symbol-inside-chat
+{
+    width: 3em;
+}
+.loading-msg
+{
+    background-color: unset;
+}
+.top-msg-end
+{
+   
+    display: none;
+    background-color: #f4f6ff17;
+    color :rgba(255, 255, 255, 0.938);
+    align-items: center;
+    padding-right: 25px;
+    justify-content: center;
+    font-size: small;
+     height: 2em;
+   
+    margin-top:5px;
+   
+   
+}
+.down-arrow
+{
+    width:1.8em
+}
+#myBtn {
+ 
+    position: absolute; /* Fixed/sticky position */
+    bottom:21%; /* Place the button at the bottom of the page */
+    right: 5%; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    border-radius: 50%;
+    height: 2.2em;
+    width: 2.2em;
+    align-content: center;
+    justify-content: center;
+    
+    background-color: white; /* Set a background color */
+    color: rgb(105, 105, 105); /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 0.3em; /* Some padding */
+    display: none;
+    
+  }
+  
+#myBtn:active
+{
+    background-color: #00000000;
 }
 
 
@@ -640,13 +692,14 @@ li .sendmsg + li .date-main
     
   
     position: relative;
-    
+    min-height: 4em;
     border-bottom: 0.06em solid grey;
 
     margin-left:1em;
-    margin-top: 0.5em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
 
-    height: 7.69vh;
+    height: 6vh;
 }
 .username-simple-chat-brief
 {

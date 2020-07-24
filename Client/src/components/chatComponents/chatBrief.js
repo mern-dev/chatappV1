@@ -68,10 +68,21 @@ class ChatBrief extends Component {
 
   }
   openChat = (user) =>
- { const {currentUserUpdate} = this.context
+ { const {currentUserUpdate,updatecnt} = this.context
     let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
     let width = window.innerWidth / em
     let height = window.innerHeight/ em
+    const container = document.getElementById("chatScroll");
+    if(container)
+    {  
+      updatecnt(0);
+      container.style.scrollBehavior="auto";
+      container.scrollTop=container.scrollHeight;
+      
+      container.style.display="block"
+      container.style.scrollBehavior="smooth";
+    }
+     
 
     if(width<60||height<41)
     { 
@@ -95,15 +106,15 @@ class ChatBrief extends Component {
   return newmsg.messages[newmsg.messages.length-1].msgBody.length<=9?"You: "+newmsg.messages[newmsg.messages.length-1].msgBody :"You: "+newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,9)+"..."
   }
   render() { 
-    const {clickOpenSearchUpdate} = this.context
+  
     return ( 
-      <div className='left-c' >
+      <div className='left-c'>
       <ul className="img-ul">
     {this.props.messages.map( (newmsg) =>{ 
       
     return (<div className="chat-brief" >
     
-    <li className='img-li row ' key={newmsg.Id} onClick={e => {clickOpenSearchUpdate(false);this.openChat({id:newmsg.Id})}}>
+    <li className='img-li row ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id})}}>
     <div>
       <Avatar alt="Cindy Baker" src={newmsg.path} className='img-avatar' />
     </div>

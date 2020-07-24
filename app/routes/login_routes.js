@@ -226,18 +226,18 @@ module.exports = function (app) {
                messages.push(res[0].chats[0].messages[i])
         }
         
-        if(messages.length<10)
+        if(messages.length<7)
           resp.json(
             {
               messages:messages
             }
           )
           else
-          {
+          
             resp.json({
-              messages:messages.slice(-10)
+              messages:messages.slice(-7)
             })
-          }
+          
       })
     })
     app.get('/getWord/:sid/:rid/:word', function (req, res) {

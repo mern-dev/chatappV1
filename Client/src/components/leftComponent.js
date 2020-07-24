@@ -63,7 +63,7 @@ class LeftComponent extends Component {
        {  if(messages.length)
          {
             return(
-               <div >
+               <div className="leftHome" id="left">
              <div className="searchBar">
                   <button className="plusButton" onClick={this.toggle} >  <FontAwesome
        name="plus" className="plusIcon"/></button>  
@@ -82,7 +82,7 @@ class LeftComponent extends Component {
          else
          {
             return(
-               <div>
+               <div className="leftHome" id="left">
              <div className="searchBar">
                   <button className="plusButton" onClick={this.toggle} >  <FontAwesome
        name="plus" className="plusIcon"/></button>  
@@ -101,7 +101,7 @@ class LeftComponent extends Component {
 
        
         return ( 
-             <div >
+             <div className="leftHome" id="left">
             <div className="searchBar">
                 <button className="plusButton" onClick={this.toggle}>  <FontAwesome
           name="close" className="plusIcon"/></button>  
