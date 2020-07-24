@@ -144,7 +144,7 @@ class UserContextProvider extends Component {
 
     const addChats =(chat) =>{
       chat.messages.map(msg=>{
-        if(!msg.delivered)
+        if(!msg.delivered && msg.senderId !== this.state.user._id)
         {
           msg.delivered=true;
           this.socket.emit("deliverUpdate", msg);

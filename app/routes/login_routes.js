@@ -240,5 +240,55 @@ module.exports = function (app) {
           }
       })
     })
-
+    app.get('/getWord/:sid/:rid/:word', function (req, res) {
+      console.log('yyyyy',req.params.sid,req.params.rid,'yyyy');
+      Room.find({ _id: req.params.sid ,'chats.Id':req.params.rid},{'chats.$.messages':1,_id:0}).then(
+        (info) => {
+         
+          var f=0;
+          var n;
+          var arrId;
+          const arrNo=[];
+          const arrMsg =[];
+          info.map((i)=>{
+            i.chats.map(chat=>{
+              chat.messages.map((msg)=>{
+                x = req.params.word
+                y = msg.msgBody
+  
+  
+                arrNo.push(msg)
+                if(y.includes(x) && f==0 ){
+                  //arrId.push(msg)
+                  n=arrNo.length-1;
+                  arrId= msg.id;
+                  f=1;
+                }
+              })
+            })
+          })
+          var l = n-4;
+          l<0 ?l=0:l=l;
+  
+          for(var i=l;i<arrNo.length;i++){
+            arrMsg.push(arrNo[i]);
+          }
+            if (info) {
+              res.json({
+  
+                status: "success",
+                arrId : arrId,
+                arrMsg:arrMsg
+                
+              })
+            }
+            else {
+              res.json({
+                status: "error"
+              })
+            }
+          }
+        )
+    })
+  
   }    

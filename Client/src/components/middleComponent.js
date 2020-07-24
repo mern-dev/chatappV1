@@ -165,7 +165,7 @@ handleScroll = e =>{
       postmessage();
 
     }
-    formatSeen = (lastSeen) =>
+    formatSeen = (lastSeen) => 
     { 
        var temp_now = new Date();
        
@@ -299,7 +299,7 @@ handleScroll = e =>{
                            }
                            else{
                             lastmsg=m;
-                            return (<li key={m.id}id="receive" >
+                            return (<li key={m.id} id="receive" >
                           
                               <ReceiveMessage msgBody={m.msgBody}  sentTime={m.sentTime} />
                               </li>)
@@ -310,7 +310,8 @@ handleScroll = e =>{
                          }  
                        
                         return null;
-                       }))
+                       })
+                       )
                     } 
                     return null;
                       }

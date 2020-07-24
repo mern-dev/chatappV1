@@ -257,6 +257,11 @@ h5::after{
     flex:10;
       
 }
+.chatScroll-right{
+    flex:10;
+    overflow-y: scroll;
+   background-color: red;
+}
 .list-none 
 {
     list-style: none;
@@ -351,8 +356,10 @@ h5::after{
   }
 .rightHome
 {
+    display: flex;
     background-color:rgba(0,0,0,0.78);
     flex:2;
+    flex-direction: column;
    
 }
 span[id="right"]
@@ -398,15 +405,7 @@ span[id="right"]
     #middle {
         display: none;
     }
-    .back-button-right
-    {
-        display: block;
-    }
-    .back-button
-    {
-        display: block;
-    }
- 
+   
  
   
 
@@ -747,5 +746,30 @@ h2{
     width: 30%;
     height: 30%;
     opacity: 0.4;
+    
+}
+
+/*=============================================================== Right-component styles ========================================================================= */
+
+.rc{
+    display: flex;
+    flex-direction: column;
+}
+
+.rc-img{
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    position: relative;
+    display: block;
+    border-radius: 4rem;
+    margin-left: 120px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+.rc-header{
+    flex: 1;
+    background-color: green;
     
 }
