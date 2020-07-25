@@ -192,7 +192,7 @@ class RightComponent extends Component {
                                             lastmsg = m;
                                             return (
 
-                                                <li key={m.id} id="send" >
+                                                <li key={m.id} id="sendTop" >
                                                     <br />
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />
@@ -222,7 +222,7 @@ class RightComponent extends Component {
 
 
 
-                                                <li key={m.id} id="receive">
+                                                <li key={m.id} id="receiveTop">
 
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />

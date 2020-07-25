@@ -93,7 +93,7 @@ componentDidUpdate()
      container.scrollTop=container.scrollHeight;
      container.style.scrollBehavior="smooth";
      
-    
+     
   }
   
   
@@ -139,9 +139,9 @@ openSearch = () =>{
 handleScroll = e =>{
  const scrollButton = document.getElementById("myBtn")
   this.setState({scrollFlag:false})
- 
-  const container = document.getElementById("chatScroll");
   
+  const container = document.getElementById("chatScroll");
+  //console.log(container.children[0].children[0].visible ,container.children[0].children[9].visible,container.offsetHeight,container.scrollTop);
       
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
        {
@@ -306,7 +306,7 @@ handleScroll = e =>{
                              {  lastmsg=m;
                               return( 
                                 
-                                <li key={m.id}id="send" >
+                                <li key={m.id} id="sendTop">
      
                                 <p className="date-main">{this.formatDisplay(m)}</p>
                                
@@ -345,7 +345,7 @@ handleScroll = e =>{
                              
                              
                                 
-                                  <li key={m.id} id="receive">
+                                  <li key={m.id} id="receiveTop">
                             
                                   <p className="date-main">{this.formatDisplay(m)}</p> 
                                  

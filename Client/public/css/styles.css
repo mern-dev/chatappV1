@@ -457,6 +457,7 @@ span[id="right"]
     
 }
 
+
 .date-main
 {   clear: both;
       
@@ -542,11 +543,11 @@ span[id="right"]
     padding: 0.5em;
    
     padding-right: 0.6em;
-   
+    padding-left: 0.6em;
     display: inline-block;
     background-color:white ;
      margin:0.1em;
-    margin-left: 0.9em;
+    margin-left: 1.3em;
      max-width: 18.75em;
     border-radius: 0.63em;
     clear:both;
@@ -566,7 +567,7 @@ span[id="right"]
     padding-left: 0.6em;
     max-width: 18.75em;
     margin:0.1em;
-    margin-right: 0.9em;
+    margin-right: 1em;
     text-align: left;
     display: inline-block;
     background-color:#000000 ;
@@ -579,21 +580,44 @@ span[id="right"]
    
     
 }
-li .sendmsg + li .date-main
-{
-    margin: 0.1em;
-}
 
+@media  only screen and (max-width:90em ) 
+{
+    .msg{
+        margin-left: 3em;
+    }
+    .sendmsg{
+        margin-right: 3em;
+    }
+}
+@media  only screen and (max-width:75em) and (min-width:60em)
+{
+    .msg{
+        margin-left: 1.3em;
+    }
+    .sendmsg{
+        margin-right: 1em;
+    }
+}
+@media  only screen  and (max-width:40em)
+{
+    .msg{
+        margin-left: 1.3em;
+    }
+    .sendmsg{
+        margin-right: 1em;
+    }
+}
 .bubble-arrow-left {
     position: absolute;
    
-    bottom:0px;
-    left: -10px;
-  
-    border: 10px solid white;
-    border-top-color: transparent;
+    top:0px;
+    left: -18px;
+    z-index: 99;
+    border: 14px solid white;
+    border-bottom-color: transparent;
     border-left-color: transparent;
-   
+ 
     width: 0;
     height: 0;
     
@@ -603,17 +627,47 @@ li .sendmsg + li .date-main
     position: absolute;
     width: 0;
     height: 0;
-    bottom:0px;
+    top:0px;
+    z-index: 99;
+    right: -15px; 
    
-    right: -10px; 
-   
-    border: 10px solid #000000;   
+    border: 15px solid #000000;   
 
  border-right-color:transparent ;
- border-top-color:transparent ;
+ border-bottom-color:transparent ;
  border-left-color:transparent ;
    
 }
+
+
+
+li#receive  + li#receive  .msg  .bubble-arrow-left 
+{ 
+    
+    display: none;
+}
+li#send + li#send  .sendmsg  .bubble-arrow-right 
+{ 
+    
+    display: none;
+}
+
+li#receiveTop +  li#receive  .msg  .bubble-arrow-left 
+{ 
+    
+    display: none;
+}
+
+li#sendTop + li#send  .sendmsg  .bubble-arrow-right 
+{ 
+    
+    display: none;
+}
+
+
+
+
+
  
 
 .sendmsgBody
@@ -638,8 +692,8 @@ li .sendmsg + li .date-main
    
     color:rgba(0, 0, 0, 0.76);
     opacity: 0.9;
+  
    display: inline;
-   
    overflow-wrap:break-word;
    font-size: 1em;
    
