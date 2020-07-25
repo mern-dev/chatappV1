@@ -67,7 +67,7 @@ scrollUpdate =(messagesw)=>
           this.setState({user:res.data.detail})
         })
     }
-    const point = "http://localhost:3000/";
+    const point = "http://192.168.1.4:3000/";
     this.socket = io(point);
     window.addEventListener("beforeunload", (event)=> {
           

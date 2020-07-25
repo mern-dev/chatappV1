@@ -61,7 +61,7 @@ class Home extends Component {
             if(mq_wt.matches)
             { 
                 console.log("inside-mobile-view",mq_wt.matches)
-              document.querySelector(".leftHome").style.display="block"
+              document.querySelector(".leftHome").style.display="flex"
               document.querySelector(".middleHome").style.display="none"
               document.querySelector(".rightHome").style.display="none"
              
@@ -74,7 +74,7 @@ class Home extends Component {
             { 
              
                 console.log("inside-tab-view",mq_wt2.matches)
-              document.querySelector(".leftHome").style.display="block"
+              document.querySelector(".leftHome").style.display="flex"
               document.querySelector(".middleHome").style.display="flex"
               document.querySelector(".rightHome").style.display="none"
                
@@ -88,7 +88,7 @@ class Home extends Component {
             { 
                 console.log("inside-web-view",mq_wt3.matches)
                
-              document.querySelector(".leftHome").style.display="block"
+              document.querySelector(".leftHome").style.display="flex"
               document.querySelector(".middleHome").style.display="flex"
               
               document.querySelector(".rightHome").style.display="flex"

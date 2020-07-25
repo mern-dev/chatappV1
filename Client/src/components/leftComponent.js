@@ -70,10 +70,10 @@ class LeftComponent extends Component {
           <h2 >Chats</h2>
          
          </div>
-         <div className="left-chat">
+         
         <ChatBrief messages={messages}/>  
-         </div>
-
+    
+          
          </div>
          );
 
@@ -115,12 +115,11 @@ class LeftComponent extends Component {
         <h3> {this.state.searchQuery?`"${this.state.searchQuery}" not found`:"Search results"}</h3>
                 <img className="img-search" alt="#" src="./images/search--v2.png"/>
               </div>:
-              <div className="left-chat">
+             
 
-              {/* <ChatBrief messages={this.state.searchResults}/> */}
               <SimpleChatBrief users={this.state.searchResults}/>
 
-              </div>
+            
             
             }
             </div>

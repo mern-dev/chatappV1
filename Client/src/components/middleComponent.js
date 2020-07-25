@@ -265,7 +265,7 @@ handleScroll = e =>{
 
     }
   
- 
+
    
     render() { 
          const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom,cnt} = this.context;
@@ -291,6 +291,7 @@ handleScroll = e =>{
                   
                </div>
                <div className="top-msg-end">That's it</div>
+              
                {this.state.scrollUpdate?<div className="date-main loading-msg"><img src="images/loading-msg.gif"alt="#" className="loading-symbol-inside-chat"/></div>:<span></span>}
                <div className="chatScroll"  onScroll={this.handleScroll}  id="chatScroll">
                <ul className="list-none">
@@ -377,12 +378,16 @@ handleScroll = e =>{
                </ul>
                
                     <div onClick={this.scrollButtonPress} id="myBtn" title="press to go down"><img src="images/down-arrow.png"alt="#" className="down-arrow"/>{cnt?<div className='unseen-msg'><p className="center-cnt">{cnt}</p></div>:<span></span>}</div>
+                   
                  </div>
-                 
-              <div id="chatInputBox">
-                 <input onChange={ e => {changeMsgBody(e.target.value);this.autoScroll()}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
+                 <div id="chatInputBox" >
+                 <input  onChange={ e => {changeMsgBody(e.target.value);this.autoScroll()}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
+                
+            
+              
                   <button onClick={this.send}  className="messageButton">Send</button>
              </div>
+             
     </div>:
             <div className="middleHome middleEmpty"  id="middle"> 
            

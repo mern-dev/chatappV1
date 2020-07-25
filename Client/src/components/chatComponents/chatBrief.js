@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
+
 import Avatar from '@material-ui/core/Avatar';
 
 import { UserContext } from '../../contexts/userContext';
@@ -47,7 +47,7 @@ class ChatBrief extends Component {
                 return weekDay;
               }
               else{
-                return "Last seen "+day+"/"+lastSeen.getMonth()+"/"+year
+                return day+"/"+lastSeen.getMonth()+"/"+year
               }
         }
      
@@ -105,18 +105,19 @@ class ChatBrief extends Component {
     else
   return newmsg.messages[newmsg.messages.length-1].msgBody.length<=9?"You: "+newmsg.messages[newmsg.messages.length-1].msgBody :"You: "+newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,9)+"..."
   }
+  
   render() { 
   
     return ( 
-      <div className='left-c'>
+      <div className='left-c '>
       <ul className="img-ul">
     {this.props.messages.map( (newmsg) =>{ 
       
-    return (<div className="chat-brief" >
+    return (
     
-    <li className='img-li row ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id})}}>
+    <li className='img-li ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id})}}>
     <div>
-      <Avatar alt="Cindy Baker" src={newmsg.path} className='img-avatar' />
+      <Avatar alt="Cindy Baker" src={newmsg.path} />
     </div>
     <div className='img-div '>
       {newmsg.isOnline?<h6 className="img-h">{newmsg.username.length<6?newmsg.username:newmsg.username.substr(0,6)+".."}</h6>:<h5 className="img-h">{newmsg.username.length<6?newmsg.username:newmsg.username.substr(0,6)+".."}</h5>}
@@ -127,12 +128,16 @@ class ChatBrief extends Component {
 <span className='time'>{this.formatAMPM(new Date(newmsg.messages[newmsg.messages.length-1].sentTime))}</span>
 {this.unseenMsg(newmsg)}
      </div>
-          
+        
     </li>
  
-     <hr className='hrr' /> </div> )})}
-       </ul>  
-  </div>);
+    )
+   
+    })}
+     </ul>
+    </div>
+     
+ );
 
  }
 }
