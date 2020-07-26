@@ -19,7 +19,7 @@ class ReceiveMessage extends Component {
     render() { 
         return (
 
-        <div className="msg">
+        <div className="msg main">
             <div className="msgBody">
          {this.props.msgBody}
 

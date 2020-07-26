@@ -60,8 +60,7 @@ class LeftComponent extends Component {
      render() { 
       const { messages } = this.context;     
        if(!this.state.isPressed)
-       {  if(messages.length)
-         {
+     { 
             return(
                <div className="leftHome" id="left">
              <div className="searchBar">
@@ -77,21 +76,6 @@ class LeftComponent extends Component {
          </div>
          );
 
-         }
-
-         else
-         {
-            return(
-               <div className="leftHome" id="left">
-             <div className="searchBar">
-                  <button className="plusButton" onClick={this.toggle} >  <FontAwesome
-       name="plus" className="plusIcon"/></button>  
-          <h2 >Chats</h2>
-         
-         </div>
-         </div>)
-
-         }
             
       }
          

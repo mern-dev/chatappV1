@@ -32,7 +32,7 @@ class SendMessage extends Component {
 
         return (
 
-        <div className="sendmsg">
+        <div className="sendmsg main">
             <div className="sendmsgBody">
             {this.props.msgBody}
             </div>

@@ -18,7 +18,8 @@ class RightComponent extends Component {
             tog: true,
             arrId: '',
             arrMsg: [],
-            lastmsg: null
+            lastmsg: null,
+            flagdate:false
         };
         this.cancel = '';
         this.handleChange = this.handleChange.bind(this);
@@ -88,6 +89,7 @@ class RightComponent extends Component {
     }
     handleSubmit(e) {
         e.preventDefault();
+        this.setState({flagdate:false})
         const { receiver, id } = this.context;
         axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}`)
             .then(res => {
@@ -96,7 +98,21 @@ class RightComponent extends Component {
 
     }
     handleScroll() {
-
+      this.setState({flagdate:true})
+        const container = document.getElementById("chatScroll-r");
+        let t = container.querySelectorAll(".date-main")
+      
+        for(let i=0;i<t.length;i++)
+        { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+   
+          if(t[i].offsetTop-120<container.scrollTop)
+          {  console.log("lll")
+            this.date=t[i].textContent
+           
+          }
+         
+          
+        }
     }
 
     backtomiddle = () => {
@@ -170,6 +186,7 @@ class RightComponent extends Component {
             )
         }
         else {
+           
             return (
 
                 <div className='rightHome' >
@@ -182,7 +199,8 @@ class RightComponent extends Component {
                             this.setState({ ...this.state, tog: !this.state.tog })
                         }}>Filter</button>
                     </div>
-                    <div className="chatScroll" onScroll={this.handleScroll}>
+                    <div className="chatScroll" id="chatScroll-r" onScroll={this.handleScroll}>
+                    {this.state.flagdate? <p className="date">{this.date}</p>:<span></span>}
                         <ul className="list-none">
                             {
                                 this.state.arrMsg.map(m => {

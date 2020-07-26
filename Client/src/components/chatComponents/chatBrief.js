@@ -79,7 +79,6 @@ class ChatBrief extends Component {
       container.style.scrollBehavior="auto";
       container.scrollTop=container.scrollHeight;
       
-      container.style.display="block"
       container.style.scrollBehavior="smooth";
     }
      

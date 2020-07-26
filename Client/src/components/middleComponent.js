@@ -92,15 +92,15 @@ componentDidUpdate()
      container.style.scrollBehavior="auto";
      container.scrollTop=container.scrollHeight;
      container.style.scrollBehavior="smooth";
-     
+    
      
   }
   
-  
+ 
  
 }
  
-            
+   
           
          
        
@@ -141,19 +141,38 @@ handleScroll = e =>{
   this.setState({scrollFlag:false})
   
   const container = document.getElementById("chatScroll");
-  //console.log(container.children[0].children[0].visible ,container.children[0].children[9].visible,container.offsetHeight,container.scrollTop);
+  
+    this.flagdate = true;
+     let t = container.querySelectorAll(".date-main")
+    
+     for(let i=0;i<t.length;i++)
+     { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+
+       if(t[i].offsetTop-120<container.scrollTop)
+       { 
+        this.date=t[i].textContent
+       
+       }
+      
+       
+     }
+    
+     
+
+      
+     
       
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
        {
         console.log("bottom")
+        this.flagdate = false
         const {updatecnt} =this.context;
          updatecnt(0);
         scrollButton.style.display="none"
         this.setState({scrollFlag:true})
        }
-       
-       
-       
+    
+
        if(container.scrollHeight-container.scrollTop!==container.offsetHeight)
        {
          
@@ -179,7 +198,7 @@ handleScroll = e =>{
             scrollUpdate(res.data.messages)
           }
           else
-          {
+          { this.flagdate=false;
              document.querySelector(".top-msg-end").style.display="grid";
              setTimeout(function() {
               document.querySelector(".top-msg-end").style.display="none"
@@ -207,6 +226,8 @@ handleScroll = e =>{
     } 
       
       postmessage();
+      this.setState({scrollFlag:true})
+      
 
     }
     formatSeen = (lastSeen) => 
@@ -269,7 +290,9 @@ handleScroll = e =>{
    
     render() { 
          const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom,cnt} = this.context;
+        this.flag=false;
         
+      
         this.cnt =0;
         return( 
             middleFlag? <div className="middleHome" id="middle" >
@@ -291,9 +314,10 @@ handleScroll = e =>{
                   
                </div>
                <div className="top-msg-end">That's it</div>
-              
-               {this.state.scrollUpdate?<div className="date-main loading-msg"><img src="images/loading-msg.gif"alt="#" className="loading-symbol-inside-chat"/></div>:<span></span>}
                <div className="chatScroll"  onScroll={this.handleScroll}  id="chatScroll">
+               {this.state.scrollUpdate?<div className="date-main loading-msg"><img src="images/loading-msg.gif"alt="#" className="loading-symbol-inside-chat"/></div>:<span></span>}
+              
+               {this.flagdate? <p className="date">{this.date}</p>:<span></span>}
                <ul className="list-none">
                    {messages.map(msg=>{
                   
@@ -381,7 +405,7 @@ handleScroll = e =>{
                    
                  </div>
                  <div id="chatInputBox" >
-                 <input  onChange={ e => {changeMsgBody(e.target.value);this.autoScroll()}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
+                 <input  onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
                 
             
               

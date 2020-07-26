@@ -182,7 +182,7 @@ h5::after{
     display: flex;
     
    justify-content: center;
-   overflow: hidden;
+
    
 
   
@@ -435,7 +435,10 @@ span[id="right"]
 @media only screen and (max-width:60em ) {
     #middle {
         display: none;
+       
     }
+  
+ 
   
     .back-button-right
     {
@@ -468,14 +471,37 @@ span[id="right"]
     margin-left: auto; 
     margin-top: 0.3em;
     margin-right: auto;
-    padding:0.4em;
+    padding:0.3em;
     border-radius: 5px;
    font-size: small;
- 
+
     
+   left: 0;
+   right: 0;
   
    
 }
+.date{
+
+   
+     z-index: 2; 
+    position: absolute;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.137), 0 2px 2px rgba(0, 0, 0, 0.281);
+    color :#000000;
+    text-align: center;
+    background-color:grey; 
+    width: max-content;
+    
+    left: 0;
+    right: 0;
+    margin-left: auto; 
+    margin-top: 0.3em;
+    margin-right: auto;
+    padding:0.6em;
+    border-radius: 5px;
+   font-size: small;
+}
+
 .loading-symbol-inside-chat
 {
     width: 3em;
