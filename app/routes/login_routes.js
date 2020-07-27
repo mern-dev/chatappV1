@@ -245,11 +245,13 @@ module.exports = function (app) {
       Room.find({ _id: req.params.sid ,'chats.Id':req.params.rid},{'chats.$.messages':1,_id:0}).then(
         (info) => {
          
-          var f=0;
+          
           var n;
-          var arrId;
+          var f=0;
+          var arrId=[];
           const arrNo=[];
           const arrMsg =[];
+        
           info.map((i)=>{
             i.chats.map(chat=>{
               chat.messages.map((msg)=>{
@@ -258,11 +260,15 @@ module.exports = function (app) {
   
   
                 arrNo.push(msg)
-                if(y.includes(x) && f==0 ){
-                  //arrId.push(msg)
+                if(y.includes(x) ){
+                  arrId.push(msg.id)
+
+                  if(f==0){
                   n=arrNo.length-1;
-                  arrId= msg.id;
                   f=1;
+                  }
+                  
+                  
                 }
               })
             })
@@ -279,6 +285,8 @@ module.exports = function (app) {
                 status: "success",
                 arrId : arrId,
                 arrMsg:arrMsg
+                // arrNo:arrNo
+
                 
               })
             }

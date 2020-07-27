@@ -20,7 +20,7 @@ class ReceiveMessage extends Component {
         return (
 
         <div className="msg">
-            <div className="msgBody">
+            <div className="msgBody"  id={this.props.msgid}>
          {this.props.msgBody}
 
             </div>
