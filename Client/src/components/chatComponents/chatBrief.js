@@ -67,22 +67,37 @@ class ChatBrief extends Component {
     }
 
   }
+  unseenMsgForRoom = (newmsg) =>{
+    var cnt = 0;
+    newmsg.messages.map(m =>{
+      if(!m.seen && m.senderId === newmsg.Id)
+      {
+        cnt=cnt+1;
+      }
+      return 0;
+    })
+   
+      return cnt;
+ 
+
+  }
   openChat = (user) =>
  { const {currentUserUpdate,updatecnt} = this.context
+   updatecnt(user.cnt);
     let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
     let width = window.innerWidth / em
     let height = window.innerHeight/ em
     const container = document.getElementById("chatScroll");
     if(container)
     {  
-      updatecnt(0);
+      
       container.style.scrollBehavior="auto";
       container.scrollTop=container.scrollHeight;
       
       container.style.scrollBehavior="smooth";
     }
      
-
+ 
     if(width<60||height<41)
     { 
       document.querySelector(".middleHome").style.display="flex";
@@ -100,9 +115,9 @@ class ChatBrief extends Component {
   lastMessage = (newmsg) =>
   {
     if(newmsg.Id===newmsg.messages[newmsg.messages.length-1].senderId)
-     return newmsg.messages[newmsg.messages.length-1].msgBody.length<=9?newmsg.messages[newmsg.messages.length-1].msgBody:newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,9)+"..."
+     return newmsg.messages[newmsg.messages.length-1].msgBody.length<=5?newmsg.messages[newmsg.messages.length-1].msgBody:newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,6)+"..."
     else
-  return newmsg.messages[newmsg.messages.length-1].msgBody.length<=9?"You: "+newmsg.messages[newmsg.messages.length-1].msgBody :"You: "+newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,9)+"..."
+  return newmsg.messages[newmsg.messages.length-1].msgBody.length<=5?"You: "+newmsg.messages[newmsg.messages.length-1].msgBody :"You: "+newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,6)+"..."
   }
   
   render() { 
@@ -114,7 +129,7 @@ class ChatBrief extends Component {
       
     return (
     
-    <li className='img-li ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id})}}>
+    <li className='img-li ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id,cnt:this.unseenMsgForRoom(newmsg)})}}>
     <div>
       <Avatar alt="Cindy Baker" src={newmsg.path} />
     </div>
@@ -134,6 +149,7 @@ class ChatBrief extends Component {
    
     })}
      </ul>
+    {this.props.messages.length?<div className="dot-end"></div>:<span></span>}
     </div>
      
  );

@@ -295,7 +295,7 @@ h5::after{
 .lastSeen
 {
     color:grey;
-    font-size: 0.89em;
+    font-size: 0.5em;
     flex: 1;
     opacity: 1;
 }
@@ -481,6 +481,22 @@ span[id="right"]
   
    
 }
+.unread-msg-in-room
+{
+    color :white;
+    text-align: center;
+    background-color:rgba(0, 0, 0, 0.199); 
+    
+     position: relative;
+     clear: both;
+     margin-left:auto ;
+     margin-right: auto;
+   
+    margin-top: 1em;
+    padding:0.3em;
+   
+   font-size: small;
+}
 .date{
 
    
@@ -571,7 +587,7 @@ span[id="right"]
     background-color:white ;
      margin:0.1em;
     margin-left: 1.3em;
-     max-width: 18.75em;
+     max-width: 16em;
     border-radius: 0.63em;
     clear:both;
     float:left;
@@ -588,7 +604,7 @@ span[id="right"]
     padding: 0.5em;
     padding-right:0.75em;
     padding-left: 0.6em;
-    max-width: 18.75em;
+    max-width: 16em;
     margin:0.1em;
     margin-right: 1em;
     text-align: left;
@@ -859,7 +875,7 @@ h2{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+    flex:10;
     color:grey;
     height: 30em;
 }
@@ -869,6 +885,15 @@ h2{
     height: 30%;
     opacity: 0.4;
     
+}
+.dot-end
+{
+    border-bottom: 5px dotted grey;
+    width: 15%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
 }
 
 /*=============================================================== Right-component styles ========================================================================= */

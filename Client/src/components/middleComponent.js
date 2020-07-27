@@ -12,7 +12,8 @@ class MiddleComponent extends Component {
      
        scrollFlag:true,
        scrollUpdate:false,
-      lastmsg:null
+      lastmsg:null,
+      cnt:0,
     }
  
   
@@ -83,18 +84,58 @@ class MiddleComponent extends Component {
 componentDidUpdate()
 {
   
-  const {middleFlag} = this.context;
+  const {middleFlag,cnt} = this.context;
+  const container = document.getElementById("chatScroll");
+ 
+  if(cnt&&container)
+  {
+    let t = container.querySelectorAll(".unread-msg-in-room");
+    if(t)
+    {
+      //container.scrollTop=t[0].offsetTop;
+        
+      for(let i=1;i<t.length;i++)
+        {
+          t[i].style.display="none"
+        }
+
+    }
+     
+     
+  }
+
+    if(cnt&&this.state.scrollFlag&&container)
+    {
+      let t = container.querySelectorAll(".unread-msg-in-room");
+      if(t)
+      {
+        container.style.scrollBehavior="auto";
+       // container.scrollTop=t[0].offsetTop;
+          container.style.scrollBehavior="smooth"
+      for(let i=1;i<t.length;i++)
+      {
+        t[i].style.display="none"
+      }
+
+      }
+      
+      this.setState({scrollFlag:false})
+
+   }
   if(middleFlag&&this.state.scrollFlag)
   {
  
  
-     const container = document.getElementById("chatScroll");
+     
      container.style.scrollBehavior="auto";
      container.scrollTop=container.scrollHeight;
      container.style.scrollBehavior="smooth";
     
      
   }
+  
+   
+  
   
  
  
@@ -111,9 +152,13 @@ backtoleft = () =>
 { 
 this.setState({scrollUpdate:false}) 
 this.setState({scrollFlag:true})
+const {updatecnt,seenInContext,receiver} = this.context
+  
+  seenInContext(receiver._id);
+  updatecnt(0);
   document.querySelector(".leftHome").style.display="block";
   document.querySelector(".middleHome").style.display="none";
-  this.autoScroll()
+  
 }
   
   
@@ -144,16 +189,16 @@ handleScroll = e =>{
   
     this.flagdate = true;
      let t = container.querySelectorAll(".date-main")
-    
+   
      for(let i=0;i<t.length;i++)
      { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
 
-       if(t[i].offsetTop-120<container.scrollTop)
+       if(t[i].offsetTop<container.scrollTop+100)
        { 
         this.date=t[i].textContent
        
        }
-      
+     
        
      }
     
@@ -166,8 +211,7 @@ handleScroll = e =>{
        {
         console.log("bottom")
         this.flagdate = false
-        const {updatecnt} =this.context;
-         updatecnt(0);
+       
         scrollButton.style.display="none"
         this.setState({scrollFlag:true})
        }
@@ -187,7 +231,7 @@ handleScroll = e =>{
      }
      return 0;
    })
-    if(0===container.scrollTop)
+    if(0===container.scrollTop&&msg)
     { this.setState({scrollUpdate:true})
 
       axios.get("/"+id+"/getmsg/"+receiver._id+"/"+msg.id).then(res=>
@@ -215,19 +259,20 @@ handleScroll = e =>{
      autoScroll = () => {
       const container = document.getElementById("chatScroll");
       if (container) container.scrollTo(0,container.scrollHeight);
-      const {updatecnt} =this.context;
-      updatecnt(0);
+      
     };
     send = () =>
-    { const {postmessage,msgBody} = this.context;
+    { const {postmessage,msgBody,updatecnt,seenInContext,receiver} = this.context;
+    
       if(msgBody==="")
     {
       return null;
     } 
-      
-      postmessage();
-      this.setState({scrollFlag:true})
-      
+    this.setState({scrollFlag:true})
+    updatecnt(0)
+    seenInContext(receiver._id)
+    postmessage();
+     
 
     }
     formatSeen = (lastSeen) => 
@@ -291,9 +336,9 @@ handleScroll = e =>{
     render() { 
          const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom,cnt} = this.context;
         this.flag=false;
-        
+       this.cnt=0;
       
-        this.cnt =0;
+        
         return( 
             middleFlag? <div className="middleHome" id="middle" >
               <div className="middleHomeHeader" >
@@ -319,6 +364,7 @@ handleScroll = e =>{
               
                {this.flagdate? <p className="date">{this.date}</p>:<span></span>}
                <ul className="list-none">
+              
                    {messages.map(msg=>{
                   
                     
@@ -332,7 +378,7 @@ handleScroll = e =>{
                               return( 
                                 
                                 <li key={m.id} id="sendTop">
-     
+                               
                                 <p className="date-main">{this.formatDisplay(m)}</p>
                                
                              <SendMessage msgBody={m.msgBody} sentTime={m.sentTime} status={{sent:m.sent,delivered:m.delivered,seen:m.seen}}/>
@@ -344,45 +390,50 @@ handleScroll = e =>{
                               return( 
                             
                                 <li key={m.id} id="send">
-                             
+                              
                              <SendMessage msgBody={m.msgBody}  sentTime={m.sentTime} status={{sent:m.sent,delivered:m.delivered,seen:m.seen}}/>
                              </li>)
                              }
                             
                         }
-                            
-                         
+                       
+                       
                           if(m.senderId===receiver._id)
                          { 
                            if(!m.seen&&document.querySelector(".middleHome").style.display!=="none")
                            {
-                               
-                                     seenOnRoom(m);
+                                   seenOnRoom(m); 
                                      
+                                   
+                                   
+                                  
                                     
-                                      
+                                   
                            }
                            if(this.formatMaindate(m,lastmsg))
                            {
                             lastmsg=m;
+                            
                             return (
                               
                              
                              
                                 
                                   <li key={m.id} id="receiveTop">
-                            
+                                   {!m.seen?<p className="unread-msg-in-room">{cnt+" "+"new messages"}</p>:<span></span>}
                                   <p className="date-main">{this.formatDisplay(m)}</p> 
                                  
                           
                               <ReceiveMessage msgBody={m.msgBody}  sentTime={m.sentTime} />
                               </li>
                               )
+                             
                            }
                            else{
+                           
                             lastmsg=m;
                             return (<li key={m.id} id="receive" >
-                          
+                               {!m.seen?<p className="unread-msg-in-room">{cnt+" "+"new messages"}</p>:<span></span>}
                               <ReceiveMessage msgBody={m.msgBody}  sentTime={m.sentTime} />
                               </li>)
 
