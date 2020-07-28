@@ -23,7 +23,7 @@ class RightComponent extends Component {
             lastmsg: null,
 
             i: 0,
-            data: false
+            data: false,
 
             flagdate:false
 
@@ -102,16 +102,16 @@ class RightComponent extends Component {
 
     handleCount() {
         
-         var x = document.getElementById(`${this.state.arrId[this.state.i]}`)
-        // console.log(this.state.i,x);
+    //      var x = document.getElementById(`${this.state.arrId[this.state.i]}`)
+    //     // console.log(this.state.i,x);
         
-      //  document.getElementById('searchChatScroll').scrollTop=x.offsetTop;
-      const container = document.getElementById('searchChatScroll')
-    let t = container.children
-    for(var j=0;j<t[0].children.length;j++){
-        console.log(t[0].children[j].children[0].children.)
-    }
-    console.log(t[0].children);
+    //   //  document.getElementById('searchChatScroll').scrollTop=x.offsetTop;
+    //   const container = document.getElementById('searchChatScroll')
+    // let t = container.children
+    // for(var j=0;j<t[0].children.length;j++){
+    //     console.log(t[0].children[j].children[0].children.)
+    // }
+    // console.log(t[0].children);
      // console.log(container.children[0].getElementById())
    // console.log(container.getElementById(`${this.state.arrId[this.state.i]}`))
        

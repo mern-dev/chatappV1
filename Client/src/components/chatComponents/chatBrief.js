@@ -82,7 +82,7 @@ class ChatBrief extends Component {
 
   }
   openChat = (user) =>
- { const {currentUserUpdate,updatecnt} = this.context
+ { const {currentUserUpdate,updatecnt, onlineBottomUpdate} = this.context
    updatecnt(user.cnt);
     let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
     let width = window.innerWidth / em
@@ -104,7 +104,7 @@ class ChatBrief extends Component {
       document.querySelector(".leftHome").style.display="none";
     }
   
-   
+   onlineBottomUpdate(false);
    axios.get("/getDetail/"+user.id).then(res=>{
    
     currentUserUpdate(res.data.detail)

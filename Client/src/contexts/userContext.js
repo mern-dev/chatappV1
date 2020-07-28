@@ -20,12 +20,15 @@ class UserContextProvider extends Component {
       cnt:0,
       msgBody:"",
       seenUpdateMessages:[],
-      
+      onlineBottom:false,
    }
    
 
    }
- 
+ onlineBottomUpdate = (value) =>
+ {
+   this.setState({onlineBottom:value})
+ }
   updatecnt = (cnt) =>
   { 
     this.setState({cnt:cnt})
@@ -67,7 +70,7 @@ scrollUpdate =(messagesw)=>
           this.setState({user:res.data.detail})
         })
     }
-    const point = "http://192.168.43.134:3000/";
+    const point = "http://localhost:3000/";
     this.socket = io(point);
     window.addEventListener("beforeunload", (event)=> {
           
@@ -290,6 +293,9 @@ scrollUpdate =(messagesw)=>
                       {
                         
                             this.setState({cnt:state.cnt+1});
+                            const container = document.getElementById("chatScroll");
+                            if(container.scrollHeight-container.scrollTop===container.offsetHeight)
+                               this.setState({onlineBottom:true})
                         
                       }
                   
@@ -434,13 +440,13 @@ seenInContext = (id) =>
 }
  seenOnRoom = (msg) =>
  { this.socket.emit("seenUpdate",msg);
-  
+   
  }
  currentUserUpdate = (details) => {
    
   
       var messages = [];
-      if(this.state.receiver!=={})
+      if(this.state.receiver!=={}&&details._id!==this.state.receiver._id)
       {
         this.setState(state =>{
     
@@ -485,7 +491,7 @@ seenInContext = (id) =>
     
     return (
       <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext}}>
+        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext, onlineBottomUpdate:this.onlineBottomUpdate}}>
         {this.props.children}
       </UserContext.Provider>
     )

@@ -81,19 +81,24 @@ class MiddleComponent extends Component {
   
     }
   }
+
   
 componentDidUpdate()
 {
+  const open =()=>
+  {
+    this.setState({scrollFlag:false})
+  }
   
-  const {middleFlag,cnt} = this.context;
+  
+  const {middleFlag,cnt, onlineBottom,onlineBottomUpdate} = this.context;
   const container = document.getElementById("chatScroll");
- 
-  if(cnt&&container)
+  if(cnt&&container&&middleFlag)
   {
     let t = container.querySelectorAll(".unread-msg-in-room");
     if(t)
     {
-      //container.scrollTop=t[0].offsetTop;
+      
         
       for(let i=1;i<t.length;i++)
         {
@@ -101,29 +106,28 @@ componentDidUpdate()
         }
 
     }
-     
-     
   }
 
-    if(cnt&&this.state.scrollFlag&&container)
+  if(cnt&&this.state.scrollFlag&&container)
+  {
+    let t = container.querySelectorAll(".unread-msg-in-room");
+
+    if(t)
     {
-      let t = container.querySelectorAll(".unread-msg-in-room");
-      if(t)
-      {
-        container.style.scrollBehavior="auto";
-       // container.scrollTop=t[0].offsetTop;
-          container.style.scrollBehavior="smooth"
-      for(let i=1;i<t.length;i++)
-      {
-        t[i].style.display="none"
-      }
-
-      }
+      container.style.scrollBehavior="auto";
       
-      this.setState({scrollFlag:false})
+      container.scrollTop=t[0].offsetTop-container.offsetHeight;
+        container.style.scrollBehavior="smooth"
+    for(let i=1;i<t.length;i++)
+    {
+      t[i].style.display="none"
+    }
 
-   }
-  if(middleFlag&&this.state.scrollFlag)
+    }
+  open()
+
+  }
+  else if(middleFlag&&this.state.scrollFlag)
   {
  
  
@@ -132,17 +136,23 @@ componentDidUpdate()
      container.scrollTop=container.scrollHeight;
      container.style.scrollBehavior="smooth";
     
-     
+    open()
   }
   
-   
+  if(onlineBottom)
+  {
+    container.style.scrollBehavior="auto";
+     container.scrollTop=container.scrollHeight;
+     container.style.scrollBehavior="smooth";
+     onlineBottomUpdate(false)
+  }
   
-  
+ 
  
  
 }
  
-   
+
           
          
        
@@ -153,8 +163,8 @@ backtoleft = () =>
 { 
 this.setState({scrollUpdate:false}) 
 this.setState({scrollFlag:true})
-const {updatecnt,seenInContext,receiver} = this.context
-  
+const {updatecnt,seenInContext,receiver, onlineBottomUpdate} = this.context
+  onlineBottomUpdate(false);
   seenInContext(receiver._id);
   updatecnt(0);
   document.querySelector(".leftHome").style.display="block";
@@ -204,24 +214,26 @@ handleScroll = e =>{
      }
     
      
-
-      
-     
-      
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
        {
         console.log("bottom")
-        this.flagdate = false
-       
-        scrollButton.style.display="none"
-        this.setState({scrollFlag:true})
+        
+        this.flagdate = false;
+        
+        
        }
     
 
-       if(container.scrollHeight-container.scrollTop!==container.offsetHeight)
+       if(container.scrollHeight-container.scrollTop>=container.offsetHeight+container.offsetHeight/2)
        {
          
          scrollButton.style.display="grid";
+       }
+       if(container.scrollHeight-container.scrollTop<container.offsetHeight+container.offsetHeight/2)
+       {
+       
+        scrollButton.style.display="none"
+
        }
    const {receiver,messages,id} = this.context
    var msg;
@@ -326,8 +338,23 @@ handleScroll = e =>{
     }
    scrollButtonPress = () =>
     {    
-    
-           this.autoScroll();
+          const {cnt} = this.context;
+          const container = document.getElementById("chatScroll");
+          if(cnt)
+          {
+            let t = container.querySelectorAll(".unread-msg-in-room");
+            
+            if(t)
+            { 
+             
+              container.scrollTop=t[0].offsetTop-container.offsetHeight;
+               
+            }
+          }
+          else{
+            this.autoScroll();
+          }
+          
        
 
     }
