@@ -32,8 +32,10 @@ class SendMessage extends Component {
 
         return (
 
+
         <div className="sendmsg" >
             <div className="sendmsgBody " id={this.props.msgid}>
+
             {this.props.msgBody}
             </div>
             <br/>

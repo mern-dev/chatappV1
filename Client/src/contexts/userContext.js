@@ -19,7 +19,7 @@ class UserContextProvider extends Component {
       messages:[],
       cnt:0,
       msgBody:"",
-    
+      seenUpdateMessages:[],
       
    }
    
@@ -27,7 +27,7 @@ class UserContextProvider extends Component {
    }
  
   updatecnt = (cnt) =>
-  {
+  { 
     this.setState({cnt:cnt})
   }
       
@@ -403,18 +403,17 @@ scrollUpdate =(messagesw)=>
  {
    this.setState({msgBody:newmsgBody})
  }
-
- seenOnRoom = (msg) =>
- {
+seenInContext = (id) =>
+{
   var messages = [];
   this.setState(state =>{
     
     messages = state.messages.map(chat =>{
-      if(chat.Id === msg.senderId)
+      if(chat.Id === id)
       {
-        return  {Id:chat.Id,username:chat.username,path:chat.path,  isOnline:chat.isOnline,messages:chat.messages.map(message=>{
-           if(message.id===msg.id&&message.senderId===chat.Id)
-           { this.socket.emit("seenUpdate",message)
+        return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:chat.messages.map(message=>{
+           if(!message.seen&&message.senderId===id)
+           { 
              return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
            }  
            else
@@ -432,36 +431,50 @@ scrollUpdate =(messagesw)=>
       return {messages,}
     
   })
+}
+ seenOnRoom = (msg) =>
+ { this.socket.emit("seenUpdate",msg);
+  
  }
  currentUserUpdate = (details) => {
    
-   this.setState({...this.state,receiver:details,middleFlag:true,msgBody:""})
-   var messages = [];
-   this.setState(state =>{
-     
-     messages = state.messages.map(chat =>{
-       if(chat.Id === details._id)
-       {
-         return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:chat.messages.map(message=>{
-            if(!message.seen&&message.senderId===details._id)
-            { this.socket.emit("seenUpdate",message)
-              return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
-            }  
-            else
+  
+      var messages = [];
+      if(this.state.receiver!=={})
+      {
+        this.setState(state =>{
+    
+          messages = state.messages.map(chat =>{
+            if(chat.Id === state.receiver._id)
             {
-              return {...message}
+              return  {Id:chat.Id,username:chat.username,path:chat.path,  isOnline:chat.isOnline,messages:chat.messages.map(message=>{
+                 if(!message.seen&&message.senderId===state.receiver._id)
+                 { 
+                   return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
+                 }  
+                 else
+                 {
+                   return {...message}
+                 }
+              }) 
+             }
             }
-         }) 
-        }
-       }
-       else{
-         return {...chat}
-       }
-     })
+            else{
+              return {...chat}
+            }
+          })
+          
+            return {messages,}
+          
+        })
+      }
      
-       return {messages,}
-     
-   })
+
+        
+    
+      
+      this.setState({...this.state,receiver:details,middleFlag:true,msgBody:""})
+    
    
  }
 
@@ -472,7 +485,7 @@ scrollUpdate =(messagesw)=>
     
     return (
       <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt}}>
+        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext}}>
         {this.props.children}
       </UserContext.Provider>
     )

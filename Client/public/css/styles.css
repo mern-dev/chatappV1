@@ -4,6 +4,7 @@
     width: 300px;
 }
 
+
 .fdiv{
     height: 300px;
     width: 300px;
@@ -12,69 +13,81 @@
     margin: 10px;
 }
 .left-c{
-    overflow: hidden;
-    display: flex;
-    flex:1
-}
- 
-.left-chat
-{
-    display: flex;
     
+    overflow-y:scroll;
+    flex:10;
+    scroll-behavior: smooth;
+    
+    
+    margin-bottom: 0.5em;
+    
+ 
 }
 
+
+.left-c::-webkit-scrollbar {
+    width: 0.5em;
+    
+}
+ 
+.left-c::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 0.38em black;
+}
+ 
+.left-c::-webkit-scrollbar-thumb {
+  background-color:rgba(128, 128, 128, 0.233);
+  outline: 0.06em solid slategrey;
+} 
+
+
 .img-ul{
-    width: 100%;
+  
     background-color:rgba(0,0,0,0.08);
     margin: 0;
     padding: 0;
-    position: relative;
+  
     list-style: none;
-    color: #f4f6ff;
-    overflow-y: scroll;
-    flex:1;
-    
-
+ 
 }
-ul::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
+
 .img-li{
-    
+    width: 90%;
     padding-left: 16px;
     padding-right: 16px;
-    align-items: flex-start;  
-    width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
     display: flex;
     position: relative;
-    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
     text-align: left;
     align-items: center;
-    padding-top: 8px;
-    padding-bottom: 8px;  
-    justify-content: flex-start;
-    text-decoration: none;
+      
+    border-bottom: 1px solid #363636;
+     
+   
+}
+
+.img-li:hover
+{
+   background-color: #f4f6ff17;
+   border-radius: 5px;
+   width: 100%;
 }
   .img-div{
     padding: 0;
-    padding-left: 1rem;
+    padding-left: 1em;
     margin-top: 20px;
-     
-    
-}  
-.img-avatar{
    margin-left: 20px;
-  
-   
-}
+}  
+
 .img-h{
     font-size: 1.25rem;
     font-family: 'Montserrat', sans-serif;
-  
+
     font-weight: 400;
-  
-    letter-spacing: 0.00938em;
+   color: white;
+   
 }
 .img-p{
     font-size: 0.85rem;
@@ -83,17 +96,6 @@ ul::-webkit-scrollbar {
     color: grey;
 }
 
-
-.hrr{
-    margin:0;
-    margin-left: 30px;
-    margin-right: 30px;
-    border-top: 1px solid #363636;
-}
-.nav-cl{
-    background-color:rgba(0,0,0,0.08);
-    color: #f4f6ff;
-}
 
 .time{
     position: absolute;
@@ -137,11 +139,7 @@ ul::-webkit-scrollbar {
   
  
 }
-.dot{
-    margin-left: 120px;
-    margin-right: 120px;
-    border-top: 3px dotted #363636;
-}
+
 
   h6::after{
     content:"\A";
@@ -184,7 +182,7 @@ h5::after{
     display: flex;
     
    justify-content: center;
-   overflow: hidden;
+
    
 
   
@@ -210,7 +208,11 @@ h5::after{
 {
     background-color:rgba(0,0,0,0.8);
     flex:1;
-    min-width: 20em;
+    min-width: 20em; 
+    position: relative;
+    height:auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .middleHome
@@ -234,7 +236,7 @@ h5::after{
     min-height: 4em;
     margin-top: 1em;
     margin-bottom: 0.5em;
-    height: 6vh;
+   
     position: relative;
     display:flex;
     flex-direction: row;
@@ -271,7 +273,7 @@ h5::after{
     padding: 0;
 }
 .chatScroll::-webkit-scrollbar {
-    width: 1em;
+    width: 0.5em;
     
 }
  
@@ -293,7 +295,7 @@ h5::after{
 .lastSeen
 {
     color:grey;
-    font-size: 0.89em;
+    font-size: 0.5em;
     flex: 1;
     opacity: 1;
 }
@@ -302,11 +304,11 @@ h5::after{
    
    display:flex;
    flex:1;
-   min-height: 3em;
    
+   min-height: 3em;
  
-
 }
+
 #chatInputBox:active
 {
     background-color: #f4f6ff17;
@@ -367,6 +369,7 @@ h5::after{
     background-color:rgba(0,0,0,0.78);
     flex:2;
     flex-direction: column;
+    position: relative;
    
 }
 span[id="right"]
@@ -428,17 +431,14 @@ span[id="right"]
 
 
 
-.chat-brief:hover
-{
-   background-color: #f4f6ff17;
-   border-radius: 5px;
-
-}
 
 @media only screen and (max-width:60em ) {
     #middle {
         display: none;
+       
     }
+  
+ 
   
     .back-button-right
     {
@@ -452,10 +452,11 @@ span[id="right"]
     .home{
         height:100vh ;
     width: 100%;
-    margin-top:0 ;
+    margin:0 ;
     }
     
 }
+
 
 .date-main
 {   clear: both;
@@ -470,14 +471,53 @@ span[id="right"]
     margin-left: auto; 
     margin-top: 0.3em;
     margin-right: auto;
-    padding:0.4em;
+    padding:0.3em;
     border-radius: 5px;
    font-size: small;
- 
+
     
+   left: 0;
+   right: 0;
   
    
 }
+.unread-msg-in-room
+{
+    color :white;
+    text-align: center;
+    background-color:rgba(0, 0, 0, 0.199); 
+    
+     position: relative;
+     clear: both;
+     margin-left:auto ;
+     margin-right: auto;
+   
+    margin-top: 1em;
+    padding:0.3em;
+   
+   font-size: small;
+}
+.date{
+
+   
+     z-index: 2; 
+    position: absolute;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.137), 0 2px 2px rgba(0, 0, 0, 0.281);
+    color :#000000;
+    text-align: center;
+    background-color:grey; 
+    width: max-content;
+    
+    left: 0;
+    right: 0;
+    margin-left: auto; 
+    margin-top: 0.3em;
+    margin-right: auto;
+    padding:0.6em;
+    border-radius: 5px;
+   font-size: small;
+}
+
 .loading-symbol-inside-chat
 {
     width: 3em;
@@ -542,12 +582,12 @@ span[id="right"]
     padding: 0.5em;
    
     padding-right: 0.6em;
-   
+    padding-left: 0.6em;
     display: inline-block;
     background-color:white ;
      margin:0.1em;
-    margin-left: 0.9em;
-     max-width: 18.75em;
+    margin-left: 1.3em;
+     max-width: 16em;
     border-radius: 0.63em;
     clear:both;
     float:left;
@@ -564,9 +604,9 @@ span[id="right"]
     padding: 0.5em;
     padding-right:0.75em;
     padding-left: 0.6em;
-    max-width: 18.75em;
+    max-width: 16em;
     margin:0.1em;
-    margin-right: 0.9em;
+    margin-right: 1em;
     text-align: left;
     display: inline-block;
     background-color:#000000 ;
@@ -579,21 +619,44 @@ span[id="right"]
    
     
 }
-li .sendmsg + li .date-main
-{
-    margin: 0.1em;
-}
 
+@media  only screen and (max-width:90em ) 
+{
+    .msg{
+        margin-left: 3em;
+    }
+    .sendmsg{
+        margin-right: 3em;
+    }
+}
+@media  only screen and (max-width:75em) and (min-width:60em)
+{
+    .msg{
+        margin-left: 1.3em;
+    }
+    .sendmsg{
+        margin-right: 1em;
+    }
+}
+@media  only screen  and (max-width:40em)
+{
+    .msg{
+        margin-left: 1.3em;
+    }
+    .sendmsg{
+        margin-right: 1em;
+    }
+}
 .bubble-arrow-left {
     position: absolute;
    
-    bottom:0px;
-    left: -10px;
-  
-    border: 10px solid white;
-    border-top-color: transparent;
+    top:0px;
+    left: -18px;
+    z-index: 99;
+    border: 14px solid white;
+    border-bottom-color: transparent;
     border-left-color: transparent;
-   
+ 
     width: 0;
     height: 0;
     
@@ -603,17 +666,47 @@ li .sendmsg + li .date-main
     position: absolute;
     width: 0;
     height: 0;
-    bottom:0px;
+    top:0px;
+    z-index: 99;
+    right: -15px; 
    
-    right: -10px; 
-   
-    border: 10px solid #000000;   
+    border: 15px solid #000000;   
 
  border-right-color:transparent ;
- border-top-color:transparent ;
+ border-bottom-color:transparent ;
  border-left-color:transparent ;
    
 }
+
+
+
+li#receive  + li#receive  .msg  .bubble-arrow-left 
+{ 
+    
+    display: none;
+}
+li#send + li#send  .sendmsg  .bubble-arrow-right 
+{ 
+    
+    display: none;
+}
+
+li#receiveTop +  li#receive  .msg  .bubble-arrow-left 
+{ 
+    
+    display: none;
+}
+
+li#sendTop + li#send  .sendmsg  .bubble-arrow-right 
+{ 
+    
+    display: none;
+}
+
+
+
+
+
  
 
 .sendmsgBody
@@ -636,10 +729,10 @@ li .sendmsg + li .date-main
 .msgBody
 {     
    
-    color:rgba(0, 0, 0, 0.76);
-    opacity: 0.9;
+    color:rgb(22, 22, 22);
+    font-weight: 500;
+  
    display: inline;
-   
    overflow-wrap:break-word;
    font-size: 1em;
    
@@ -686,12 +779,12 @@ li .sendmsg + li .date-main
     position: relative;
     min-height: 4em;
     border-bottom: 0.06em solid grey;
-
+    flex:1;
     margin-left:1em;
     margin-top: 1em;
     margin-bottom: 0.5em;
+   
 
-    height: 6vh;
 }
 .username-simple-chat-brief
 {
@@ -782,9 +875,9 @@ h2{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+    flex:10;
     color:grey;
-    height: 70vh;
+    height: 30em;
 }
 .img-search
 {
@@ -792,6 +885,15 @@ h2{
     height: 30%;
     opacity: 0.4;
     
+}
+.dot-end
+{
+    border-bottom: 5px dotted grey;
+    width: 15%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
 }
 
 /*=============================================================== Right-component styles ========================================================================= */
@@ -818,7 +920,7 @@ h2{
    min-height: 2em; 
    display: flex;
    align-items:center;
-
+  flex-direction: column;
    
   
 }

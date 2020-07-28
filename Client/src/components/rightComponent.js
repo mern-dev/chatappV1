@@ -21,8 +21,12 @@ class RightComponent extends Component {
             arrId: [],
             arrMsg: [],
             lastmsg: null,
+
             i: 0,
             data: false
+
+            flagdate:false
+
         };
         this.cancel = '';
         this.handleChange = this.handleChange.bind(this);
@@ -117,6 +121,7 @@ class RightComponent extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        this.setState({flagdate:false})
         const { receiver, id } = this.context;
         //let arrId ;
         axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}`)
@@ -151,6 +156,21 @@ class RightComponent extends Component {
     }
     handleScroll() {
 
+      this.setState({flagdate:true})
+        const container = document.getElementById("searchChatScroll");
+        let t = container.querySelectorAll(".date-main")
+      
+        for(let i=0;i<t.length;i++)
+        { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+   
+          if(t[i].offsetTop-120<container.scrollTop)
+          {  console.log("lll")
+            this.date=t[i].textContent
+           
+          }
+         
+          
+        }
 
     }
 
@@ -227,6 +247,7 @@ class RightComponent extends Component {
             )
         }
         else {
+           
             return (
 
                 <div className='rightHome' >
@@ -260,8 +281,12 @@ class RightComponent extends Component {
 
 
                     </div>
+
                     {this.state.arrMsg.length ? <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
                         {/* <a href={`#${this.state.arrId}`} onLoad */}
+
+                    {this.state.flagdate? <p className="date">{this.date}</p>:<span></span>}
+
                         <ul className="list-none">
                             {
                                 this.state.arrMsg.map(m => {
@@ -271,7 +296,7 @@ class RightComponent extends Component {
                                             lastmsg = m;
                                             return (
 
-                                                <li key={m.id} id="send" >
+                                                <li key={m.id} id="sendTop" >
                                                     <br />
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />
@@ -301,7 +326,7 @@ class RightComponent extends Component {
 
 
 
-                                                <li key={m.id} id="receive">
+                                                <li key={m.id} id="receiveTop">
 
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />
