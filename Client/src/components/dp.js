@@ -2,17 +2,21 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
+
+
 class Dp extends Component {
+    
     constructor(props) {
         super(props);
 
         this.state = {
+            
             fileInfo: null,
             loaded: '',
             username: '',
             path: '',
             id: '',
-            status: ''
+            status: 'available'
 
         }
         this.handleClick = this.handleClick.bind(this);
@@ -25,8 +29,8 @@ class Dp extends Component {
         if (token) {
             const decode = jwt_decode(token);
             this.id = decode._id;
-            this.setState({ id: decode._id });
-            this.setState({ username: decode.username });
+            this.setState({...this.state, id: decode._id });
+            this.setState({...this.state, username: decode.username });
             console.log(decode._id);
         }
         // else {
@@ -38,13 +42,22 @@ class Dp extends Component {
 
     handleChange = (e) => {
         if (e.target.type === 'file') {
+            
             const file = e.target.files[0];
-
-            this.setState({ fileInfo: file });
+            let ls = file.name.split('.');
+            let extension = ls[ls.length-1]
+            console.log(extension);
+            if(file.name==='png' || file.name==='jpg' || file.name==='jpeg' || file.name==='jpe' || file.name==='jif' || file.name==='jfif' || file.name==='jfi' || file.name==='.webp'){ 
+            this.setState({...this.state, fileInfo: file });
+            }
+            else{
+                console.log("choose a image file");
+            }
+            
         }
         else {
             const status = e.target.value;
-            this.setState({ status: status });
+            this.setState({ ...this.state,status: status });
 
         }
 
@@ -73,7 +86,7 @@ class Dp extends Component {
             },
         })
             .then((res) => {
-                this.setState({ path: res.data })
+                this.setState({...this.state, path: res.data })
                 window.location='/home'
             })
             .catch((err) => console.log(err));
@@ -94,7 +107,7 @@ class Dp extends Component {
                     <br />
                     <img src={this.state.path} alt="A" width="30%" />
                     <input type='text' name='status' value={this.state.status} onChange={this.handleChange} placeholder='Status' />
-                    <button type="submit" onClick={() => window.location = '/home'}>Skip</button>
+                    <button type="submit" onClick={()=>{window.location='/home'}}>Skip</button>
                 </form>
             </div>
         )

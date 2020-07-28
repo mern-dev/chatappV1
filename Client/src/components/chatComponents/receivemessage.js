@@ -19,8 +19,10 @@ class ReceiveMessage extends Component {
     render() { 
         return (
 
-        <div className="msg main">
-            <div className="msgBody">
+
+        <div className="msg">
+            <div className="msgBody"  id={this.props.msgid}>
+
          {this.props.msgBody}
 
             </div>

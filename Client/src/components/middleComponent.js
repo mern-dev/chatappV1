@@ -12,8 +12,9 @@ class MiddleComponent extends Component {
      
        scrollFlag:true,
        scrollUpdate:false,
-      lastmsg:null,
-      cnt:0,
+
+       lastmsg:null
+
     }
  
   

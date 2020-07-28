@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 
 
 app.post('/dp',(req,res)=>{
-  console.log(req.files);
+  console.log(req.files,req.files,req.files.image);
  // res.send(req.files);
    let file = req.files.image;
 

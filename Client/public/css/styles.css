@@ -931,3 +931,25 @@ h2{
     
     
 }
+.rc-button{
+    width: 2em;
+    margin-right: 10px;
+   
+}
+.rc-searchBar
+{
+   
+    color: white;
+    background-color: inherit;
+    outline: none;
+    margin: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-style: outset;
+   
+    
+}
+html {
+    scroll-behavior: smooth;
+  }
