@@ -3,8 +3,7 @@ import { UserContext } from '../contexts/userContext'
 import ReceiveMessage from "./chatComponents/receivemessage"
 import SendMessage from './chatComponents/sendmessage';
 import axios from 'axios';
-import { Link, animateScroll as scroll } from "react-scroll";
-import $ from 'jquery'
+
 
 
 
@@ -14,23 +13,22 @@ class RightComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // startDate:'',
-            // endDate:'',
+            
             word: '',
             tog: true,
             arrId: [],
             arrMsg: [],
             lastmsg: null,
-
+            arrPos:[],
             i: 0,
-            data: false,
-
+            data: true,
+            date:"",
             flagdate:false
 
         };
         this.cancel = '';
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+       
         this.handleScroll = this.handleScroll.bind(this);
         this.handleCount = this.handleCount.bind(this);
         this.handleOffset = this.handleOffset.bind(this);
@@ -102,75 +100,149 @@ class RightComponent extends Component {
 
     handleCount() {
         
-    //      var x = document.getElementById(`${this.state.arrId[this.state.i]}`)
-    //     // console.log(this.state.i,x);
-        
-    //   //  document.getElementById('searchChatScroll').scrollTop=x.offsetTop;
-    //   const container = document.getElementById('searchChatScroll')
-    // let t = container.children
-    // for(var j=0;j<t[0].children.length;j++){
-    //     console.log(t[0].children[j].children[0].children.)
-    // }
-    // console.log(t[0].children);
-     // console.log(container.children[0].getElementById())
-   // console.log(container.getElementById(`${this.state.arrId[this.state.i]}`))
+    
        
-      
+      const container = document.getElementById('searchChatScroll')
+     const t = container.querySelectorAll(".search-message")
+     if(this.state.i>=1)
+      { t[this.state.arrPos[this.state.i-1]].style.backgroundColor="transparent";
+       t[this.state.arrPos[this.state.i]].style.backgroundColor="#f4f6ff17"
+      container.scrollTop = t[this.state.arrPos[this.state.i]].offsetTop-container.offsetTop-container.clientHeight/2;
+     }
+    else
+     {
+        t[this.state.arrPos[this.state.i]].style.backgroundColor="#f4f6ff17"
+        container.scrollTop = t[this.state.arrPos[this.state.i]].offsetTop-container.offsetTop-container.clientHeight/2;
+     }
+     
 
     }
-
-    handleSubmit(e) {
-        e.preventDefault();
+  
+    handleSubmit = () =>{
+        
+     
         this.setState({flagdate:false})
         const { receiver, id } = this.context;
-        //let arrId ;
+     
         axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}`)
             .then(res => {
-                this.setState({ ...this.state, arrId: res.data.arrId, arrMsg: res.data.arrMsg })
-                // arrId = res.data.arrId;
-                //  console.log(this.state.arrMsg);
-                console.log(this.state.arrId);
-
-
-                if (res.data.arrId.length === 0) {
-                    this.setState({ data: true })
+                
+                   
+                const hightlight = (str) =>
+                { 
+                 var resdata = str.split(" ");
+                 var cmp = this.state.word.split(" ");
+              console.log(cmp,"l")
+                 var reStr=[];
+                 for(let i=0;i<resdata.length;i++)
+                 {
+                     for(let k=0;k<cmp.length;k++)
+                     {  if(resdata[i].length===cmp[k].length)
+                         {  let flag =true;
+                             for(let j=0;j<cmp[k].length;j++)
+                             { 
+                                 if(resdata[i].charAt(j).toLowerCase()!==cmp[k].charAt(j).toLowerCase())
+                                 {
+                                        flag=false;   
+                                 }
+                             
+                             }
+                             if(flag)
+                             {
+                                 let temp1 = `<span class="hightcolor-search">${resdata[i]}+</span>`
+                                 reStr.push(temp1);  
+                             }
+                             else
+                             {
+                                 reStr.push(resdata[i])
+                             }
+                         }
+                         
+                        else if(resdata[i].length>cmp[k].length)
+                         {   let gflag = true;
+                               for(let p=cmp[k].length-1;p>=0;p--)
+                               {
+                                   if(resdata[i].charAt(p).toLowerCase()!==cmp[k].charAt(p).toLowerCase())
+                                         gflag=false;
+                               }
+                               if(gflag)
+                               {
+                                   let temp2 = resdata[i].slice(0,cmp[k].length);
+                                   let temp3 = `<span class="hightcolor-search">${temp2}</span>`+resdata[i].slice(cmp[k].length,resdata[i].length)
+                                   reStr.push(temp3)
+                               }
+                               else{
+            
+                                 reStr.push(resdata[i])
+                               }
+                         }
+                         else
+                         {
+                             reStr.push(resdata[i])
+                         }
+            
+                     }
+                 
+                       
+                 }
+                
+                 return reStr.join(" ");
                 }
-                else {
-                    this.setState({ data: false })
-                }
-
-
-                // console.log( document.getElementById(`${arrId}`));
-                for (var j = 0; j < this.state.arrId.length; j++)
-                    document.getElementById(`${res.data.arrId[j]}`).style.backgroundColor = 'orange';
-
-
-
-
+              
+                      if(res.data.status==="success")
+                      {   this.setState({ ...this.state,data: false , arrId: res.data.arrId,arrPos:res.data.arrPos, arrMsg: res.data.arrMsg })
+                           
+                               
+                            for (var j = 0; j < this.state.arrId.length; j++)
+                          
+                           document.getElementById(`${res.data.arrId[j]}`).innerHTML=hightlight(document.getElementById(`${res.data.arrId[j]}`).innerHTML);
+                        
+                        
+                        }
+                        else
+                        {
+                         this.setState({ data: true })
+                       }
+                 
             })
 
+        
 
-
-
+          
+           
 
     }
     handleScroll() {
 
-      this.setState({flagdate:true})
+      
         const container = document.getElementById("searchChatScroll");
         let t = container.querySelectorAll(".date-main")
       
         for(let i=0;i<t.length;i++)
-        { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+        { 
    
-          if(t[i].offsetTop-120<container.scrollTop)
-          {  console.log("lll")
-            this.date=t[i].textContent
+          if(t[i].offsetTop<container.scrollTop+120)
+          {  
            
+           this.setState({date:t[i].textContent})
           }
          
           
         }
+        document.querySelector(".date-right").style.display="block";
+
+       if(container.scrollHeight-container.scrollTop===container.offsetHeight)
+       {
+       
+        
+        document.querySelector(".date-right").style.display="none"
+        
+        
+       }
+       if(0===container.scrollTop)
+       {
+        document.querySelector(".date-right").style.display="none"
+       }
 
     }
 
@@ -258,34 +330,45 @@ class RightComponent extends Component {
                         }} />
                         <input type="text" className='rc-searchBar' name="word" value={this.state.word} onChange={this.handleChange} />
 
-                        <button type='submit' onClick={this.handleSubmit}> <i class="fa fa-search" aria-hidden="true"></i>Search</button>
+                        <button type='button' onClick={this.handleSubmit}> <i className="fa fa-search" aria-hidden="true"></i> Search</button>
+                       
                      
                         <button type='button' id='plus' onClick={(e) => {
-                            if (this.state.i < this.state.arrId.length - 1) {
+                           
+                           if(this.state.arrId!==[])
+                           {
+                            if (this.state.i <=this.state.arrId.length - 1) {
+                                
                                 this.setState({ ...this.state, i: this.state.i + 1 })
                                 this.handleCount()
                                 
                             }
+                           } 
+                          
 
                         }}>+</button>
 
 
 
                         <button type='button' id='minus' onClick={(e) => {
-                            if (this.state.i > 0) {
-                                this.setState({ ...this.state, i: this.state.i - 1 })
-                                this.handleCount()
-
-                            }
+                             if(this.state.arrId!==[])
+                             {
+                                if (this.state.i > 0) {
+                                    this.setState({ ...this.state, i: this.state.i - 1 })
+                                    this.handleCount()
+    
+                                }
+                             }
+                          
                         }}>-</button>
 
 
                     </div>
 
                     {this.state.arrMsg.length ? <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
-                        {/* <a href={`#${this.state.arrId}`} onLoad */}
+                       
 
-                    {this.state.flagdate? <p className="date">{this.date}</p>:<span></span>}
+                     <p className="date-right">{this.state.date}</p>
 
                         <ul className="list-none">
                             {
@@ -296,7 +379,7 @@ class RightComponent extends Component {
                                             lastmsg = m;
                                             return (
 
-                                                <li key={m.id} id="sendTop" >
+                                                <li key={m.id} id="sendTop" className="search-message" >
                                                     <br />
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />
@@ -308,7 +391,7 @@ class RightComponent extends Component {
                                             lastmsg = m;
                                             return (
 
-                                                <li key={m.id} id="send">
+                                                <li key={m.id} id="send"className="search-message">
 
                                                     <SendMessage msgBody={m.msgBody} msgid={m.id} sentTime={m.sentTime} status={{ sent: m.sent, delivered: m.delivered, seen: m.seen }} />
                                                 </li>)
@@ -326,7 +409,7 @@ class RightComponent extends Component {
 
 
 
-                                                <li key={m.id} id="receiveTop">
+                                                <li key={m.id} id="receiveTop"className="search-message">
 
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />
@@ -337,7 +420,7 @@ class RightComponent extends Component {
                                         }
                                         else {
                                             lastmsg = m;
-                                            return (<li key={m.id} id="receive" >
+                                            return (<li key={m.id} id="receive" className="search-message">
 
                                                 <ReceiveMessage msgBody={m.msgBody} msgid={m.id} sentTime={m.sentTime} />
                                             </li>)

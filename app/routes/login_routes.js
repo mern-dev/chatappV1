@@ -251,6 +251,8 @@ module.exports = function (app) {
           var arrId=[];
           const arrNo=[];
           const arrMsg =[];
+          const arrMsgId=[];
+          const arrPos=[];
         
           info.map((i)=>{
             i.chats.map(chat=>{
@@ -278,14 +280,20 @@ module.exports = function (app) {
   
           for(var i=l;i<arrNo.length;i++){
             arrMsg.push(arrNo[i]);
+            arrMsgId.push(arrNo[i].id);
           }
-            if (info) {
+          for(var i=0;i<arrId.length;i++)
+          {
+            arrPos[i]= arrMsgId.indexOf(arrId[i])
+          }
+            if (arrId.length) {
               res.json({
   
                 status: "success",
                 arrId : arrId,
-                arrMsg:arrMsg
-                // arrNo:arrNo
+                arrMsg:arrMsg,
+                arrPos:arrPos
+             
 
                 
               })

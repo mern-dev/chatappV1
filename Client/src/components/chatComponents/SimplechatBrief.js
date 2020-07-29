@@ -33,20 +33,20 @@ class SimpleChatBrief extends Component {
       <ul className="img-ul">
     {this.props.users.map( (user) =>{ 
       
-    return (<div>
-    <li className='img-li row ' key={user._id} onClick={e => this.openChat(user)}>
-    <div>
-      <Avatar alt="Cindy Baker" src={user.path} className='img-avatar' />
-      
-    </div>
+    return (
+    <li className='img-li' key={user._id} onClick={e => this.openChat(user)}>
+ 
+    {user.isOnline?<div className="img-chat"> <Avatar alt="Cindy Baker" src={user.path} /><div className="online-color"></div></div>:<Avatar alt="Cindy Baker" src={user.path} />}
+  
+   
      <div className="username-simple-chat-brief">
-     <h4 className="img-h">{user.username}</h4>
+     <h4 className="img-h-simple-brief">{user.username}</h4>
      </div>
    
   
     </li>
      
-     <hr className='hrr' /> </div> )})}
+      )})}
        </ul>  
   </div>);
 

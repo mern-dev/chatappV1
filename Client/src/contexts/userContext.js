@@ -21,12 +21,18 @@ class UserContextProvider extends Component {
       msgBody:"",
       seenUpdateMessages:[],
       onlineBottom:false,
+      Bottom:false,
    }
    
 
    }
+   updateBottom = value =>
+   {
+           this.setState({Bottom:value})
+   }
  onlineBottomUpdate = (value) =>
- {
+ { 
+   
    this.setState({onlineBottom:value})
  }
   updatecnt = (cnt) =>
@@ -268,7 +274,7 @@ scrollUpdate =(messagesw)=>
    const addmessage= (newmsg)=>{
     var messages=[];
     var temp = {};
-    
+    let bflag=false;
       this.setState(state =>{
       
         if(state.messages.length===0)
@@ -295,7 +301,8 @@ scrollUpdate =(messagesw)=>
                             this.setState({cnt:state.cnt+1});
                             const container = document.getElementById("chatScroll");
                             if(container.scrollHeight-container.scrollTop===container.offsetHeight)
-                               this.setState({onlineBottom:true})
+                            bflag=true;
+                               
                         
                       }
                   
@@ -328,7 +335,8 @@ scrollUpdate =(messagesw)=>
           messages,
         }
       });
-   
+      if(bflag)
+      this.setState({Bottom:true})
   }
 }
 
@@ -491,7 +499,7 @@ seenInContext = (id) =>
     
     return (
       <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext, onlineBottomUpdate:this.onlineBottomUpdate}}>
+        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate}}>
         {this.props.children}
       </UserContext.Provider>
     )
