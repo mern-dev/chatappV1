@@ -20,7 +20,7 @@ class RightComponent extends Component {
             arrMsg: [],
             lastmsg: null,
             arrPos:[],
-            i: 0,
+           
             data: true,
             date:"",
             flagdate:false
@@ -30,9 +30,8 @@ class RightComponent extends Component {
         this.handleChange = this.handleChange.bind(this);
        
         this.handleScroll = this.handleScroll.bind(this);
-        this.handleCount = this.handleCount.bind(this);
-        this.handleOffset = this.handleOffset.bind(this);
-
+       
+       
     }
     formatDisplay = (msg) => {
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -88,54 +87,98 @@ class RightComponent extends Component {
 
         // }
     }
-    handleOffset(el) {
-        var rect = el.getBoundingClientRect(),
-        scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-        scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
-    }
-    
-        
-        
 
-    handleCount() {
-        
-    
+    handleCountDown = (i) => {
+   
+       const uparrow = document.getElementById("up-arrow");
+       const downarrow =document.getElementById("down-arrow");
+       if(i===this.state.arrId.length-1)
+       {
+           downarrow.style.opacity="0.25";
+           downarrow.style.pointerEvents="none";
+           uparrow.style.opacity="1";
+           uparrow.style.pointerEvents="auto";
+       }
+       else if(i===0)
+       {
+           uparrow.style.opacity="0.25";
+           uparrow.style.pointerEvents="none";
+           downarrow.style.opacity="1";
+           downarrow.style.pointerEvents="auto";
+       }
+  
+      
+       
        
       const container = document.getElementById('searchChatScroll')
      const t = container.querySelectorAll(".search-message")
-     if(this.state.i>=1)
-      { t[this.state.arrPos[this.state.i-1]].style.backgroundColor="transparent";
-       t[this.state.arrPos[this.state.i]].style.backgroundColor="#f4f6ff17"
-      container.scrollTop = t[this.state.arrPos[this.state.i]].offsetTop-container.offsetTop-container.clientHeight/2;
+     if(i>=1)
+      { t[this.state.arrPos[i-1]].style.backgroundColor="transparent";
+       t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+      container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
      }
     else
      {
-        t[this.state.arrPos[this.state.i]].style.backgroundColor="#f4f6ff17"
-        container.scrollTop = t[this.state.arrPos[this.state.i]].offsetTop-container.offsetTop-container.clientHeight/2;
+        t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+        container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
      }
      
 
     }
+  handleCountUp =(i) =>
+  {
+    const uparrow = document.getElementById("up-arrow");
+    const downarrow =document.getElementById("down-arrow");
+    if(i===this.state.arrId.length-1)
+    {
+        downarrow.style.opacity="0.25";
+        downarrow.style.pointerEvents="none";
+        uparrow.style.opacity="1";
+        uparrow.style.pointerEvents="auto";
+    }
+    else if(i===0)
+    {
+        uparrow.style.opacity="0.25";
+        uparrow.style.pointerEvents="none";
+        downarrow.style.opacity="1";
+        downarrow.style.pointerEvents="auto";
+    }
   
+   const container = document.getElementById('searchChatScroll')
+  const t = container.querySelectorAll(".search-message")
+  if(i===this.state.arrId.length-1)
+    {
+        t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+     container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
+    }
+ else
+  {
+     
+     t[this.state.arrPos[i+1]].style.backgroundColor="transparent";
+     t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+    container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
+  }
+  }
     handleSubmit = () =>{
         
-     
-        this.setState({flagdate:false})
+        
+        
         const { receiver, id } = this.context;
-     
-        axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}`)
+         
+        axios.get(`/getWord/${id}/${receiver._id}/${this.state.word.trim()}`)
             .then(res => {
-                
+                this.i=0;
                    
                 const hightlight = (str) =>
                 { 
                  var resdata = str.split(" ");
-                 var cmp = this.state.word.split(" ");
-              console.log(cmp,"l")
+                 
+                 var cmp = this.state.word.trim().split(" ");
+               
+             
                  var reStr=[];
                  for(let i=0;i<resdata.length;i++)
-                 {
+                 {  
                      for(let k=0;k<cmp.length;k++)
                      {  if(resdata[i].length===cmp[k].length)
                          {  let flag =true;
@@ -149,13 +192,10 @@ class RightComponent extends Component {
                              }
                              if(flag)
                              {
-                                 let temp1 = `<span class="hightcolor-search">${resdata[i]}+</span>`
-                                 reStr.push(temp1);  
+                                 let temp1 = `<span class="hightcolor-search">${resdata[i]}</span>`
+                                 reStr.push({str:temp1,index:i});  
                              }
-                             else
-                             {
-                                 reStr.push(resdata[i])
-                             }
+                           
                          }
                          
                         else if(resdata[i].length>cmp[k].length)
@@ -169,39 +209,59 @@ class RightComponent extends Component {
                                {
                                    let temp2 = resdata[i].slice(0,cmp[k].length);
                                    let temp3 = `<span class="hightcolor-search">${temp2}</span>`+resdata[i].slice(cmp[k].length,resdata[i].length)
-                                   reStr.push(temp3)
+                                   reStr.push({str:temp3,index:i})
                                }
-                               else{
-            
-                                 reStr.push(resdata[i])
-                               }
+                              
                          }
-                         else
-                         {
-                             reStr.push(resdata[i])
-                         }
+                       
             
                      }
                  
                        
                  }
                 
-                 return reStr.join(" ");
+                 if(reStr.length)
+                 {
+                    for(let i=0;i<reStr.length;i++)
+                    {
+                        resdata[reStr[i].index]=reStr[i].str;
+                    }
+                    return resdata.join(" ");
+                 }
+
+                
+                 return str;
                 }
               
                       if(res.data.status==="success")
-                      {   this.setState({ ...this.state,data: false , arrId: res.data.arrId,arrPos:res.data.arrPos, arrMsg: res.data.arrMsg })
+                      {   this.setState({ data: false , arrId: res.data.arrId,arrPos:res.data.arrPos, arrMsg: res.data.arrMsg })
                            
                                
                             for (var j = 0; j < this.state.arrId.length; j++)
                           
-                           document.getElementById(`${res.data.arrId[j]}`).innerHTML=hightlight(document.getElementById(`${res.data.arrId[j]}`).innerHTML);
-                        
+                           document.getElementById(`${res.data.arrId[j]}`).innerHTML=hightlight(document.getElementById(`${res.data.arrId[j]}`).textContent);
+                           const uparrow = document.getElementById("up-arrow");
+                           const downarrow =document.getElementById("down-arrow");
+                           if(uparrow&&downarrow)
+                           {
+                            uparrow.style.opacity="0.5";
+                            uparrow.style.pointerEvents="none";
+                            downarrow.style.opacity="1";
+                            downarrow.style.pointerEvents="auto";
+
+                           }
+                           
+                           const container = document.getElementById('searchChatScroll');
+                           const t = container.querySelectorAll(".search-message");
+
+                           t[this.state.arrPos[0]].style.backgroundColor="#f4f6ff17"
+                          container.scrollTop = t[this.state.arrPos[0]].offsetTop-container.offsetTop-container.clientHeight/2;
                         
                         }
                         else
                         {
-                         this.setState({ data: true })
+                            this.i=0;
+                         this.setState({ data: true ,arrId:[],arrMsg:[],arrPos:[]})
                        }
                  
             })
@@ -221,7 +281,7 @@ class RightComponent extends Component {
         for(let i=0;i<t.length;i++)
         { 
    
-          if(t[i].offsetTop<container.scrollTop+120)
+          if(t[i].offsetTop<container.scrollTop+80)
           {  
            
            this.setState({date:t[i].textContent})
@@ -229,7 +289,7 @@ class RightComponent extends Component {
          
           
         }
-        document.querySelector(".date-right").style.display="block";
+        document.querySelector(".date-right").style.display="table";
 
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
        {
@@ -277,7 +337,7 @@ class RightComponent extends Component {
 
     render() {
         var lastmsg = 'null'
-
+         
         const { receiver } = this.context;
         if (this.state.tog) {
             return (
@@ -287,7 +347,7 @@ class RightComponent extends Component {
                         <div className="back-button-right">
                             <img alt="#" src="images/back-button.png" id="back-button-right" className="back-button-right" onClick={this.backtomiddle} />
                         </div>
-                        <h4 >Contact info</h4>
+                       
                     </div>
 
 
@@ -297,14 +357,15 @@ class RightComponent extends Component {
                     <div className="contact-info">
                         {receiver.path ? <img src={receiver.path} alt='aaa' className='rc-img' /> : <img src='uploads/nodp.png' alt='a' className='rc-img' />}
 
-                        <h4>{receiver.username}</h4>
-                        <button onClick={
+                        <h4 className="contact-name">{receiver.username}</h4>
+                        {/* <div className="contact-status">{receiver.status}</div> */}
+                        <div onClick={
                             () => {
                                 this.setState(
                                     { ...this.state, tog: !this.state.tog }
                                 )
                             }
-                        } type='button' >Filter</button>
+                        }  className="chat-search-button"><span><img alt="#" src="images/chat-search.png" className="chat-search-png" /></span>Chat Search</div>
 
                     </div>
 
@@ -333,42 +394,16 @@ class RightComponent extends Component {
                         <button type='button' onClick={this.handleSubmit}> <i className="fa fa-search" aria-hidden="true"></i> Search</button>
                        
                      
-                        <button type='button' id='plus' onClick={(e) => {
-                           
-                           if(this.state.arrId!==[])
-                           {
-                            if (this.state.i <=this.state.arrId.length - 1) {
-                                
-                                this.setState({ ...this.state, i: this.state.i + 1 })
-                                this.handleCount()
-                                
-                            }
-                           } 
-                          
-
-                        }}>+</button>
-
-
-
-                        <button type='button' id='minus' onClick={(e) => {
-                             if(this.state.arrId!==[])
-                             {
-                                if (this.state.i > 0) {
-                                    this.setState({ ...this.state, i: this.state.i - 1 })
-                                    this.handleCount()
-    
-                                }
-                             }
-                          
-                        }}>-</button>
-
+                        
 
                     </div>
 
-                    {this.state.arrMsg.length ? <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
+                    {this.state.arrMsg.length ?
+                   
+                    <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
                        
 
-                     <p className="date-right">{this.state.date}</p>
+                    <div className="outer-div"> <p className="date-right">{this.state.date}</p> </div>
 
                         <ul className="list-none">
                             {
@@ -433,10 +468,46 @@ class RightComponent extends Component {
                                     return null;
                                 })}
                         </ul>
-                    </div> : <div className="search-img">
+                    </div>
+                   
+                    : <div className="search-img">
                             <h3> {this.state.word.length ? this.state.data ? `"${this.state.word}" not found` : '' : "Search"}</h3>
                             <img className="img-search" alt="#" src="./images/search--v2.png" />
                         </div>}
+                   {this.state.arrId.length>1  ? <div className="search-bottom">
+                    <div className="arrows" id="down-arrow" onClick={(e) => {
+                           
+                           if(this.state.arrId!==[])
+                           {
+                            if (this.i <=this.state.arrId.length - 1) 
+                            {
+                                this.i=this.i+1;
+                            
+                                this.handleCountDown(this.i)
+                                
+                            }
+                           } 
+                          
+
+                        }}><img src="images/down-arrow-sea.png" alt='#' className="downarrow" /></div>
+
+                     <div className="search-no-messages ">{this.state.arrId.length}</div>
+
+                        <div className="arrows" id="up-arrow" onClick={(e) => {
+                             if(this.state.arrId!==[])
+                             {
+                                if (this.i > 0) 
+                                {
+                                    this.i=this.i-1;
+                                    this.handleCountUp(this.i)
+    
+                                }
+                             }
+                          
+                        }}><img src="images/up-arrow.png" alt='#' className="uparrow" /></div>
+
+
+                    </div>:<span></span>}
 
                 </div>
             );

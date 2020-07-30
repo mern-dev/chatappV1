@@ -123,7 +123,7 @@ class ChatBrief extends Component {
     
     <li className='img-li ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id,cnt:this.unseenMsgForRoom(newmsg)})}}>
    
-      {newmsg.isOnline?<div className="img-chat"> <Avatar alt="Cindy Baker" src={newmsg.path} /><div className="online-color"></div></div>:<Avatar alt="Cindy Baker" src={newmsg.path} />}
+      {newmsg.isOnline?<div className="img-chat"> <Avatar  alt="Cindy Baker" src={newmsg.path} /><div className="online-color"></div></div>:<Avatar alt="Cindy Baker" src={newmsg.path} />}
   
     <div className='img-div '>
 <h6 className="img-h">{newmsg.username} </h6>

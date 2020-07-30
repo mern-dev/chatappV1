@@ -215,7 +215,7 @@ handleScroll = e =>{
      
        
      }
-     document.querySelector(".date").style.display="block"
+     document.querySelector(".date").style.display="table"
      
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
        {
@@ -341,6 +341,10 @@ handleScroll = e =>{
       var strTime = hours + ':' + minutes + ' ' + ampm;
       return strTime;
     }
+    softKeyboardView = () =>
+    {
+
+    }
    scrollButtonPress = () =>
     {    
           const {cnt} = this.context;
@@ -398,7 +402,7 @@ handleScroll = e =>{
                <div className="chatScroll"  onScroll={this.handleScroll}  id="chatScroll">
                {this.state.scrollUpdate?<div className="date-main loading-msg"><img src="images/loading-msg.gif"alt="#" className="loading-symbol-inside-chat"/></div>:<span></span>}
               
-              <p className="date">{this.state.date}</p>
+            <div className="outer-div">   <p className="date">{this.state.date}</p> </div>
                <ul className="list-none">
               
                    {messages.map(msg=>{
@@ -492,7 +496,7 @@ handleScroll = e =>{
                    
                  </div>
                  <div id="chatInputBox" >
-                 <input  onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
+                 <input onClick={this.softKeyboardView} onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
                 
             
               
