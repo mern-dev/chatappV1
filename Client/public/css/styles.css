@@ -977,6 +977,7 @@ h2 {
 #searchChatScroll
 {
   flex:8;
+ 
 }
 .arrows
 {
@@ -1016,6 +1017,27 @@ h2 {
 
 }
 
+.search-bar-header
+{
+  display: flex;
+  flex-direction: column;
+  flex:2;
+  align-items: center;
+  justify-content: center;
+}
+.date-picker
+{
+  height: 2em;
+}
+.header-search
+{
+  flex:1;
+}
+.date-picker-section
+{
+  display: flex;
+  flex:1
+}
 /* ==================================================sign-up styles =================================================*/
 
 .FirstPage

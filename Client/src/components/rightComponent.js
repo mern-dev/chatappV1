@@ -181,7 +181,8 @@ class RightComponent extends Component {
         
         
         const { receiver, id } = this.context;
-      if (!(this.state.startDate && this.state.endDate)){
+      if (!(this.state.startDate && this.state.endDate))
+      {
          
         axios.get(`/getWord/${id}/${receiver._id}/${this.state.word.trim()}`)
             .then(res => {
@@ -269,11 +270,17 @@ class RightComponent extends Component {
 
                            }
                            
-                           const container = document.getElementById('searchChatScroll');
-                           const t = container.querySelectorAll(".search-message");
-
-                           t[this.state.arrPos[0]].style.backgroundColor="#f4f6ff17"
-                          container.scrollTop = t[this.state.arrPos[0]].offsetTop-container.offsetTop-container.clientHeight/2;
+                           const container = document.getElementById('searchChatScroll');if(container)
+                           {
+                            const t = container.querySelectorAll(".search-message");
+                            if(t)
+                            {
+                                t[this.state.arrPos[0]].style.backgroundColor="#f4f6ff17"
+                                container.scrollTop = t[this.state.arrPos[0]].offsetTop-container.offsetTop-container.clientHeight/2;
+                            }
+                           }
+                           
+                         
                         
                         }
                         else
@@ -304,25 +311,30 @@ class RightComponent extends Component {
                         this.setState({ data: false })
                     }
         
-      }
+      })
+
+    
 
 
     }
-    handleScroll() {
+
+}
+    handleScroll =() => {
 
 
         this.setState({ flagdate: true })
         const container = document.getElementById("searchChatScroll");
         let t = container.querySelectorAll(".date-main")
 
-        for (let i = 0; i < t.length; i++) { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+        for (let i = 0; i < t.length; i++) 
+        { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
 
             if (t[i].offsetTop - 120 < container.scrollTop) {
-                console.log("lll")
-                this.date = t[i].textContent
+                
+                this.setState({date:t[i].textContent})
 
             }
-
+        }
 
         document.querySelector(".date-right").style.display="table";
 
@@ -359,7 +371,8 @@ class RightComponent extends Component {
         else {
             let lastmsg = new Date(lastMsg.sentTime)
 
-            if (lastmsg.getFullYear() === msg_sent.getFullYear() && lastmsg.getMonth() === msg_sent.getMonth() && lastmsg.getDate() === msg_sent.getDate()) {
+            if (lastmsg.getFullYear() === msg_sent.getFullYear() && lastmsg.getMonth() === msg_sent.getMonth() && lastmsg.getDate() === msg_sent.getDate()) 
+            {
                 return false
             }
             else {
@@ -405,6 +418,7 @@ class RightComponent extends Component {
                     </div>
 
                 </div>
+              
 
             )
         }
@@ -413,30 +427,39 @@ class RightComponent extends Component {
             return (
 
                 <div className='rightHome' >
-                    <div className='rc-header'>
+                    <div class="search-bar-header">              
 
-                        <img src="images/back-button.png" alt='a' className='rc-button' onClick={(e) => {
-                            this.setState({ ...this.state, tog: !this.state.tog })
-                        }} />
-                        <input type="text" className='rc-searchBar' name="word" value={this.state.word} onChange={this.handleChange} />
+                    <div className='rc-header header-search'>
 
-
-                        <button type='submit' onClick={this.handleSubmit}> <i class="fa fa-search" aria-hidden="true"></i>Search</button>
-
+<img src="images/back-button.png" alt='a' className='rc-button' onClick={(e) => {
+    this.setState({ ...this.state, tog: !this.state.tog })
+}} />
+<input type="text" className='rc-searchBar' name="word" value={this.state.word} onChange={this.handleChange} />
 
 
+<button type='submit' onClick={this.handleSubmit}> <i class="fa fa-search" aria-hidden="true"></i>Search</button>
+</div> 
+
+<div className="date-picker-section">
+<input type='date' className="date-picker" name='start'  onChange={(e) => {
+    this.setState({...this.state,startDate:true,start:e.target.value})
+  
+}} />
+<input type='date' className="date-picker"  name='end' onChange={(e) => {
+      this.setState({...this.state,endDate:true,end:e.target.value})
+      }} />
+                     </div> 
+
+
+                  
 
 
                     </div>
-                    <div>
-                        <input type='date' name='start'  onChange={(e) => {
-                            this.setState({...this.state,startDate:true,start:e.target.value})
-                          
-                        }} />
-                        <input type='date' name='end' onChange={(e) => {
-                              this.setState({...this.state,endDate:true,end:e.target.value})
-                              }} />
-                    </div>
+                  
+
+
+                    
+                  
 
                     {this.state.arrMsg.length ? <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
 

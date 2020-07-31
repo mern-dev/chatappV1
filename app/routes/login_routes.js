@@ -355,9 +355,11 @@ module.exports = function (app) {
 
               console.log(ZD,ZS,ZE);
 
-              if(ZD>=ZS && ZD<=ZE){
+              if(ZD>=ZS && ZD<=ZE)
+              {
     
-              if (y===x) {
+              if (y===x)
+             {
                 arrId.push(msg.id)
 
             
@@ -382,7 +384,8 @@ module.exports = function (app) {
   
   
                 arrNo.push(msg)
-                if(y.includes(x) ){
+                if(y.includes(x) )
+                {
                   arrId.push(msg.id)
 
                   if(f==0){
@@ -392,15 +395,16 @@ module.exports = function (app) {
                   
                   
 
+                
                 }
 
 
-              }
-            }
+              })
+          
             })
           })
 
-        })
+        }
         var l = n - 4;
         l < 0 ? l = 0 : l = l;
 
@@ -419,7 +423,8 @@ module.exports = function (app) {
                 status: "success",
                 arrId : arrId,
                 arrMsg:arrMsg,
-                arrPos:arrPos
+                arrPos:arrPos});
+            }  
 
 
       
@@ -438,9 +443,15 @@ module.exports = function (app) {
           res.json({
             status: "error"
           })
-        }
+    
       }
-    )
-  })
+        
+    }
+  }
+})
+        })
+    })
+   
+        })})
 
-}    
+      }
