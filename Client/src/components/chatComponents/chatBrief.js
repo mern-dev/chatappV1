@@ -18,7 +18,7 @@ class ChatBrief extends Component {
        let day = lastSeen.getDate();
        let weekDay = days[lastSeen.getDay()]
        let year = lastSeen.getFullYear().toString().slice(-2);
-       
+       let month =lastSeen.getMonth()+1;
 
        if(temp_now.getFullYear()!==lastSeen.getFullYear()||temp_now.getMonth()!==lastSeen.getMonth())
         {
@@ -47,7 +47,7 @@ class ChatBrief extends Component {
                 return weekDay;
               }
               else{
-                return day+"/"+lastSeen.getMonth()+"/"+year
+                return day+"/"+month+"/"+year
               }
         }
      
@@ -84,19 +84,11 @@ class ChatBrief extends Component {
   openChat = (user) =>
  { const {currentUserUpdate,updatecnt, onlineBottomUpdate} = this.context
    updatecnt(user.cnt);
+   onlineBottomUpdate(true);
     let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
     let width = window.innerWidth / em
     let height = window.innerHeight/ em
-    const container = document.getElementById("chatScroll");
-    if(container)
-    {  
-      
-      container.style.scrollBehavior="auto";
-      container.scrollTop=container.scrollHeight;
-      
-      container.style.scrollBehavior="smooth";
-    }
-     
+   
  
     if(width<60||height<41)
     { 
@@ -104,7 +96,7 @@ class ChatBrief extends Component {
       document.querySelector(".leftHome").style.display="none";
     }
   
-   onlineBottomUpdate(false);
+  
    axios.get("/getDetail/"+user.id).then(res=>{
    
     currentUserUpdate(res.data.detail)
@@ -115,9 +107,9 @@ class ChatBrief extends Component {
   lastMessage = (newmsg) =>
   {
     if(newmsg.Id===newmsg.messages[newmsg.messages.length-1].senderId)
-     return newmsg.messages[newmsg.messages.length-1].msgBody.length<=5?newmsg.messages[newmsg.messages.length-1].msgBody:newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,6)+"..."
+     return newmsg.messages[newmsg.messages.length-1].msgBody
     else
-  return newmsg.messages[newmsg.messages.length-1].msgBody.length<=5?"You: "+newmsg.messages[newmsg.messages.length-1].msgBody :"You: "+newmsg.messages[newmsg.messages.length-1].msgBody.substr(0,6)+"..."
+  return "You: "+newmsg.messages[newmsg.messages.length-1].msgBody 
   }
   
   render() { 
@@ -130,11 +122,11 @@ class ChatBrief extends Component {
     return (
     
     <li className='img-li ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id,cnt:this.unseenMsgForRoom(newmsg)})}}>
-    <div>
-      <Avatar alt="Cindy Baker" src={newmsg.path} />
-    </div>
+   
+      {newmsg.isOnline?<div className="img-chat"> <Avatar  alt="Cindy Baker" src={newmsg.path} /><div className="online-color"></div></div>:<Avatar alt="Cindy Baker" src={newmsg.path} />}
+  
     <div className='img-div '>
-      {newmsg.isOnline?<h6 className="img-h">{newmsg.username.length<6?newmsg.username:newmsg.username.substr(0,6)+".."}</h6>:<h5 className="img-h">{newmsg.username.length<6?newmsg.username:newmsg.username.substr(0,6)+".."}</h5>}
+<h6 className="img-h">{newmsg.username} </h6>
       
    <p className="img-p">  {this.lastMessage(newmsg)}</p>
     </div>

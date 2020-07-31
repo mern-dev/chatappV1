@@ -1,18 +1,71 @@
 var User = require('../models/user_model.js');
 var Room = require('../models/room_model.js');
 var mongoose = require('mongoose');
+const users = {  }
+const userTab = {}
 module.exports=function(io,socket){
-        
+  
+
+         
+  // =====================================
+  //  User is offline ====================
+  // =====================================
+  socket.on('disconnect', () => {
+    console.log("offline",users[socket.id]);
+    
+  
+    let id = users[socket.id]
+    console.log("off",userTab[id]);
+    if(userTab[id]>1)
+    {
+      userTab[id] = userTab[id] - 1;
+    }
+    else if(userTab[id]==1)
+    {
+      userTab[id]=0;
+      let lastSeen =  new Date();
+      User.updateOne({
+        _id:id
+        },
+        {$set:{
+            isOnline:false,
+            lastSeen:lastSeen,
+        }}).then(val => 
+           {
+            io.to("commonRoom").emit("lastSeen",{id:id,lastSeen:lastSeen})
+           })
+
+    }
+   
+    
+  });
         
   // =====================================
   //  User is online =====================
   // =====================================
         socket.on("join",function(data)
         { console.log(data);
+          
+           users[socket.id] = data.id;
+           
+           if(userTab[data.id])
+           {
+            userTab[data.id] = userTab[data.id] + 1;
+           }
+           else
+           {
+            
+            userTab[data.id] =  1;
+            io.to("commonRoom").emit("isOnline",{id:data.id})   //===================Emitting the user who is come online to other users==================//
+           
+
+           }
+           
           socket.join("commonRoom");
           socket.join(`${data.id}`,() => {
             console.log("into chat room")
-            io.to("commonRoom").emit("isOnline",{id:data.id})  //===================Emitting the user who is come online to other users==================//
+            
+           
            User.updateOne({
              _id:data.id
              },
@@ -40,11 +93,10 @@ module.exports=function(io,socket){
 	
                              
                          ]).then(res=>{
-                            
-                         
-                           res.forEach(item =>
-                              {
-                                   User.findOne({_id:item.chats.Id},{_id:0,username:1,path:1,isOnline:1}).then(detail=>{
+                            var chats = [];
+                          res.forEach(item =>
+                              { 
+                                 User.findOne({_id:item.chats.Id},{_id:0,username:1,path:1,isOnline:1}).then(detail=>{
                                              let len=item.chats.messages.length;
                                             
                                              var latestmsg=[]
@@ -71,13 +123,15 @@ module.exports=function(io,socket){
 
                                                  
                                               }
-                                              let chat = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,messages:latestmsg}
-                                              io.to(`${data.id}`).emit("chat",chat);                            
-                                            
+                                              let chat  = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,messages:latestmsg}
+                                                                    
+                                              io.to(`${socket.id}`).emit("chat",chat); 
                                             })
                                            
                                              
                                    })
+                                   
+                                   
                                    
                               })
                              
@@ -95,7 +149,11 @@ module.exports=function(io,socket){
           
                     
         socket.on("postingMessage",function(newMessage){
-          
+       
+          if(userTab[newMessage.senderId]>1)
+          {
+            io.to(`${newMessage.senderId}`).emit("postingMessgaeDevices",newMessage) 
+          }
           const msg= {
              
               id:newMessage.id,
@@ -248,27 +306,8 @@ module.exports=function(io,socket){
                     
         })
       })
-      
-  // =====================================
-  //  User is offline ====================
-  // =====================================
 
-  socket.on("offline",function(data){
-    socket.leave(data.id);
-    socket.leave("commonRoom")
-   console.log("data-offline",data)
-    User.updateOne({
-      _id:data.id
-      },
-      {$set:{
-          isOnline:false,
-          lastSeen:data.lastSeen,
-      }}).then(val => 
-         {
-          io.to("commonRoom").emit("lastSeen",{id:data.id,lastSeen:data.lastSeen})
-         })
-
-  })    
+   
 
 
   

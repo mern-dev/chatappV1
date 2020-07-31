@@ -13,26 +13,36 @@ class RightComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+
             startDate: false,
             endDate: false,
+
             word: '',
             tog: true,
             arrId: [],
             arrMsg: [],
             lastmsg: null,
+
             i: 0,
-            data: false,
+         
             start:'',
             end: new Date(),
-            flagdate: false
+           
+
+            arrPos:[],
+           
+            data: true,
+            date:"",
+            flagdate:false
+
 
         };
         this.cancel = '';
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+       
         this.handleScroll = this.handleScroll.bind(this);
-        //this.handleCount = this.handleCount.bind(this);
-        this.handleOffset = this.handleOffset.bind(this);
+
+       
 
     }
     formatDisplay = (msg) => {
@@ -76,53 +86,196 @@ class RightComponent extends Component {
         this.setState({ ...this.state, [name]: value, data: false });
 
     }
-    handleOffset(el) {
-        var rect = el.getBoundingClientRect(),
-            scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-            scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+
+
+
+ 
+
+    handleCountDown = (i) => {
+   
+       const uparrow = document.getElementById("up-arrow");
+       const downarrow =document.getElementById("down-arrow");
+       if(i===this.state.arrId.length-1)
+       {
+           downarrow.style.opacity="0.25";
+           downarrow.style.pointerEvents="none";
+           uparrow.style.opacity="1";
+           uparrow.style.pointerEvents="auto";
+       }
+       else if(i===0)
+       {
+           uparrow.style.opacity="0.25";
+           uparrow.style.pointerEvents="none";
+           downarrow.style.opacity="1";
+           downarrow.style.pointerEvents="auto";
+       }
+  
+      
+       
+       
+      const container = document.getElementById('searchChatScroll')
+     const t = container.querySelectorAll(".search-message")
+     if(i>=1)
+      { t[this.state.arrPos[i-1]].style.backgroundColor="transparent";
+       t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+      container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
+     }
+    else
+     {
+        t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+        container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
+     }
+     
+
     }
-
-    // handleCount() {
-
-
-    // }
-
-    handleSubmit(e) {
-        e.preventDefault();
-
-        this.setState({ flagdate: false })
+  handleCountUp =(i) =>
+  {
+    const uparrow = document.getElementById("up-arrow");
+    const downarrow =document.getElementById("down-arrow");
+    if(i===this.state.arrId.length-1)
+    {
+        downarrow.style.opacity="0.25";
+        downarrow.style.pointerEvents="none";
+        uparrow.style.opacity="1";
+        uparrow.style.pointerEvents="auto";
+    }
+    else if(i===0)
+    {
+        uparrow.style.opacity="0.25";
+        uparrow.style.pointerEvents="none";
+        downarrow.style.opacity="1";
+        downarrow.style.pointerEvents="auto";
+    }
+  
+   const container = document.getElementById('searchChatScroll')
+  const t = container.querySelectorAll(".search-message")
+  if(i===this.state.arrId.length-1)
+    {
+        t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+     container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
+    }
+ else
+  {
+     
+     t[this.state.arrPos[i+1]].style.backgroundColor="transparent";
+     t[this.state.arrPos[i]].style.backgroundColor="#f4f6ff17"
+    container.scrollTop = t[this.state.arrPos[i]].offsetTop-container.offsetTop-container.clientHeight/2;
+  }
+  }
+    handleSubmit = () =>{
+        
+        
+        
         const { receiver, id } = this.context;
-        //let arrId ;
-        if (!(this.state.startDate && this.state.endDate)) {
-            console.log('without date');
-            axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}`)
-                .then(res => {
-                    this.setState({ ...this.state, arrId: res.data.arrId, arrMsg: res.data.arrMsg })
-                    // arrId = res.data.arrId;
-                    //  console.log(this.state.arrMsg);
+      if (!(this.state.startDate && this.state.endDate)){
+         
+        axios.get(`/getWord/${id}/${receiver._id}/${this.state.word.trim()}`)
+            .then(res => {
+                this.i=0;
+                   
+                const hightlight = (str) =>
+                { 
+                 var resdata = str.split(" ");
+                 
+                 var cmp = this.state.word.trim().split(" ");
+               
+             
+                 var reStr=[];
+                 for(let i=0;i<resdata.length;i++)
+                 {  
+                     for(let k=0;k<cmp.length;k++)
+                     {  if(resdata[i].length===cmp[k].length)
+                         {  let flag =true;
+                             for(let j=0;j<cmp[k].length;j++)
+                             { 
+                                 if(resdata[i].charAt(j).toLowerCase()!==cmp[k].charAt(j).toLowerCase())
+                                 {
+                                        flag=false;   
+                                 }
+                             
+                             }
+                             if(flag)
+                             {
+                                 let temp1 = `<span class="hightcolor-search">${resdata[i]}</span>`
+                                 reStr.push({str:temp1,index:i});  
+                             }
+                           
+                         }
+                         
+                        else if(resdata[i].length>cmp[k].length)
+                         {   let gflag = true;
+                               for(let p=cmp[k].length-1;p>=0;p--)
+                               {
+                                   if(resdata[i].charAt(p).toLowerCase()!==cmp[k].charAt(p).toLowerCase())
+                                         gflag=false;
+                               }
+                               if(gflag)
+                               {
+                                   let temp2 = resdata[i].slice(0,cmp[k].length);
+                                   let temp3 = `<span class="hightcolor-search">${temp2}</span>`+resdata[i].slice(cmp[k].length,resdata[i].length)
+                                   reStr.push({str:temp3,index:i})
+                               }
+                              
+                         }
+                       
             
-                    console.log(res.data.arrId,res.data.arrMsg,res.data.arrPos)
-
-
-
-                    if (res.data.arrId.length === 0) {
-                        this.setState({ data: true })
+                     }
+                 
+                       
+                 }
+                
+                 if(reStr.length)
+                 {
+                    for(let i=0;i<reStr.length;i++)
+                    {
+                        resdata[reStr[i].index]=reStr[i].str;
                     }
-                    else {
-                        this.setState({ data: false })
-                    }
+                    return resdata.join(" ");
+                 }
 
+                
+                 return str;
+                }
+              
+                      if(res.data.status==="success")
+                      {   this.setState({ data: false , arrId: res.data.arrId,arrPos:res.data.arrPos, arrMsg: res.data.arrMsg })
+                           
+                               
+                            for (var j = 0; j < this.state.arrId.length; j++)
+                          
+                           document.getElementById(`${res.data.arrId[j]}`).innerHTML=hightlight(document.getElementById(`${res.data.arrId[j]}`).textContent);
+                           const uparrow = document.getElementById("up-arrow");
+                           const downarrow =document.getElementById("down-arrow");
+                           if(uparrow&&downarrow)
+                           {
+                            uparrow.style.opacity="0.5";
+                            uparrow.style.pointerEvents="none";
+                            downarrow.style.opacity="1";
+                            downarrow.style.pointerEvents="auto";
 
-                    // console.log( document.getElementById(`${arrId}`));
-                    for (var j = 0; j < this.state.arrId.length; j++)
-                        document.getElementById(`${res.data.arrId[j]}`).style.backgroundColor = 'orange';
+                           }
+                           
+                           const container = document.getElementById('searchChatScroll');
+                           const t = container.querySelectorAll(".search-message");
 
-
-                })
-        }
-        else {
-            console.log('with date');
+                           t[this.state.arrPos[0]].style.backgroundColor="#f4f6ff17"
+                          container.scrollTop = t[this.state.arrPos[0]].offsetTop-container.offsetTop-container.clientHeight/2;
+                        
+                        }
+                        else
+                        {
+                            this.i=0;
+                         this.setState({ data: true ,arrId:[],arrMsg:[],arrPos:[]})
+                       }
+                 
+            })
+        
+        
+      }
+      else 
+      {
+        
+                console.log('with date');
             axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}/${this.state.start}/${this.state.end}`)
                 .then(res => {
                     this.setState({ ...this.state, arrId: res.data.arrId, arrMsg: res.data.arrMsg })
@@ -136,19 +289,13 @@ class RightComponent extends Component {
                     else {
                         this.setState({ data: false })
                     }
-
-
-                    // console.log( document.getElementById(`${arrId}`));
-                    for (var j = 0; j < this.state.arrId.length; j++)
-                        document.getElementById(`${res.data.arrId[j]}`).style.backgroundColor = 'orange';
-
-
-                })
-        }
+        
+      }
 
 
     }
     handleScroll() {
+
 
         this.setState({ flagdate: true })
         const container = document.getElementById("searchChatScroll");
@@ -163,7 +310,20 @@ class RightComponent extends Component {
             }
 
 
-        }
+        document.querySelector(".date-right").style.display="table";
+
+       if(container.scrollHeight-container.scrollTop===container.offsetHeight)
+       {
+       
+        
+        document.querySelector(".date-right").style.display="none"
+        
+        
+       }
+       if(0===container.scrollTop)
+       {
+        document.querySelector(".date-right").style.display="none"
+       }
 
     }
 
@@ -198,7 +358,7 @@ class RightComponent extends Component {
 
     render() {
         var lastmsg = 'null'
-
+         
         const { receiver } = this.context;
         if (this.state.tog) {
             return (
@@ -208,7 +368,7 @@ class RightComponent extends Component {
                         <div className="back-button-right">
                             <img alt="#" src="images/back-button.png" id="back-button-right" className="back-button-right" onClick={this.backtomiddle} />
                         </div>
-                        <h4 >Contact info</h4>
+                       
                     </div>
 
 
@@ -218,14 +378,15 @@ class RightComponent extends Component {
                     <div className="contact-info">
                         {receiver.path ? <img src={receiver.path} alt='aaa' className='rc-img' /> : <img src='uploads/nodp.png' alt='a' className='rc-img' />}
 
-                        <h4>{receiver.username}</h4>
-                        <button onClick={
+                        <h4 className="contact-name">{receiver.username}</h4>
+                        {/* <div className="contact-status">{receiver.status}</div> */}
+                        <div onClick={
                             () => {
                                 this.setState(
                                     { ...this.state, tog: !this.state.tog }
                                 )
                             }
-                        } type='button' >Filter</button>
+                        }  className="chat-search-button"><span><img alt="#" src="images/chat-search.png" className="chat-search-png" /></span>Chat Search</div>
 
                     </div>
 
@@ -245,26 +406,10 @@ class RightComponent extends Component {
                         }} />
                         <input type="text" className='rc-searchBar' name="word" value={this.state.word} onChange={this.handleChange} />
 
+
                         <button type='submit' onClick={this.handleSubmit}> <i class="fa fa-search" aria-hidden="true"></i>Search</button>
 
-                        <button type='button' id='plus' onClick={(e) => {
-                            if (this.state.i < this.state.arrId.length - 1) {
-                                this.setState({ ...this.state, i: this.state.i + 1 })
-                                this.handleCount()
 
-                            }
-
-                        }}>+</button>
-
-
-
-                        <button type='button' id='minus' onClick={(e) => {
-                            if (this.state.i > 0) {
-                                this.setState({ ...this.state, i: this.state.i - 1 })
-                                this.handleCount()
-
-                            }
-                        }}>-</button>
 
 
 
@@ -282,7 +427,11 @@ class RightComponent extends Component {
                     {this.state.arrMsg.length ? <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
 
 
-                        {this.state.flagdate ? <p className="date">{this.date}</p> : <span></span>}
+                   
+                   
+
+                    <div className="outer-div"> <p className="date-right">{this.state.date}</p> </div>
+
 
                         <ul className="list-none">
                             {
@@ -293,7 +442,7 @@ class RightComponent extends Component {
                                             lastmsg = m;
                                             return (
 
-                                                <li key={m.id} id="sendTop" >
+                                                <li key={m.id} id="sendTop" className="search-message" >
                                                     <br />
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />
@@ -305,7 +454,7 @@ class RightComponent extends Component {
                                             lastmsg = m;
                                             return (
 
-                                                <li key={m.id} id="send">
+                                                <li key={m.id} id="send"className="search-message">
 
                                                     <SendMessage msgBody={m.msgBody} msgid={m.id} sentTime={m.sentTime} status={{ sent: m.sent, delivered: m.delivered, seen: m.seen }} />
                                                 </li>)
@@ -323,7 +472,7 @@ class RightComponent extends Component {
 
 
 
-                                                <li key={m.id} id="receiveTop">
+                                                <li key={m.id} id="receiveTop"className="search-message">
 
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
                                                     <br />
@@ -334,7 +483,7 @@ class RightComponent extends Component {
                                         }
                                         else {
                                             lastmsg = m;
-                                            return (<li key={m.id} id="receive" >
+                                            return (<li key={m.id} id="receive" className="search-message">
 
                                                 <ReceiveMessage msgBody={m.msgBody} msgid={m.id} sentTime={m.sentTime} />
                                             </li>)
@@ -347,10 +496,46 @@ class RightComponent extends Component {
                                     return null;
                                 })}
                         </ul>
-                    </div> : <div className="search-img">
+                    </div>
+                   
+                    : <div className="search-img">
                             <h3> {this.state.word.length ? this.state.data ? `"${this.state.word}" not found` : '' : "Search"}</h3>
                             <img className="img-search" alt="#" src="./images/search--v2.png" />
                         </div>}
+                   {this.state.arrId.length>1  ? <div className="search-bottom">
+                    <div className="arrows" id="down-arrow" onClick={(e) => {
+                           
+                           if(this.state.arrId!==[])
+                           {
+                            if (this.i <=this.state.arrId.length - 1) 
+                            {
+                                this.i=this.i+1;
+                            
+                                this.handleCountDown(this.i)
+                                
+                            }
+                           } 
+                          
+
+                        }}><img src="images/down-arrow-sea.png" alt='#' className="downarrow" /></div>
+
+                     <div className="search-no-messages ">{this.state.arrId.length}</div>
+
+                        <div className="arrows" id="up-arrow" onClick={(e) => {
+                             if(this.state.arrId!==[])
+                             {
+                                if (this.i > 0) 
+                                {
+                                    this.i=this.i-1;
+                                    this.handleCountUp(this.i)
+    
+                                }
+                             }
+                          
+                        }}><img src="images/up-arrow.png" alt='#' className="uparrow" /></div>
+
+
+                    </div>:<span></span>}
 
                 </div>
             );

@@ -21,12 +21,18 @@ class UserContextProvider extends Component {
       msgBody:"",
       seenUpdateMessages:[],
       onlineBottom:false,
+      Bottom:false,
    }
    
 
    }
+   updateBottom = value =>
+   {
+           this.setState({Bottom:value})
+   }
  onlineBottomUpdate = (value) =>
- {
+ { 
+   
    this.setState({onlineBottom:value})
  }
   updatecnt = (cnt) =>
@@ -51,8 +57,7 @@ scrollUpdate =(messagesw)=>
       }
     })
    }
-     
-   
+ 
   componentDidMount ()
   {
     let token = window.localStorage.getItem("token")
@@ -70,13 +75,11 @@ scrollUpdate =(messagesw)=>
           this.setState({user:res.data.detail})
         })
     }
-    const point = "http://localhost:3000/";
+    const point = "http://192.168.1.4:3000/";
     this.socket = io(point);
-    window.addEventListener("beforeunload", (event)=> {
-          
-      this.socket.emit("offline",{id:this.state.id,lastSeen:new Date()});
-        return undefined;
-    })
+  
+
+  
     
     this.socket.on("isOnline",function(data){
        onlineUpdate(data)
@@ -141,23 +144,27 @@ scrollUpdate =(messagesw)=>
     this.socket.emit("join",{id:this.id})
     this.socket.on("chat",function(chat){
      
-      addChats(chat)
+      addChats(chat);
+     
       
      
      });
 
     const addChats =(chat) =>{
-      chat.messages.map(msg=>{
+      
+      
+            chat.messages.map(msg=>{
+              if(!msg.delivered&&msg.senderId!==this.state.user._id)
 
+              {
+                msg.delivered=true;
+                this.socket.emit("deliverUpdate", msg);
+              }
+              return 0;
+            })
 
-        if(!msg.delivered&&msg.senderId!==this.state.user._id)
-
-        {
-          msg.delivered=true;
-          this.socket.emit("deliverUpdate", msg);
-        }
-        return 0;
-      })
+        
+    
       this.setState({messages:[...this.state.messages,chat]})
     }
     this.socket.on("receivingMessage",function(newmsg){
@@ -175,6 +182,39 @@ scrollUpdate =(messagesw)=>
    this.socket.on("seenSuccess",function(msg){
      seenUpdate(msg)
    })
+   this.socket.on("postingMessgaeDevices",function(msg){
+    MessagePostedFromOtherDevices(msg)
+  })
+  const MessagePostedFromOtherDevices = (msg) =>
+  {
+    var flag = false
+    var t = {}
+    var messages = [];
+ this.state.messages.map((chat)=>{
+        if(chat.Id===msg.receiverId)
+        {  
+          
+           
+          if(chat.messages[chat.messages.length-1].id!==msg.id)
+          {
+             flag = true;
+             t = {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:[...chat.messages,msg]}
+          }
+    
+        }
+        else{
+          messages.push(chat);
+        }
+    return 0;
+  })
+  if(flag)
+  { 
+    messages = [t,...messages]
+    
+   this.setState({messages:messages});
+  }
+ 
+}
    const seenUpdate = (msg) =>
    {
     var messages = [];
@@ -268,7 +308,7 @@ scrollUpdate =(messagesw)=>
    const addmessage= (newmsg)=>{
     var messages=[];
     var temp = {};
-    
+    let bflag=false;
       this.setState(state =>{
       
         if(state.messages.length===0)
@@ -295,7 +335,8 @@ scrollUpdate =(messagesw)=>
                             this.setState({cnt:state.cnt+1});
                             const container = document.getElementById("chatScroll");
                             if(container.scrollHeight-container.scrollTop===container.offsetHeight)
-                               this.setState({onlineBottom:true})
+                            bflag=true;
+                               
                         
                       }
                   
@@ -328,7 +369,8 @@ scrollUpdate =(messagesw)=>
           messages,
         }
       });
-   
+      if(bflag)
+      this.setState({Bottom:true})
   }
 }
 
@@ -491,7 +533,7 @@ seenInContext = (id) =>
     
     return (
       <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext, onlineBottomUpdate:this.onlineBottomUpdate}}>
+        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate}}>
         {this.props.children}
       </UserContext.Provider>
     )

@@ -294,6 +294,7 @@ module.exports = function (app) {
             arrPos : arrPos
           
 
+
           })
         }
         else {
@@ -364,7 +365,33 @@ module.exports = function (app) {
                 if (f == 0) {
                   n = arrNo.length - 1;
                   f = 1;
-              
+
+          var n;
+          var f=0;
+          var arrId=[];
+          const arrNo=[];
+          const arrMsg =[];
+          const arrMsgId=[];
+          const arrPos=[];
+        
+          info.map((i)=>{
+            i.chats.map(chat=>{
+              chat.messages.map((msg)=>{
+                x = req.params.word
+                y = msg.msgBody
+  
+  
+                arrNo.push(msg)
+                if(y.includes(x) ){
+                  arrId.push(msg.id)
+
+                  if(f==0){
+                  n=arrNo.length-1;
+                  f=1;
+                  }
+                  
+                  
+
                 }
 
 
@@ -372,13 +399,30 @@ module.exports = function (app) {
             }
             })
           })
+
         })
         var l = n - 4;
         l < 0 ? l = 0 : l = l;
 
-        for (var i = l; i < arrNo.length; i++) {
-          arrMsg.push(arrNo[i]);
-        }
+  
+          for(var i=l;i<arrNo.length;i++){
+            arrMsg.push(arrNo[i]);
+            arrMsgId.push(arrNo[i].id);
+          }
+          for(var i=0;i<arrId.length;i++)
+          {
+            arrPos[i]= arrMsgId.indexOf(arrId[i])
+          }
+            if (arrId.length) {
+              res.json({
+  
+                status: "success",
+                arrId : arrId,
+                arrMsg:arrMsg,
+                arrPos:arrPos
+
+
+      
         if (info) {
           res.json({
 

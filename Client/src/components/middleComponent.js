@@ -10,14 +10,20 @@ class MiddleComponent extends Component {
   
     state = {
      
-       scrollFlag:true,
        scrollUpdate:false,
-
+         date:"pops",
        lastmsg:null
 
     }
  
-  
+    newmsgFormat =(cnt) =>
+    {
+      if(cnt===1)
+        return cnt +" new message"
+      else{
+        return cnt +" new messages"
+      }  
+    }
   formatDisplay = (msg) =>
   { 
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -84,14 +90,10 @@ class MiddleComponent extends Component {
 
   
 componentDidUpdate()
-{
-  const open =()=>
-  {
-    this.setState({scrollFlag:false})
-  }
+{ 
   
   
-  const {middleFlag,cnt, onlineBottom,onlineBottomUpdate} = this.context;
+  const {middleFlag,cnt, onlineBottom,Bottom,updateBottom} = this.context;
   const container = document.getElementById("chatScroll");
   if(cnt&&container&&middleFlag)
   {
@@ -108,26 +110,23 @@ componentDidUpdate()
     }
   }
 
-  if(cnt&&this.state.scrollFlag&&container)
+  if(cnt&&onlineBottom&&container)
   {
-    let t = container.querySelectorAll(".unread-msg-in-room");
-
+    let t = container.querySelector(".unread-msg-in-room");
+   
     if(t)
-    {
+    { 
       container.style.scrollBehavior="auto";
       
-      container.scrollTop=t[0].offsetTop-container.offsetHeight;
+     container.scrollTop=t.offsetTop-container.offsetHeight+30;
         container.style.scrollBehavior="smooth"
-    for(let i=1;i<t.length;i++)
-    {
-      t[i].style.display="none"
-    }
+    
 
     }
-  open()
+  
 
   }
-  else if(middleFlag&&this.state.scrollFlag)
+  else if(middleFlag&&onlineBottom&&container)
   {
  
  
@@ -135,17 +134,18 @@ componentDidUpdate()
      container.style.scrollBehavior="auto";
      container.scrollTop=container.scrollHeight;
      container.style.scrollBehavior="smooth";
+   
     
-    open()
   }
-  
-  if(onlineBottom)
+ else if(Bottom)
   {
-    container.style.scrollBehavior="auto";
+     container.style.scrollBehavior="auto";
      container.scrollTop=container.scrollHeight;
      container.style.scrollBehavior="smooth";
-     onlineBottomUpdate(false)
+     updateBottom(false);
   }
+  
+  
   
  
  
@@ -162,12 +162,12 @@ componentDidUpdate()
 backtoleft = () =>
 { 
 this.setState({scrollUpdate:false}) 
-this.setState({scrollFlag:true})
+
 const {updatecnt,seenInContext,receiver, onlineBottomUpdate} = this.context
   onlineBottomUpdate(false);
   seenInContext(receiver._id);
   updatecnt(0);
-  document.querySelector(".leftHome").style.display="block";
+  document.querySelector(".leftHome").style.display="flex";
   document.querySelector(".middleHome").style.display="none";
   
 }
@@ -193,32 +193,35 @@ openSearch = () =>{
 }
 
 handleScroll = e =>{
+  const {onlineBottomUpdate} = this.context;
+  onlineBottomUpdate(false);
  const scrollButton = document.getElementById("myBtn")
-  this.setState({scrollFlag:false})
+  
   
   const container = document.getElementById("chatScroll");
   
-    this.flagdate = true;
+          
      let t = container.querySelectorAll(".date-main")
    
      for(let i=0;i<t.length;i++)
      { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
-
-       if(t[i].offsetTop<container.scrollTop+100)
+         
+       if(t[i].offsetTop<container.scrollTop+120)
        { 
-        this.date=t[i].textContent
+        this.setState({date:t[i].textContent});
+        
        
        }
      
        
      }
-    
+     document.querySelector(".date").style.display="table"
      
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
        {
         console.log("bottom")
         
-        this.flagdate = false;
+        document.querySelector(".date").style.display="none"
         
         
        }
@@ -246,6 +249,7 @@ handleScroll = e =>{
    })
     if(0===container.scrollTop&&msg)
     { this.setState({scrollUpdate:true})
+     document.querySelector(".date").style.display="none";
 
       axios.get("/"+id+"/getmsg/"+receiver._id+"/"+msg.id).then(res=>
          { this.setState({scrollUpdate:false}) 
@@ -255,11 +259,11 @@ handleScroll = e =>{
             scrollUpdate(res.data.messages)
           }
           else
-          { this.flagdate=false;
+          { 
              document.querySelector(".top-msg-end").style.display="grid";
              setTimeout(function() {
               document.querySelector(".top-msg-end").style.display="none"
-               }, 1100);
+               }, 1000);
             
           }
         })
@@ -275,13 +279,13 @@ handleScroll = e =>{
       
     };
     send = () =>
-    { const {postmessage,msgBody,updatecnt,seenInContext,receiver} = this.context;
+    { const {postmessage,msgBody,updatecnt,seenInContext,receiver,onlineBottomUpdate} = this.context;
     
       if(msgBody==="")
     {
       return null;
     } 
-    this.setState({scrollFlag:true})
+    onlineBottomUpdate(true)
     updatecnt(0)
     seenInContext(receiver._id)
     postmessage();
@@ -294,11 +298,12 @@ handleScroll = e =>{
        
        let day = lastSeen.getDate();
        let year = lastSeen.getFullYear();
+       let month =lastSeen.getMonth()+1;
        
        if(temp_now.getFullYear()!==lastSeen.getFullYear()||temp_now.getMonth()!==lastSeen.getMonth())
         {
               
-               return "Last seen "+day+"/"+lastSeen.getMonth()+"/"+year
+               return "Last seen "+day+"/"+month+"/"+year
         }
         if(temp_now.getMonth()===lastSeen.getMonth())
         {
@@ -324,7 +329,7 @@ handleScroll = e =>{
                 return "Last seen Yesterday,at "+strTime
               }
               else{
-                return "Last seen "+day+"/"+lastSeen.getMonth()+"/"+year
+                return "Last seen "+day+"/"+month+"/"+year
               }
         }
       var hours = lastSeen.getHours();
@@ -336,6 +341,10 @@ handleScroll = e =>{
       var strTime = hours + ':' + minutes + ' ' + ampm;
       return strTime;
     }
+    softKeyboardView = () =>
+    {
+
+    }
    scrollButtonPress = () =>
     {    
           const {cnt} = this.context;
@@ -346,8 +355,13 @@ handleScroll = e =>{
             
             if(t)
             { 
+              if( container.scrollTop===t[0].offsetTop-container.offsetHeight+30)
+              {
+                this.autoScroll();
+              }
              
-              container.scrollTop=t[0].offsetTop-container.offsetHeight;
+             else container.scrollTop=t[0].offsetTop-container.offsetHeight+30;
+
                
             }
           }
@@ -363,9 +377,7 @@ handleScroll = e =>{
    
     render() { 
          const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom,cnt} = this.context;
-        this.flag=false;
-       this.cnt=0;
-      
+       
         
         return( 
             middleFlag? <div className="middleHome" id="middle" >
@@ -390,7 +402,7 @@ handleScroll = e =>{
                <div className="chatScroll"  onScroll={this.handleScroll}  id="chatScroll">
                {this.state.scrollUpdate?<div className="date-main loading-msg"><img src="images/loading-msg.gif"alt="#" className="loading-symbol-inside-chat"/></div>:<span></span>}
               
-               {this.flagdate? <p className="date">{this.date}</p>:<span></span>}
+            <div className="outer-div">   <p className="date">{this.state.date}</p> </div>
                <ul className="list-none">
               
                    {messages.map(msg=>{
@@ -447,8 +459,8 @@ handleScroll = e =>{
                              
                              
                                 
-                                  <li key={m.id} id="receiveTop">
-                                   {!m.seen?<p className="unread-msg-in-room">{cnt+" "+"new messages"}</p>:<span></span>}
+                                  <li key={m.id}  id="receiveTop">
+                                   {!m.seen?<p className="unread-msg-in-room">{this.newmsgFormat(cnt)}</p>:<span></span>}
                                   <p className="date-main">{this.formatDisplay(m)}</p> 
                                  
                           
@@ -460,8 +472,8 @@ handleScroll = e =>{
                            else{
                            
                             lastmsg=m;
-                            return (<li key={m.id} id="receive" >
-                               {!m.seen?<p className="unread-msg-in-room">{cnt+" "+"new messages"}</p>:<span></span>}
+                            return (<li key={m.id}   id="receive" >
+                               {!m.seen?<p className="unread-msg-in-room">{this.newmsgFormat(cnt)}</p>:<span></span>}
                               <ReceiveMessage msgBody={m.msgBody}  sentTime={m.sentTime} />
                               </li>)
 
@@ -484,7 +496,7 @@ handleScroll = e =>{
                    
                  </div>
                  <div id="chatInputBox" >
-                 <input  onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
+                 <input onClick={this.softKeyboardView} onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
                 
             
               
