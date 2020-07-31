@@ -1,10 +1,9 @@
-import React, { Component  } from "react";
+import React, { Component } from "react";
 import { UserContext } from '../contexts/userContext'
 import ReceiveMessage from "./chatComponents/receivemessage"
 import SendMessage from './chatComponents/sendmessage';
 import axios from 'axios';
-import { Link, animateScroll as scroll } from "react-scroll";
-import $ from 'jquery'
+
 
 
 
@@ -14,25 +13,25 @@ class RightComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // startDate:'',
-            // endDate:'',
+            startDate: false,
+            endDate: false,
             word: '',
             tog: true,
             arrId: [],
             arrMsg: [],
             lastmsg: null,
-
             i: 0,
             data: false,
-
-            flagdate:false
+            start:'',
+            end: new Date(),
+            flagdate: false
 
         };
         this.cancel = '';
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
-        this.handleCount = this.handleCount.bind(this);
+        //this.handleCount = this.handleCount.bind(this);
         this.handleOffset = this.handleOffset.bind(this);
 
     }
@@ -75,101 +74,95 @@ class RightComponent extends Component {
         const name = e.target.name;
         const value = e.target.value;
         this.setState({ ...this.state, [name]: value, data: false });
-        // if (name === 'word') {
-        //     if (this.cancel) {
-        //         this.cancel.cancel();
-        //     }
-        //     this.cancel = axios.CancelToken.source();
 
-        //     axios.get(`/getWord/${id}/${receiver._id}/${value}`, {
-        //         cancelToken: this.cancel.token
-        //     }).then(res => {
-        //         console.log(res.data)
-
-        //     })
-
-        // }
     }
     handleOffset(el) {
         var rect = el.getBoundingClientRect(),
-        scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-        scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+            scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
     }
-    
-        
-        
 
-    handleCount() {
-        
-    //      var x = document.getElementById(`${this.state.arrId[this.state.i]}`)
-    //     // console.log(this.state.i,x);
-        
-    //   //  document.getElementById('searchChatScroll').scrollTop=x.offsetTop;
-    //   const container = document.getElementById('searchChatScroll')
-    // let t = container.children
-    // for(var j=0;j<t[0].children.length;j++){
-    //     console.log(t[0].children[j].children[0].children.)
+    // handleCount() {
+
+
     // }
-    // console.log(t[0].children);
-     // console.log(container.children[0].getElementById())
-   // console.log(container.getElementById(`${this.state.arrId[this.state.i]}`))
-       
-      
-
-    }
 
     handleSubmit(e) {
         e.preventDefault();
-        this.setState({flagdate:false})
+
+        this.setState({ flagdate: false })
         const { receiver, id } = this.context;
         //let arrId ;
-        axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}`)
-            .then(res => {
-                this.setState({ ...this.state, arrId: res.data.arrId, arrMsg: res.data.arrMsg })
-                // arrId = res.data.arrId;
-                //  console.log(this.state.arrMsg);
-                console.log(this.state.arrId);
-
-
-                if (res.data.arrId.length === 0) {
-                    this.setState({ data: true })
-                }
-                else {
-                    this.setState({ data: false })
-                }
-
-
-                // console.log( document.getElementById(`${arrId}`));
-                for (var j = 0; j < this.state.arrId.length; j++)
-                    document.getElementById(`${res.data.arrId[j]}`).style.backgroundColor = 'orange';
+        if (!(this.state.startDate && this.state.endDate)) {
+            console.log('without date');
+            axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}`)
+                .then(res => {
+                    this.setState({ ...this.state, arrId: res.data.arrId, arrMsg: res.data.arrMsg })
+                    // arrId = res.data.arrId;
+                    //  console.log(this.state.arrMsg);
+            
+                    console.log(res.data.arrId,res.data.arrMsg,res.data.arrPos)
 
 
 
+                    if (res.data.arrId.length === 0) {
+                        this.setState({ data: true })
+                    }
+                    else {
+                        this.setState({ data: false })
+                    }
 
-            })
+
+                    // console.log( document.getElementById(`${arrId}`));
+                    for (var j = 0; j < this.state.arrId.length; j++)
+                        document.getElementById(`${res.data.arrId[j]}`).style.backgroundColor = 'orange';
 
 
+                })
+        }
+        else {
+            console.log('with date');
+            axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}/${this.state.start}/${this.state.end}`)
+                .then(res => {
+                    this.setState({ ...this.state, arrId: res.data.arrId, arrMsg: res.data.arrMsg })
 
+                    console.log(this.state.arrId);
+
+
+                    if (res.data.arrId.length === 0) {
+                        this.setState({ data: true })
+                    }
+                    else {
+                        this.setState({ data: false })
+                    }
+
+
+                    // console.log( document.getElementById(`${arrId}`));
+                    for (var j = 0; j < this.state.arrId.length; j++)
+                        document.getElementById(`${res.data.arrId[j]}`).style.backgroundColor = 'orange';
+
+
+                })
+        }
 
 
     }
     handleScroll() {
 
-      this.setState({flagdate:true})
+        this.setState({ flagdate: true })
         const container = document.getElementById("searchChatScroll");
         let t = container.querySelectorAll(".date-main")
-      
-        for(let i=0;i<t.length;i++)
-        { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
-   
-          if(t[i].offsetTop-120<container.scrollTop)
-          {  console.log("lll")
-            this.date=t[i].textContent
-           
-          }
-         
-          
+
+        for (let i = 0; i < t.length; i++) { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+
+            if (t[i].offsetTop - 120 < container.scrollTop) {
+                console.log("lll")
+                this.date = t[i].textContent
+
+            }
+
+
         }
 
     }
@@ -236,18 +229,12 @@ class RightComponent extends Component {
 
                     </div>
 
-
-
-
-
-
-
                 </div>
 
             )
         }
         else {
-           
+
             return (
 
                 <div className='rightHome' >
@@ -259,12 +246,12 @@ class RightComponent extends Component {
                         <input type="text" className='rc-searchBar' name="word" value={this.state.word} onChange={this.handleChange} />
 
                         <button type='submit' onClick={this.handleSubmit}> <i class="fa fa-search" aria-hidden="true"></i>Search</button>
-                     
+
                         <button type='button' id='plus' onClick={(e) => {
                             if (this.state.i < this.state.arrId.length - 1) {
                                 this.setState({ ...this.state, i: this.state.i + 1 })
                                 this.handleCount()
-                                
+
                             }
 
                         }}>+</button>
@@ -280,12 +267,22 @@ class RightComponent extends Component {
                         }}>-</button>
 
 
+
+                    </div>
+                    <div>
+                        <input type='date' name='start'  onChange={(e) => {
+                            this.setState({...this.state,startDate:true,start:e.target.value})
+                          
+                        }} />
+                        <input type='date' name='end' onChange={(e) => {
+                              this.setState({...this.state,endDate:true,end:e.target.value})
+                              }} />
                     </div>
 
                     {this.state.arrMsg.length ? <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
-                        {/* <a href={`#${this.state.arrId}`} onLoad */}
 
-                    {this.state.flagdate? <p className="date">{this.date}</p>:<span></span>}
+
+                        {this.state.flagdate ? <p className="date">{this.date}</p> : <span></span>}
 
                         <ul className="list-none">
                             {
