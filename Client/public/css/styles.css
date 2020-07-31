@@ -1,8 +1,7 @@
-.app-img {
-  height: 300px;
-  width: 300px;
-}
 
+html {
+  overflow: hidden;
+}
 .fdiv {
   height: 300px;
   width: 300px;
@@ -41,8 +40,8 @@
   width: 90%;
   padding-left: 16px;
   padding-right: 16px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   display: flex;
   position: relative;
   margin-left: auto;
@@ -94,7 +93,7 @@
     white-space: nowrap;
 }
 .img-p {
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
   color: grey;
@@ -118,7 +117,7 @@
 .unseen-msg {
   position: absolute;
   right: 20px;
-  bottom: 25px;
+  bottom: 30px;
   font-family: "Montserrat", sans-serif;
   font-size: 0.9em;
   max-width: 50px;
@@ -246,6 +245,8 @@
 
   height: auto;
   margin-bottom: 0.5em;
+  
+ 
 }
 
 .list-none {
@@ -437,13 +438,13 @@ span[id="right"] {
 .date-main {
   clear: both;
 
-  position: relative;
+ 
 
   color: white;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.199);
   width: fit-content;
-
+  
   margin-left: auto;
   margin-top: 0.3em;
   margin-right: auto;
@@ -451,8 +452,6 @@ span[id="right"] {
   border-radius: 5px;
   font-size: small;
 
-  left: 0;
-  right: 0;
 }
 .outer-div {
   position: absolute;
@@ -568,8 +567,8 @@ span[id="right"] {
   padding-left: 0.6em;
   display: inline-block;
   background-color: white;
-  margin: 0.1em;
-  margin-left: 1.3em;
+ 
+  margin-left: 1.4em;
   max-width: 16em;
   border-radius: 0.63em;
   clear: both;
@@ -583,8 +582,8 @@ span[id="right"] {
   padding-right: 0.75em;
   padding-left: 0.6em;
   max-width: 16em;
-  margin: 0.1em;
-  margin-right: 1.3em;
+ 
+  margin-right: 1.4em;
   text-align: left;
   display: inline-block;
   background-color: #000000;
@@ -604,18 +603,18 @@ span[id="right"] {
 }
 @media only screen and (max-width: 75em) and (min-width: 60em) {
   .msg {
-    margin-left: 1.3em;
+    margin-left: 1.4em;
   }
   .sendmsg {
-    margin-right: 1.3em;
+    margin-right: 1.4em;
   }
 }
 @media only screen and (max-width: 40em) {
   .msg {
-    margin-left: 1.3em;
+    margin-left: 1.4em;
   }
   .sendmsg {
-    margin-right: 1.3em;
+    margin-right: 1.4em;
   }
 }
 .bubble-arrow-left {
@@ -661,6 +660,51 @@ li#receiveTop + li#receive .msg .bubble-arrow-left {
 li#sendTop + li#send .sendmsg .bubble-arrow-right {
   display: none;
 }
+
+li#receiveTop + li#receive
+{
+  margin-top: 0.3em;
+  
+}
+li#sendTop + li#send
+{
+  margin-top: 0.3em;
+  
+}
+
+li#receive + li#receive
+{
+  margin-top: -3px;
+  
+}
+li#send + li#send
+{
+  margin-top: -3px;
+ 
+}
+
+li#send + li#receive
+{
+  margin-top: 1em;
+
+}
+li#receive + li#send
+{
+  margin-top: 1em;
+
+}
+
+ li#receiveTop  {
+  
+  margin-top: 1.5em;
+}
+ li#sendTop  {
+  
+  margin-top: 1.5em;
+}
+
+
+
 
 .sendmsgBody {
   color: rgba(255, 255, 255, 0.692);
@@ -830,9 +874,17 @@ h2 {
   width: 100%;
   height: fit-content;
   display: inline-block;
+  margin: 0;
   
 
   
+}
+.middle-message
+{
+  width: 100%;
+  height: fit-content;
+  display: inline-block;
+ 
 }
 .contact-status
 {
@@ -905,9 +957,7 @@ h2 {
   border-right: none;
   border-bottom-style: outset;
 }
-html {
-  overflow: hidden;
-}
+
 .hightcolor-search
 {
   background-color: orange;
@@ -964,4 +1014,194 @@ html {
   text-align: center;
   
 
+}
+
+/* ==================================================sign-up styles =================================================*/
+
+.FirstPage
+{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  border-radius: 0;
+  border: 0;
+  flex-direction: column;
+ 
+}
+.FirstPageHeader
+{
+  flex:1;
+  background-color: #000000;
+}
+.FrontPage
+{
+  display: flex;
+  flex:10
+}
+.Header-text
+{
+  font-size: 3em;
+  
+  color:palevioletred;
+}
+.FormContent
+{
+  flex:1;
+  background-color: aqua;
+ 
+}
+
+.app-feature-content
+{
+  flex:2;
+  overflow: hidden;
+  background-color: red;
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+ 
+}
+@keyframes chat-anime {
+  0%   {top:45%;right:-20%;opacity: 1;transform: scale(1);}
+  25%  {top:0;right:0;opacity:0.5;transform: scale(0.7);}
+  50%  {top:-40%;right:85%;}
+  75%  { top:100%;right:85%}
+  100% { top:75%;right:0;opacity:0.5;transform: scale(0.7);}
+}
+
+@keyframes scroll-anime {
+  0%   {top:0;right:0;opacity:0.5;transform: scale(0.7);}
+  25%  {top:-40%;right:85%}
+  50%  { top:100%;right:85%}
+  75%  { top:75% ;right:0;opacity:0.5;transform: scale(0.7);}
+  100%  {top:35%;right:-20%;opacity: 1;transform: scale(1);}
+}
+@keyframes unlock-anime {
+  0%   {top:-40%;right:85%}
+  25%   { top:100%;right:85%}
+  50%  { top:75% ;right:0;opacity:0.5;transform: scale(0.7);}
+  75%  {top:35%;right:-20%;opacity: 1;transform: scale(1);}
+  100% {top:0;right:0;opacity:0.5;transform: scale(0.7);}
+}
+
+@keyframes all-devices-anime {
+  0%  { top:100%;right:85%}
+  25%  { top:75% ;right:0;opacity:0.5;transform: scale(0.7);}
+  50%  {top:35%;right:-20%;opacity: 1;transform: scale(1);}
+  75%  {top:0;right:0;opacity:0.5;transform: scale(0.7);}
+  100% {top:-40%;right:85%}
+}
+@keyframes cloud-anime {
+  0%   { top:75% ;right:0;opacity:0.5;transform: scale(0.7);}
+  25%  {top:35%;right:-20%;opacity: 1;transform: scale(1);}
+  50%  {top:0;right:0;opacity:0.5;transform: scale(0.7);}
+  75%  {top:-40%;right:85%}
+  100% { top:100%;right:85%}
+}
+
+
+.circular-section
+{
+  
+  margin-top: auto;
+  margin-bottom: auto;
+   
+    background-color: #27be8b;
+    
+  width: 40em;
+  height: 40em;
+  border-radius: 20em; 
+
+ right: 60%;
+  position: relative;;
+ 
+}
+.features
+{
+  width: 10em;
+  height: 10em;
+  border-radius: 5em;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  background-color: palevioletred;
+  position: absolute;
+
+ 
+  
+}
+
+
+#unlock
+{
+  
+
+ animation-name:unlock-anime;
+ animation-duration: 10s;
+ animation-iteration-count: infinite;
+
+  
+}
+#scroll
+{
+ 
+  animation-name:scroll-anime;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+}
+#cloud
+{
+
+ animation-name:cloud-anime;
+ animation-duration: 10s;
+ animation-iteration-count: infinite;
+}
+#all-devices
+{
+ 
+  animation-name:all-devices-anime;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  
+}
+#chat
+{
+ 
+  animation-name:chat-anime;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  
+
+  
+  
+}
+.feature-unlock
+{
+  
+  padding: 0.3em;
+  width: 10em;
+  
+}
+.feature-rest
+{
+  padding: 0.3em;
+  width: 10em;
+
+}
+.feature-scroll
+{
+  margin-left: 5em;
+  
+  width: 10em;
+  padding: 0.3em;
+}
+.feature-cloud
+{
+  
+  width: 15em;
+  
+  
 }

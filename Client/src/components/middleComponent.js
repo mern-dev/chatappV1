@@ -118,7 +118,7 @@ componentDidUpdate()
     { 
       container.style.scrollBehavior="auto";
       
-     container.scrollTop=t.offsetTop-container.offsetHeight+30;
+     container.scrollTop=t.offsetTop-container.offsetTop-container.clientHeight/2;
         container.style.scrollBehavior="smooth"
     
 
@@ -355,12 +355,12 @@ handleScroll = e =>{
             
             if(t)
             { 
-              if( container.scrollTop===t[0].offsetTop-container.offsetHeight+30)
+              if( container.scrollTop===t[0].offsetTop-container.offsetTop-container.clientHeight/2)
               {
                 this.autoScroll();
               }
              
-             else container.scrollTop=t[0].offsetTop-container.offsetHeight+30;
+             else container.scrollTop=t[0].offsetTop-container.offsetTop-container.clientHeight/2;
 
                
             }
@@ -417,7 +417,7 @@ handleScroll = e =>{
                              {  lastmsg=m;
                               return( 
                                 
-                                <li key={m.id} id="sendTop">
+                                <li key={m.id} id="sendTop" className="middle-message">
                                
                                 <p className="date-main">{this.formatDisplay(m)}</p>
                                
@@ -429,7 +429,7 @@ handleScroll = e =>{
                              {  lastmsg=m;
                               return( 
                             
-                                <li key={m.id} id="send">
+                                <li key={m.id} id="send" className="middle-message">
                               
                              <SendMessage msgBody={m.msgBody}  sentTime={m.sentTime} status={{sent:m.sent,delivered:m.delivered,seen:m.seen}}/>
                              </li>)
@@ -459,7 +459,7 @@ handleScroll = e =>{
                              
                              
                                 
-                                  <li key={m.id}  id="receiveTop">
+                                  <li key={m.id}  id="receiveTop" className="middle-message">
                                    {!m.seen?<p className="unread-msg-in-room">{this.newmsgFormat(cnt)}</p>:<span></span>}
                                   <p className="date-main">{this.formatDisplay(m)}</p> 
                                  
@@ -472,7 +472,7 @@ handleScroll = e =>{
                            else{
                            
                             lastmsg=m;
-                            return (<li key={m.id}   id="receive" >
+                            return (<li key={m.id}   id="receive" className="middle-message">
                                {!m.seen?<p className="unread-msg-in-room">{this.newmsgFormat(cnt)}</p>:<span></span>}
                               <ReceiveMessage msgBody={m.msgBody}  sentTime={m.sentTime} />
                               </li>)

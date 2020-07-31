@@ -106,6 +106,13 @@ class RightComponent extends Component {
            downarrow.style.opacity="1";
            downarrow.style.pointerEvents="auto";
        }
+       else
+       {
+        uparrow.style.opacity="1";
+        uparrow.style.pointerEvents="auto";
+        downarrow.style.opacity="1";
+        downarrow.style.pointerEvents="auto";
+       }
   
       
        
@@ -142,6 +149,13 @@ class RightComponent extends Component {
         uparrow.style.pointerEvents="none";
         downarrow.style.opacity="1";
         downarrow.style.pointerEvents="auto";
+    }
+    else
+    {
+     uparrow.style.opacity="1";
+     uparrow.style.pointerEvents="auto";
+     downarrow.style.opacity="1";
+     downarrow.style.pointerEvents="auto";
     }
   
    const container = document.getElementById('searchChatScroll')
@@ -491,7 +505,7 @@ class RightComponent extends Component {
 
                         }}><img src="images/down-arrow-sea.png" alt='#' className="downarrow" /></div>
 
-                     <div className="search-no-messages ">{this.state.arrId.length}</div>
+                     <div className="search-no-messages ">{this.state.arrId.length} matches</div>
 
                         <div className="arrows" id="up-arrow" onClick={(e) => {
                              if(this.state.arrId!==[])
