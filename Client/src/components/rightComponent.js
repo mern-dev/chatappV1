@@ -1,4 +1,4 @@
-import React, { Component  } from "react";
+import React, { Component } from "react";
 import { UserContext } from '../contexts/userContext'
 import ReceiveMessage from "./chatComponents/receivemessage"
 import SendMessage from './chatComponents/sendmessage';
@@ -13,25 +13,37 @@ class RightComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+
+            startDate: false,
+            endDate: false,
+
             word: '',
             tog: true,
             arrId: [],
             arrMsg: [],
             lastmsg: null,
+
+            i: 0,
+         
+            start:'',
+            end: new Date(),
+           
+
             arrPos:[],
            
             data: true,
             date:"",
             flagdate:false
 
+
         };
         this.cancel = '';
         this.handleChange = this.handleChange.bind(this);
        
         this.handleScroll = this.handleScroll.bind(this);
+
        
-       
+
     }
     formatDisplay = (msg) => {
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -72,21 +84,12 @@ class RightComponent extends Component {
         const name = e.target.name;
         const value = e.target.value;
         this.setState({ ...this.state, [name]: value, data: false });
-        // if (name === 'word') {
-        //     if (this.cancel) {
-        //         this.cancel.cancel();
-        //     }
-        //     this.cancel = axios.CancelToken.source();
 
-        //     axios.get(`/getWord/${id}/${receiver._id}/${value}`, {
-        //         cancelToken: this.cancel.token
-        //     }).then(res => {
-        //         console.log(res.data)
-
-        //     })
-
-        // }
     }
+
+
+
+ 
 
     handleCountDown = (i) => {
    
@@ -178,6 +181,7 @@ class RightComponent extends Component {
         
         
         const { receiver, id } = this.context;
+      if (!(this.state.startDate && this.state.endDate)){
          
         axios.get(`/getWord/${id}/${receiver._id}/${this.state.word.trim()}`)
             .then(res => {
@@ -279,30 +283,47 @@ class RightComponent extends Component {
                        }
                  
             })
-
         
+        
+      }
+      else 
+      {
+        
+                console.log('with date');
+            axios.get(`/getWord/${id}/${receiver._id}/${this.state.word}/${this.state.start}/${this.state.end}`)
+                .then(res => {
+                    this.setState({ ...this.state, arrId: res.data.arrId, arrMsg: res.data.arrMsg })
 
-          
-           
+                    console.log(this.state.arrId);
+
+
+                    if (res.data.arrId.length === 0) {
+                        this.setState({ data: true })
+                    }
+                    else {
+                        this.setState({ data: false })
+                    }
+        
+      }
+
 
     }
     handleScroll() {
 
-      
+
+        this.setState({ flagdate: true })
         const container = document.getElementById("searchChatScroll");
         let t = container.querySelectorAll(".date-main")
-      
-        for(let i=0;i<t.length;i++)
-        { 
-   
-          if(t[i].offsetTop<container.scrollTop+80)
-          {  
-           
-           this.setState({date:t[i].textContent})
-          }
-         
-          
-        }
+
+        for (let i = 0; i < t.length; i++) { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+
+            if (t[i].offsetTop - 120 < container.scrollTop) {
+                console.log("lll")
+                this.date = t[i].textContent
+
+            }
+
+
         document.querySelector(".date-right").style.display="table";
 
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
@@ -383,18 +404,12 @@ class RightComponent extends Component {
 
                     </div>
 
-
-
-
-
-
-
                 </div>
 
             )
         }
         else {
-           
+
             return (
 
                 <div className='rightHome' >
@@ -405,19 +420,32 @@ class RightComponent extends Component {
                         }} />
                         <input type="text" className='rc-searchBar' name="word" value={this.state.word} onChange={this.handleChange} />
 
-                        <button type='button' onClick={this.handleSubmit}> <i className="fa fa-search" aria-hidden="true"></i> Search</button>
-                       
-                     
-                        
+
+                        <button type='submit' onClick={this.handleSubmit}> <i class="fa fa-search" aria-hidden="true"></i>Search</button>
+
+
+
+
 
                     </div>
+                    <div>
+                        <input type='date' name='start'  onChange={(e) => {
+                            this.setState({...this.state,startDate:true,start:e.target.value})
+                          
+                        }} />
+                        <input type='date' name='end' onChange={(e) => {
+                              this.setState({...this.state,endDate:true,end:e.target.value})
+                              }} />
+                    </div>
 
-                    {this.state.arrMsg.length ?
+                    {this.state.arrMsg.length ? <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
+
+
                    
-                    <div className="chatScroll" id='searchChatScroll' onScroll={this.handleScroll}>
-                       
+                   
 
                     <div className="outer-div"> <p className="date-right">{this.state.date}</p> </div>
+
 
                         <ul className="list-none">
                             {
