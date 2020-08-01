@@ -14,6 +14,7 @@ class UserContextProvider extends Component {
      this.state={
       user: {},
       id:"",
+      username:"",
       middleFlag:false,
       receiver:{},
       messages:[],
@@ -25,6 +26,10 @@ class UserContextProvider extends Component {
    }
    
 
+   }
+   updateId = (user) =>
+   {
+     this.setState({id:user.id,username:user.username});
    }
    updateBottom = value =>
    {
@@ -532,7 +537,7 @@ seenInContext = (id) =>
   
     
     return (
-      <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
+      <UserContext.Provider value={{...this.state,updateId:this.updateId,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
         seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate}}>
         {this.props.children}
       </UserContext.Provider>

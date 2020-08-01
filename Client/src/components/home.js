@@ -33,17 +33,7 @@ class Home extends Component {
        
        
       
-        let token = window.localStorage.getItem("token")
        
-       
-        
-        if(!token)
-        {
-           
-         
-            window.location = '/'
-          
-        }
        
        
         const mq_wt = window.matchMedia( "(min-width: 0em) and (max-width: 59em)" );
