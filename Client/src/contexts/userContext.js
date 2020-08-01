@@ -22,10 +22,38 @@ class UserContextProvider extends Component {
       seenUpdateMessages:[],
       onlineBottom:false,
       Bottom:false,
+      word:'',
+      arrMsg:'',
+      arrPos:'',
+      arrId:'',
+      tog:true,
+      data:true
    }
-   
+
+  
 
    }
+updateData = (val)=>{
+  this.setState({ ...this.state, data:val})
+}
+updateSearch=()=>{
+  
+  this.setState({ ...this.state, tog:true,arrId:[],arrMsg:[],arrPos:[],word:''})
+}
+
+updateTog = () =>{
+  this.setState({ ...this.state, tog: !this.state.tog , arrId:[],arrMsg:[],arrPos:[],word:''})
+}
+
+   updateRight = e=>{
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ ...this.state, [name]: value, data: false });
+   }
+   updateRes = (val)=>{
+    this.setState({  arrId: val.arrId, arrPos: val.arrPos, arrMsg: val.arrMsg })
+   }
+   
    updateBottom = value =>
    {
            this.setState({Bottom:value})
@@ -75,7 +103,7 @@ scrollUpdate =(messagesw)=>
           this.setState({user:res.data.detail})
         })
     }
-    const point = "http://192.168.1.4:3000/";
+    const point = "http://localhost:3000/";
     this.socket = io(point);
   
 
@@ -410,7 +438,7 @@ scrollUpdate =(messagesw)=>
     var temp={}
      if(state.messages.length===0)
      {
-       messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,isOnline:state.receiver.isOnline,messages:[newMessage]}]
+       messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,isOnline:state.receiver.isOnline,messages:[newMessage],}]
      }
      else
      {
@@ -532,8 +560,8 @@ seenInContext = (id) =>
   
     
     return (
-      <UserContext.Provider value={{...this.state,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate}}>
+      <UserContext.Provider value={{...this.state,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
+        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
         {this.props.children}
       </UserContext.Provider>
     )

@@ -47,7 +47,7 @@ class Dp extends Component {
             let ls = file.name.split('.');
             let extension = ls[ls.length-1]
             console.log(extension);
-            if(file.name==='png' || file.name==='jpg' || file.name==='jpeg' || file.name==='jpe' || file.name==='jif' || file.name==='jfif' || file.name==='jfi' || file.name==='.webp'){ 
+            if(extension==='png' || extension==='jpg' || extension==='jpeg' || extension==='jpe' || extension==='jif' || extension==='jfif' || extension==='jfi' || extension==='.webp'){ 
             this.setState({...this.state, fileInfo: file });
             }
             else{

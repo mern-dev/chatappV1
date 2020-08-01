@@ -95,6 +95,17 @@ class ChatBrief extends Component {
       document.querySelector(".middleHome").style.display="flex";
       document.querySelector(".leftHome").style.display="none";
     }
+    if(width>60&&width<90)
+    {
+          const middle = document.querySelector(".middleHome").style.display;
+          if(middle==="none")
+          {
+           document.querySelector(".middleHome").style.display="flex";
+           document.querySelector(".rightHome").style.display='none';
+ 
+          }
+ 
+    }
   
   
    axios.get("/getDetail/"+user.id).then(res=>{
@@ -113,7 +124,7 @@ class ChatBrief extends Component {
   }
   
   render() { 
-  
+    const {updateSearch,middleFlag} = this.context;
     return ( 
       <div className='left-c '>
       <ul className="img-ul">
@@ -121,7 +132,13 @@ class ChatBrief extends Component {
       
     return (
     
-    <li className='img-li ' key={newmsg.Id} onClick={e => {this.openChat({id:newmsg.Id,cnt:this.unseenMsgForRoom(newmsg)})}}>
+    <li className='img-li ' key={newmsg.Id} onClick={e => {
+      this.openChat({id:newmsg.Id,cnt:this.unseenMsgForRoom(newmsg)})
+      
+          updateSearch()
+
+    
+                                                                }}>
    
       {newmsg.isOnline?<div className="img-chat"> <Avatar  alt="Cindy Baker" src={newmsg.path} /><div className="online-color"></div></div>:<Avatar alt="Cindy Baker" src={newmsg.path} />}
   

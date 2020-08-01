@@ -247,29 +247,49 @@ module.exports = function (app) {
         const arrNo = [];
         const arrMsg = [];
         const arrPos = [];
-        const arrMsgId=[];
+        const arrMsgId = [];
+        var x = req.params.word.split(" ")
+
+        const xArray = x.filter((val) => {
+          if (val[0] != ' ')
+            return val;
+        })
+        console.log(xArray);
 
         info.map((i) => {
           i.chats.map(chat => {
             chat.messages.map((msg) => {
-              x = req.params.word
-              y = msg.msgBody.slice(0,x.length)
-                       
-              // var a = new Date();
-              // var b = new Date();
-              // var c = new Date(b.getTime());   
-              // c.setDate(c.getDate() + 1);
-          
-              arrNo.push(msg)
-              if (y===x) {
-                arrId.push(msg.id)
-               
 
-                if (f == 0) {
-                  n = arrNo.length - 1;
-                  f = 1;                  
+              y = msg.msgBody.trim().split(" ")
+
+              const yArray = y.filter((val) => {
+                if (val[0] != ' ')
+                  return val;
+              })
+              console.log(yArray);
+
+              arrNo.push(msg)
+
+
+              for (var k = 0; k < xArray.length; k++) {
+                  var bol = false;
+                for (var m = 0; m < yArray.length; m++) {
+                  if (xArray[k] === yArray[m].slice(0,xArray[k].length)) {
+                    arrId.push(msg.id)
+
+
+                    if (f == 0) {
+                      n = arrNo.length - 1;
+                      f = 1;
+                    }
+                    bol = true;
+                    break;
+                  }
                 }
+                if(bol)
+                break;
               }
+
             })
           })
         })
@@ -279,20 +299,19 @@ module.exports = function (app) {
         for (var i = l; i < arrNo.length; i++) {
           arrMsg.push(arrNo[i]);
           arrMsgId.push(arrNo[i].id);
-          
+
         }
-        for(var i=0;i<arrId.length;i++){
-          arrPos[i]=arrMsgId.indexOf(arrId[i])
+        for (var i = 0; i < arrId.length; i++) {
+          arrPos[i] = arrMsgId.indexOf(arrId[i])
         }
-       
+
         if (info) {
           res.json({
 
             status: "success",
             arrId: arrId,
             arrMsg: arrMsg,
-            arrPos : arrPos
-          
+            arrPos: arrPos
 
 
           })
@@ -317,124 +336,102 @@ module.exports = function (app) {
         var arrId = [];
         const arrNo = [];
         const arrMsg = [];
+        const arrPos = [];
+        const arrMsgId = [];
         var t;
         var ZS = new Date(req.params.start);
         var ZE = new Date(req.params.end);
         var k;
-       console.log('before ',ZS,ZE);
+        console.log('before ', ZS, ZE);
 
-         if(ZS>ZE){
-            t=ZS;
-            ZS=ZE;
-            ZE=t;
-         }
-         console.log('after',ZS,ZE);
-         k = new Date(ZE.getTime())
-         k.setDate(k.getDate()+1);  
-         
-         ZE = k;
-         console.log('k',ZE,k);
+        if (ZS > ZE) {
+          t = ZS;
+          ZS = ZE;
+          ZE = t;
+        }
+        console.log('after', ZS, ZE);
+        k = new Date(ZE.getTime())
+        k.setDate(k.getDate() + 1);
+
+        ZE = k;
+        console.log('k', ZE, k);
+        var x = req.params.word.split(" ")
+
+        const xArray = x.filter((val) => {
+          if (val[0] != ' ')
+            return val;
+        })
 
         info.map((i) => {
           i.chats.map(chat => {
             chat.messages.map((msg) => {
-              x = req.params.word
-              y = msg.msgBody.slice(0,x.length)
-              z=msg.sentTime;
+              y = msg.msgBody.trim().split(" ")
+
+              const yArray = y.filter((val) => {
+                if (val[0] != ' ')
+                  return val;
+              })
+              console.log(yArray);
+              
+              z = msg.sentTime;
 
 
               arrNo.push(msg)
 
-              var  Y = z.getFullYear()
+              var Y = z.getFullYear()
               M = z.getMonth()
               D = z.getDate()
               HH = z.getHours()
               MM = z.getMinutes()
               SS = z.getSeconds()
-              var ZD = new Date(Y, M, D,HH,MM,SS);
+              var ZD = new Date(Y, M, D, HH, MM, SS);
 
-              console.log(ZD,ZS,ZE);
+              console.log(ZD, ZS, ZE);
 
-              if(ZD>=ZS && ZD<=ZE)
-              {
-    
-              if (y===x)
-             {
-                arrId.push(msg.id)
-
-            
-
-                if (f == 0) {
-                  n = arrNo.length - 1;
-                  f = 1;
-
-          var n;
-          var f=0;
-          var arrId=[];
-          const arrNo=[];
-          const arrMsg =[];
-          const arrMsgId=[];
-          const arrPos=[];
-        
-          info.map((i)=>{
-            i.chats.map(chat=>{
-              chat.messages.map((msg)=>{
-                x = req.params.word
-                y = msg.msgBody
-  
-  
-                arrNo.push(msg)
-                if(y.includes(x) )
-                {
+              if (ZD >= ZS && ZD <= ZE) {
+                
+               
+              for (var k = 0; k < xArray.length; k++) {
+                var bol = false;
+              for (var m = 0; m < yArray.length; m++) {
+                if (xArray[k] === yArray[m].slice(0,xArray[k].length)) {
                   arrId.push(msg.id)
 
-                  if(f==0){
-                  n=arrNo.length-1;
-                  f=1;
+
+                  if (f == 0) {
+                    n = arrNo.length - 1;
+                    f = 1;
                   }
-                  
-                  
-
-                
+                  bol = true;
+                  break;
                 }
-
-
-              })
-          
+              }
+              if(bol)
+              break;
+            }
+              }
             })
           })
-
-        }
+        })
         var l = n - 4;
         l < 0 ? l = 0 : l = l;
 
-  
-          for(var i=l;i<arrNo.length;i++){
-            arrMsg.push(arrNo[i]);
-            arrMsgId.push(arrNo[i].id);
-          }
-          for(var i=0;i<arrId.length;i++)
-          {
-            arrPos[i]= arrMsgId.indexOf(arrId[i])
-          }
-            if (arrId.length) {
-              res.json({
-  
-                status: "success",
-                arrId : arrId,
-                arrMsg:arrMsg,
-                arrPos:arrPos});
-            }  
+        for (var i = l; i < arrNo.length; i++) {
+          arrMsg.push(arrNo[i]);
+          arrMsgId.push(arrNo[i].id);
 
+        }
+        for (var i = 0; i < arrId.length; i++) {
+          arrPos[i] = arrMsgId.indexOf(arrId[i])
+        }
 
-      
         if (info) {
           res.json({
 
             status: "success",
             arrId: arrId,
-            arrMsg: arrMsg
-            // arrNo:arrNo
+            arrMsg: arrMsg,
+            arrPos: arrPos
 
 
           })
@@ -443,15 +440,9 @@ module.exports = function (app) {
           res.json({
             status: "error"
           })
-    
+        }
       }
-        
-    }
-  }
-})
-        })
-    })
-   
-        })})
+    )
+  })
 
-      }
+}    
