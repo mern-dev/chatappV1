@@ -381,7 +381,7 @@ span[id="right"] {
  }
 }
 
-/* @media only screen and (max-height: 41em) {
+@media only screen and (max-height: 41em) {
   #right {
     display: none;
   }
@@ -407,9 +407,9 @@ span[id="right"] {
     bottom: 0;
     border-radius: 0;
   }
+
   
-  
-} */
+}
 
 @media only screen and (max-width: 60em) {
   #middle {
@@ -1316,18 +1316,20 @@ flex:1;
   height: 16em;
   overflow: hidden;
   margin-top: 1em;
-  
-  
+
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 8rem; 
 
 }
 .dp-setting
 {
   width: fit-content;
-     display: flex;
-  margin-right: auto;
-  margin-left: auto;
+  align-items: center;
+  display: flex;
  position: relative;
+ margin-left: auto;
+ margin-right: auto;
  flex-direction: column;
 
 }

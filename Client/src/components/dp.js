@@ -103,7 +103,7 @@ class Dp extends Component {
             <div className="FormContent">
                 
                   <div className="heading-form" >
-                            Hi {username},<div className="setting-profile-text">set your profile</div>
+                            Hi {username} ,<div className="setting-profile-text">set your profile</div>
                               </div>
                               <div className="button-signup skip-button" onClick={()=>{ this.setState({updateUser:true});window.location='/home'}}>Skip</div>
                  <div className="inputFrom">

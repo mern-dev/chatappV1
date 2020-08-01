@@ -14,13 +14,33 @@ const Form = (props) => {
       
     const token = window.localStorage.getItem('token');
         var showupdateUser = false;
+        var chatflag =false;
     if (token) {
        showupdateUser=true;
     }
    
    
     const { stateSignup, handleChange,handleClick, validateForm, toggle, tog,stopAnime } = props;
-  
+    const mq_ht = window.matchMedia( "(min-height:  41em)" );
+    const HeightChange = (mq_ht)=>
+    {  
+       if(!mq_ht.matches)
+       { 
+           
+          if(stateSignup.newUser)
+          {
+              chatflag = true;
+          }
+       }
+     
+    
+     }
+     if(mq_ht)
+         {
+         mq_ht.addListener(HeightChange);
+       HeightChange(mq_ht);
+
+         }
    
     return (
         <div className="home" id="formApp">
@@ -30,9 +50,9 @@ const Form = (props) => {
 
                 <div className="chatBox FrontPage">
                 
-                <div id="Header-text">
+                {!chatflag?<div id="Header-text">
                           Chat app
-                      </div>
+                      </div>:<span></span>}
                    <div id="app-feature" className="app-feature-content">
                
                   <div  className="circular-section" >
