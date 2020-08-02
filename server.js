@@ -30,11 +30,26 @@ app.use(bodyParser.urlencoded())
 
 app.use(bodyParser.json());
 
+app.post("/status",(req,res)=>
+{
+     User.findOneAndUpdate({username:req.body.username},{status:req.body.status},null,function(err,docs){
 
+       if(err)
+       {
+         console.log(err);
+         res.json({status:"error"})
+       }
+       else{
+         res.json({
+           status:"success"
+
+         })
+       }
+     })
+})
 
 app.post('/dp',(req,res)=>{
-  console.log(req.files,req.files,req.files.image);
- // res.send(req.files);
+
    let file = req.files.image;
 
    let ls = file.name.split('.');
@@ -43,12 +58,11 @@ app.post('/dp',(req,res)=>{
    file.mv(`uploads/${req.body.name}.${extension}`,(err)=>{
      if(err){
        console.log(err)
-      // res.status(500).send(err);
+      
      }
      else{
       User.findOneAndUpdate({username:req.body.name},  
-        {path:`uploads/${req.body.name}.${extension}`,
-     status: req.body.status }, null, function (err, docs) { 
+        {path:`uploads/${req.body.name}.${extension}`}, null, function (err, docs) { 
         if (err){ 
             console.log(err) 
         } 

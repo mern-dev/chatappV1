@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Form from './form';
-
-
+import  { UserContext } from '../contexts/userContext'
+import jwt_decode from "jwt-decode";
 
 export default class Login extends Component {
-
+    static contextType = UserContext
     constructor(props) {
         super(props);
 
@@ -21,9 +21,18 @@ export default class Login extends Component {
             passerror: false
         }
 
-
+        
     }
 
+   stopAnime = () =>
+    {  
+    //    document.getElementById("unlock").style.animationPlayState="paused"   
+    //    document.getElementById("scroll").style.animationPlayState="paused"   
+    //    document.getElementById("all-devices").style.animationPlayState="paused"   
+    //    document.getElementById("chat").style.animationPlayState="paused"   
+    //    document.getElementById("cloud").style.animationPlayState="paused"  
+        
+    }
 
     validateForm() {
         return true;
@@ -49,7 +58,7 @@ export default class Login extends Component {
             username: this.state.username,
             password: this.state.password
         }
-
+       const {updateId} = this.context
         axios.post('/login', userr)
             .then(res => {
 
@@ -63,6 +72,8 @@ export default class Login extends Component {
 
                     this.setState({ token: this.state.token })
                     window.localStorage.setItem("token",res.data.token)
+                    const decode = jwt_decode(res.data.token);
+                    updateId({id:decode._id,username:decode.username});
                     window.location = '/Home'
 
                
@@ -86,7 +97,7 @@ export default class Login extends Component {
         return (
 
             <div>
-                < Form tog={this.props.tog} state={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
+                < Form tog={this.props.tog} stateSignup={this.state} stopAnime={this.stopAnime} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
         );
     }

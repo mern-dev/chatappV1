@@ -19,11 +19,11 @@ class ChatBrief extends Component {
        let weekDay = days[lastSeen.getDay()]
        let year = lastSeen.getFullYear().toString().slice(-2);
        let month =lastSeen.getMonth()+1;
-
+       
        if(temp_now.getFullYear()!==lastSeen.getFullYear()||temp_now.getMonth()!==lastSeen.getMonth())
         {
               
-               return day+"/"+lastSeen.getMonth()+"/"+year
+               return day+"/"+month+"/"+year
         }
         if(temp_now.getMonth()===lastSeen.getMonth())
         {
@@ -95,6 +95,7 @@ class ChatBrief extends Component {
       document.querySelector(".middleHome").style.display="flex";
       document.querySelector(".leftHome").style.display="none";
     }
+
     if(width>60&&width<90)
     {
           const middle = document.querySelector(".middleHome").style.display;
@@ -107,6 +108,7 @@ class ChatBrief extends Component {
  
     }
   
+
   
    axios.get("/getDetail/"+user.id).then(res=>{
    

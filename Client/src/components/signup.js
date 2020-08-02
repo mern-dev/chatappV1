@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Form from './form';
-
-
+import  { UserContext } from '../contexts/userContext'
+import jwt_decode from "jwt-decode";
 
 
 export default class Signup extends Component {
-
+    static contextType = UserContext
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -19,16 +19,25 @@ export default class Signup extends Component {
             token: "",
             usererror: true,
             passerror: false,
-            matcherror:false
+            matcherror:false,
+            newUser:false,
 
         }
         this.cancel = '';
 
     }
     componentDidMount() {
-        // if (window.localStorage.getItem('token')) {
-        //     window.location = '/dp'
-        // }
+        let token = window.localStorage.getItem("token")
+       
+       
+        
+        if(!token)
+        {
+           
+         
+            // window.location = '/'
+          
+        }
     }
 
 
@@ -52,7 +61,7 @@ export default class Signup extends Component {
 
 
 
-        //console.log("signup")
+     
         if (name === "username" && value.length>4) {
             if (this.cancel) {
                 this.cancel.cancel();
@@ -81,12 +90,13 @@ export default class Signup extends Component {
 
     handleClick(e) {
         e.preventDefault();
-        const user = {
+        const user =
+         {
             username: this.state.username,
             password: this.state.password
         }
  
-    
+     const {updateId} = this.context;
 
         axios.post('/signup', user)
             .then(res => {
@@ -94,16 +104,17 @@ export default class Signup extends Component {
 
                 if (res.data.status === 'error') {
 
-                    window.location = '/error'
+                   alert("error")
                 }
-                else {
+                else
+                 {
 
-                    this.setState({ token: res.data.token })
+                    this.setState({ token: res.data.token,newUser:true })
                     window.localStorage.setItem('token', this.state.token);
-                    //const decode = jwt_decode(res.data.token);
+                    const decode = jwt_decode(this.state.token);
+                    updateId({id:decode._id,username:decode.username});
                     
-                    
-                 window.location = '/dp'
+                   
                 }
             });
 
@@ -119,7 +130,7 @@ export default class Signup extends Component {
     render() {
         return (
             <div>
-                < Form tog={this.props.tog} state={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
+                < Form tog={this.props.tog} stateSignup={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
 
         );

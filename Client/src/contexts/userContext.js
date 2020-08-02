@@ -14,6 +14,7 @@ class UserContextProvider extends Component {
      this.state={
       user: {},
       id:"",
+      username:"",
       middleFlag:false,
       receiver:{},
       messages:[],
@@ -53,7 +54,12 @@ updateTog = () =>{
    updateRes = (val)=>{
     this.setState({  arrId: val.arrId, arrPos: val.arrPos, arrMsg: val.arrMsg })
    }
-   
+
+   updateId = (user) =>
+   {
+     this.setState({id:user.id,username:user.username});
+   }
+
    updateBottom = value =>
    {
            this.setState({Bottom:value})
@@ -560,8 +566,11 @@ seenInContext = (id) =>
   
     
     return (
-      <UserContext.Provider value={{...this.state,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
+
+      <UserContext.Provider value={{...this.state,updateId:this.updateId,,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
         seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
+
+  
         {this.props.children}
       </UserContext.Provider>
     )

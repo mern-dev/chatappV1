@@ -33,23 +33,13 @@ class Home extends Component {
        
        
       
-        let token = window.localStorage.getItem("token")
        
-       
-        
-        if(!token)
-        {
-           
-         
-            window.location = '/'
-          
-        }
        
        
         const mq_wt = window.matchMedia( "(min-width: 0em) and (max-width: 59em)" );
         const mq_wt2 = window.matchMedia( "(min-width: 61em) and (max-width: 89em)" );
         const mq_wt3 = window.matchMedia( "(min-width: 90em) and (max-width: 200em)" );
-        //const mq_ht = window.matchMedia( "(min-height:  41em)" );
+        // const mq_ht = window.matchMedia( "(min-height:  41em)" );
         
     
     
@@ -98,7 +88,7 @@ class Home extends Component {
          
           }
     
-          //   const HeightChange = (mq_ht)=>
+        //     const HeightChange = (mq_ht)=>
         //  {  
         //     if(!mq_ht.matches)
         //     { 
