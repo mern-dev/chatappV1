@@ -181,7 +181,9 @@ class RightComponent extends Component {
 
 
 
-        const { receiver, id, word, updateRes, arrId, arrPos, updateData } = this.context;
+        const { receiver, id, word, updateRes, updateData } = this.context;
+
+        updateRes({ arrId: [], arrMsg: [], arrPos: [] })
         if (!(this.state.startDate && this.state.endDate)) {
 
             console.log("without date");
@@ -256,7 +258,7 @@ class RightComponent extends Component {
 
                         updateData(false);
                         updateRes(res.data);
-                        for (var j = 0; j < arrId.length; j++)
+                        for (var j = 0; j < res.data.arrId.length; j++)
 
                             document.getElementById(`${res.data.arrId[j]}`).innerHTML = hightlight(document.getElementById(`${res.data.arrId[j]}`).textContent);
                         const uparrow = document.getElementById("up-arrow");
@@ -269,11 +271,14 @@ class RightComponent extends Component {
 
                         }
 
-                        const container = document.getElementById('searchChatScroll'); if (container) {
+                        const container = document.getElementById('searchChatScroll');
+                         if (container)
+                          {
                             const t = container.querySelectorAll(".search-message");
                             if (t) {
-                                t[arrPos[0]].style.backgroundColor = "#f4f6ff17"
-                                container.scrollTop = t[arrPos[0]].offsetTop - container.offsetTop - container.clientHeight / 2;
+                               t[res.data.arrPos[0]].style.backgroundColor = "#f4f6ff17"
+                               container.scrollTop = t[res.data.arrPos[0]].offsetTop - container.offsetTop - container.clientHeight / 2;
+                              
                             }
                         }
 
@@ -372,7 +377,7 @@ class RightComponent extends Component {
                         updateRes(res.data);
 
 
-                        for (var j = 0; j < arrId.length; j++)
+                        for (var j = 0; j < res.data.arrId.length; j++)
 
                             document.getElementById(`${res.data.arrId[j]}`).innerHTML = hightlight(document.getElementById(`${res.data.arrId[j]}`).textContent);
                         const uparrow = document.getElementById("up-arrow");
@@ -388,10 +393,11 @@ class RightComponent extends Component {
                         const container = document.getElementById('searchChatScroll'); if (container) {
                             const t = container.querySelectorAll(".search-message");
                             if (t) {
-                                t[arrPos[0]].style.backgroundColor = "#f4f6ff17"
-                                container.scrollTop = t[arrPos[0]].offsetTop - container.offsetTop - container.clientHeight / 2;
+                                t[res.data.arrPos[0]].style.backgroundColor = "#f4f6ff17"
+                                container.scrollTop = t[res.data.arrPos[0]].offsetTop - container.offsetTop - container.clientHeight / 2;
                             }
                         }
+
 
 
 

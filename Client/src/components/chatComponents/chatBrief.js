@@ -126,7 +126,7 @@ class ChatBrief extends Component {
   }
   
   render() { 
-    const {updateSearch,middleFlag} = this.context;
+    const {updateSearch} = this.context;
     return ( 
       <div className='left-c '>
       <ul className="img-ul">
