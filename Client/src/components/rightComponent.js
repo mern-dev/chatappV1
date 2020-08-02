@@ -458,8 +458,18 @@ class RightComponent extends Component {
 
     backtomiddle = () => {
 
-        document.querySelector(".rightHome").style.display = "none";
+        document.querySelector(".middleHome").style.animation = "none" 
+        
+        document.querySelector(".rightHome").style.animation="close-chat-anime 0.15s linear 1";
+       
         document.querySelector(".middleHome").style.display = "flex";
+ 
+  setTimeout(function(){
+    
+    document.querySelector(".rightHome").style.display = "none";
+    
+  },90)
+
 
     }
 

@@ -94,14 +94,15 @@ componentDidUpdate()
   
   
   const {middleFlag,cnt, onlineBottom,Bottom,updateBottom} = this.context;
+  console.log("ooo",middleFlag,cnt,onlineBottom,Bottom)
   const container = document.getElementById("chatScroll");
   if(cnt&&container&&middleFlag)
   {
     let t = container.querySelectorAll(".unread-msg-in-room");
-    if(t)
+    if(t.length)
     {
       
-        
+        t[0].parentNode.style.marginBottom ="4px"
       for(let i=1;i<t.length;i++)
         {
           t[i].style.display="none"
@@ -126,10 +127,10 @@ componentDidUpdate()
   
 
   }
-  else if(middleFlag&&onlineBottom&&container)
+ else if(middleFlag&&onlineBottom&&container)
   {
  
- 
+  
      
      container.style.scrollBehavior="auto";
      container.scrollTop=container.scrollHeight;
@@ -137,8 +138,8 @@ componentDidUpdate()
    
     
   }
- else if(Bottom)
-  {
+ else if(Bottom&&container)
+  { 
      container.style.scrollBehavior="auto";
      container.scrollTop=container.scrollHeight;
      container.style.scrollBehavior="smooth";
@@ -167,8 +168,17 @@ const {updatecnt,seenInContext,receiver, onlineBottomUpdate} = this.context
   onlineBottomUpdate(false);
   seenInContext(receiver._id);
   updatecnt(0);
+  
+  document.querySelector(".middleHome").style.animation="close-chat-anime 0.15s linear 1"
   document.querySelector(".leftHome").style.display="flex";
-  document.querySelector(".middleHome").style.display="none";
+ 
+  setTimeout(function(){
+    
+    document.querySelector(".middleHome").style.display="none"
+    
+  },90)
+ 
+
   
 }
   
@@ -183,9 +193,15 @@ openSearch = () =>{
     {
       if(container.scrollHeight-container.scrollTop!==container.offsetHeight)
                 document.getElementById("myBtn").style.display="grid";
-      document.querySelector(".middleHome").style.display="none";
+                document.querySelector(".rightHome").style.display="flex";
+                document.querySelector(".rightHome").style.animation="open-chat-anime 0.15s linear 1"
+                setTimeout(function(){
+                  document.querySelector(".middleHome").style.display="none";
+                },90)
+   
+
       
-      document.querySelector(".rightHome").style.display="flex";
+      
     }
 
   
@@ -204,7 +220,7 @@ handleScroll = e =>{
      let t = container.querySelectorAll(".date-main")
    
      for(let i=0;i<t.length;i++)
-     { //console.log(t[i].nextSibling.clientHeight,t[i].offsetTop)
+     {
          
        if(t[i].offsetTop<container.scrollTop+120)
        { 
@@ -285,6 +301,13 @@ handleScroll = e =>{
     {
       return null;
     } 
+    const container = document.getElementById("chatScroll");
+    let t = container.querySelectorAll(".unread-msg-in-room");
+    if(t.length)
+    {
+        
+        t[0].parentNode.style.marginBottom ="-2px"
+    }
     onlineBottomUpdate(true)
     updatecnt(0)
     seenInContext(receiver._id)
@@ -343,25 +366,45 @@ handleScroll = e =>{
     }
     softKeyboardView = () =>
     {
-
+      let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+      let width = window.innerWidth / em
+      let height = window.innerHeight/ em
+      if(width<60||height<41)
+      {
+       
+        document.querySelector(".home").style.height ="50vh";
+        document.body.style.overflow = "hidden";
+       
+      }
+     
     }
+    hideSoftKeyboardView = () =>
+    {
+      let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+      let width = window.innerWidth / em
+      let height = window.innerHeight/ em
+      if(width<60||height<41)
+      {
+       
+        document.querySelector(".home").style.height ="100%"
+        
+       
+      }
+    }
+
    scrollButtonPress = () =>
     {    
-          const {cnt} = this.context;
+          const {cntifup,updatecntifup} = this.context;
           const container = document.getElementById("chatScroll");
-          if(cnt)
+          if(cntifup)
           {
             let t = container.querySelectorAll(".unread-msg-in-room");
             
             if(t)
             { 
-              if( container.scrollTop===t[0].offsetTop-container.offsetTop-container.clientHeight/2)
-              {
-                this.autoScroll();
-              }
-             
-             else container.scrollTop=t[0].offsetTop-container.offsetTop-container.clientHeight/2;
+              container.scrollTop=t[0].offsetTop-container.offsetTop-container.clientHeight/2;
 
+               updatecntifup();
                
             }
           }
@@ -376,11 +419,11 @@ handleScroll = e =>{
 
    
     render() { 
-         const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom,cnt} = this.context;
+         const { receiver,middleFlag,messages,changeMsgBody,msgBody,seenOnRoom,cnt,cntifup} = this.context;
        
         
         return( 
-            middleFlag? <div className="middleHome" id="middle" >
+            middleFlag? <div className="middleHome"  id="middle" >
               <div className="middleHomeHeader" >
                
            
@@ -492,15 +535,15 @@ handleScroll = e =>{
                      )} 
                </ul>
                
-                    <div onClick={this.scrollButtonPress} id="myBtn" title="press to go down"><img src="images/down-arrow.png"alt="#" className="down-arrow"/>{cnt?<div className='unseen-msg'><p className="center-cnt">{cnt}</p></div>:<span></span>}</div>
+                    <div onClick={this.scrollButtonPress} id="myBtn" title="press to go down"><img src="images/down-arrow.png"alt="#" className="down-arrow"/>{cntifup?<div className='unseen-msg'><p className="center-cnt">{cntifup}</p></div>:<span></span>}</div>
                    
-                 </div>
-                 <div id="chatInputBox" >
-                 <input onClick={this.softKeyboardView} onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
+                 </div >
+                 <div onBlur={this.hideSoftKeyboardView} id="chatInputBox" >
+                 <input onClick={this.softKeyboardView}  onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
                 
             
               
-                  <button onClick={this.send}  className="messageButton">Send</button>
+                  <button onClick={e=>{this.send()}}  className="messageButton">Send</button>
              </div>
              
     </div>:

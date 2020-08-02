@@ -236,7 +236,7 @@ html {
 }
 .header-username-section:active
 {
-    background-color: #f4f6ff17;
+    opacity: 0.5;
 }
 .chatScroll {
   overflow-y: scroll;
@@ -296,9 +296,9 @@ html {
   color: grey;
 }
 .messageInput {
-  flex: 3;
+  flex: 1;
   border: none;
-  padding-top: 0.5em;
+
   outline: none;
    width: 15em;
   background-color: rgba(0, 0, 0, 0);
@@ -460,15 +460,16 @@ span[id="right"] {
 .date-main {
   clear: both;
 
- 
+  position: relative;
 
   color: white;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.199);
   width: fit-content;
-  
+  display: table;
   margin-left: auto;
   margin-top: 0.3em;
+  
   margin-right: auto;
   padding: 0.3em;
   border-radius: 5px;
@@ -489,13 +490,13 @@ span[id="right"] {
   color: white;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.199);
-
-  position: relative;
-  clear: both;
+  
+  margin-top: 6px;
+  margin-bottom: 16px;
   margin-left: auto;
   margin-right: auto;
 
-  margin-top: 1em;
+  
   padding: 0.3em;
 
   font-size: small;
@@ -601,6 +602,7 @@ span[id="right"] {
 
 .sendmsg {
   padding: 0.5em;
+
   padding-right: 0.75em;
   padding-left: 0.6em;
   max-width: 16em;
@@ -683,47 +685,28 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
   display: none;
 }
 
-li#receiveTop + li#receive
+/* #sendTop + #send 
 {
-  margin-top: 0.3em;
-  
+  margin-top: 2px;
 }
-li#sendTop + li#send
+#receiveTop + #receive
 {
-  margin-top: 0.3em;
-  
+  margin-top: 2px;
+} */
+
+#send + #receive
+{
+  margin-top: 14px;
+}
+#receive + #send
+{
+  margin-top:14px;
 }
 
-li#receive + li#receive
-{
-  margin-top: -3px;
-  
-}
-li#send + li#send
-{
-  margin-top: -3px;
- 
-}
 
-li#send + li#receive
-{
-  margin-top: 1em;
 
-}
-li#receive + li#send
-{
-  margin-top: 1em;
 
-}
 
- li#receiveTop  {
-  
-  margin-top: 1.5em;
-}
- li#sendTop  {
-  
-  margin-top: 1.5em;
-}
 
 
 
@@ -817,6 +800,23 @@ li#receive + li#send
 .searchIcon {
   color: rgb(161, 136, 136);
 }
+.ProfileButton
+{
+  background-color: inherit;
+  outline: none;
+  border: none;
+  position: absolute;
+
+  top: 0;
+  right: 0;
+}
+.ProfileButton:focus
+{
+  outline: none;
+}
+.ProfileButton:active {
+  transform: translateY(0.2em);
+}
 .plusButton {
   background-color: inherit;
   outline: none;
@@ -834,6 +834,7 @@ li#receive + li#send
 }
 .plusIcon {
   color: rgb(161, 136, 136);
+  font-size: 1.5em;
 }
 
 h2 {
@@ -896,7 +897,7 @@ h2 {
   width: 100%;
   height: fit-content;
   display: inline-block;
-  margin: 0;
+  margin: -2px;
   
 
   
@@ -906,7 +907,7 @@ h2 {
   width: 100%;
   height: fit-content;
   display: inline-block;
- 
+  margin: -2px;
 }
 .contact-status
 {
@@ -937,6 +938,20 @@ h2 {
  margin-right: auto;
   margin-top: 20px;
   
+}
+.profile-name
+{
+  font-size: 2em;
+  color: silver;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  height: auto;
+ max-width: 90%;
+ margin-left: auto;
+ margin-right: auto;
+  margin-top: 20px;
 }
 .chat-search-button
 {
@@ -1125,7 +1140,7 @@ flex:1;
 .button-signup:active {
  
 
-  transform: translateY(0.5em);
+  color: #000000;
 }
 .color-input
 {
@@ -1395,4 +1410,67 @@ input[type="file"] {
 .temp-form
 {
   display: none;
+}
+
+.profile-page
+{
+
+ text-align: center;
+
+}
+.profile-input-status
+{
+  pointer-events: none;
+ 
+}
+
+.ProfileCloseButton
+{
+  margin-top: 1em;
+  margin-right: 2em;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  position: absolute;
+  right: 0;
+  top:0;
+}
+.ProfileCloseButton:focus
+{
+  outline: none;
+}
+.ProfileCloseButton:active {
+  transform: translateY(0.2em);
+}
+.logout
+{
+  color: rgb(255, 88, 88);
+  text-align:center ;
+   bottom:1em;
+   margin-left: auto;
+   margin-right: auto;
+   left:0;
+   right: 0;
+  display: inline;
+   position: absolute;
+  font-size: 1;
+}
+
+.logout:active
+{
+  color: black;
+}
+@keyframes open-chat-anime {
+  0%   {transform:translateX(100vw)}
+ 
+
+  
+  100% {transform:translateX(0vw);}
+}
+@keyframes close-chat-anime {
+  0%   {transform:translateX(0vw)}
+ 
+  
+  
+  100% {transform:translateX(100vw);}
 }

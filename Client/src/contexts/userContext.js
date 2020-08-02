@@ -28,22 +28,27 @@ class UserContextProvider extends Component {
       arrPos:'',
       arrId:'',
       tog:true,
-      data:true
+      data:true,
+      cntifup:0,
    }
 
   
 
    }
+  updatecntifup = () =>
+  {
+    this.setState({cntifup:0});
+  }
 updateData = (val)=>{
-  this.setState({ ...this.state, data:val})
+  this.setState({ data:val})
 }
 updateSearch=()=>{
   
-  this.setState({ ...this.state, tog:true,arrId:[],arrMsg:[],arrPos:[],word:''})
+  this.setState({ tog:true,arrId:[],arrMsg:[],arrPos:[],word:''})
 }
 
 updateTog = () =>{
-  this.setState({ ...this.state, tog: !this.state.tog , arrId:[],arrMsg:[],arrPos:[],word:''})
+  this.setState({ tog: !this.state.tog , arrId:[],arrMsg:[],arrPos:[],word:''})
 }
 
    updateRight = e=>{
@@ -61,7 +66,7 @@ updateTog = () =>{
    }
 
    updateBottom = value =>
-   {
+   {  console.log("p",value)
            this.setState({Bottom:value})
    }
  onlineBottomUpdate = (value) =>
@@ -91,7 +96,14 @@ scrollUpdate =(messagesw)=>
       }
     })
    }
- 
+  updateUserDetail = (detail) =>
+  {
+    
+    
+    this.setState({user:detail})
+  
+   
+  }
   componentDidMount ()
   {
     let token = window.localStorage.getItem("token")
@@ -108,8 +120,12 @@ scrollUpdate =(messagesw)=>
          res.data.detail.isOnline=true
           this.setState({user:res.data.detail})
         })
+     
+        
+       
     }
-    const point = "http://localhost:3000/";
+  
+    const point = "http://192.168.1.4:3000/";
     this.socket = io(point);
   
 
@@ -370,7 +386,9 @@ scrollUpdate =(messagesw)=>
                             const container = document.getElementById("chatScroll");
                             if(container.scrollHeight-container.scrollTop===container.offsetHeight)
                             bflag=true;
-                               
+                            else{
+                              this.setState({cntifup:state.cntifup+1});
+                            } 
                         
                       }
                   
@@ -567,7 +585,7 @@ seenInContext = (id) =>
     
     return (
 
-      <UserContext.Provider value={{...this.state,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
+      <UserContext.Provider value={{...this.state,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
         seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
 
   

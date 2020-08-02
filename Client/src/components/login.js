@@ -23,7 +23,16 @@ export default class Login extends Component {
 
         
     }
+componentDidMount ( )
+{
+    let token = window.localStorage.getItem("token")
+    if(token)
+    {
+        window.location="/home"
 
+    }
+  
+}
    stopAnime = () =>
     {  
     //    document.getElementById("unlock").style.animationPlayState="paused"   

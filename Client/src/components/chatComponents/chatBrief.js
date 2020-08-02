@@ -82,9 +82,8 @@ class ChatBrief extends Component {
 
   }
   openChat = (user) =>
- { const {currentUserUpdate,updatecnt, onlineBottomUpdate} = this.context
-   updatecnt(user.cnt);
-   onlineBottomUpdate(true);
+ { const {currentUserUpdate} = this.context
+   
     let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
     let width = window.innerWidth / em
     let height = window.innerHeight/ em
@@ -93,7 +92,12 @@ class ChatBrief extends Component {
     if(width<60||height<41)
     { 
       document.querySelector(".middleHome").style.display="flex";
-      document.querySelector(".leftHome").style.display="none";
+     
+      document.querySelector(".middleHome").style.animation="open-chat-anime 0.15s linear 1"
+      setTimeout(function(){
+        document.querySelector(".leftHome").style.display="none";
+      },90)
+      
     }
 
     if(width>60&&width<90)
@@ -126,7 +130,8 @@ class ChatBrief extends Component {
   }
   
   render() { 
-    const {updateSearch} = this.context;
+   
+    const {updateSearch,updatecnt,onlineBottomUpdate,updatecntifup} = this.context
     return ( 
       <div className='left-c '>
       <ul className="img-ul">
@@ -135,8 +140,11 @@ class ChatBrief extends Component {
     return (
     
     <li className='img-li ' key={newmsg.Id} onClick={e => {
-      this.openChat({id:newmsg.Id,cnt:this.unseenMsgForRoom(newmsg)})
-      
+      this.openChat({id:newmsg.Id})
+      updatecnt(this.unseenMsgForRoom(newmsg));
+   onlineBottomUpdate(true);
+   updatecntifup();
+  
           updateSearch()
 
     

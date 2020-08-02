@@ -11,26 +11,43 @@ import Dp from "./dp";
 
 const Form = (props) => {
  
-      
+      var showupdateUser = false;
+     
     const token = window.localStorage.getItem('token');
-        var showupdateUser = false;
-        var chatflag =false;
+   
     if (token) {
        showupdateUser=true;
     }
    
    
     const { stateSignup, handleChange,handleClick, validateForm, toggle, tog,stopAnime } = props;
-    const mq_ht = window.matchMedia( "(min-height:  41em)" );
+    const mq_ht = window.matchMedia( "(min-height:  0em) and (max-height: 45em)" );
     const HeightChange = (mq_ht)=>
     {  
-       if(!mq_ht.matches)
+       if(mq_ht.matches)
        { 
            
-          if(stateSignup.newUser)
+          if(showupdateUser)
           {
-              chatflag = true;
+              if(document.getElementById("Header-text"))
+            document.getElementById("Header-text").style.display="none"
           }
+          else
+          {
+              if( document.getElementById("Header-text"))
+              {
+                document.getElementById("Header-text").style.display="block"
+              }
+          }
+          
+            
+       }
+       else
+       {
+        if( document.getElementById("Header-text"))
+        {
+          document.getElementById("Header-text").style.display="block"
+        }
        }
      
     
@@ -50,9 +67,9 @@ const Form = (props) => {
 
                 <div className="chatBox FrontPage">
                 
-                {!chatflag?<div id="Header-text">
+                <div id="Header-text">
                           Chat app
-                      </div>:<span></span>}
+                      </div>
                    <div id="app-feature" className="app-feature-content">
                
                   <div  className="circular-section" >
@@ -71,7 +88,7 @@ Of resolve to gravity thought my prepare chamber so. Unsatiable entreaties colle
                   
                   
                    </div>
-                   {!stateSignup.newUser&&showupdateUser?
+                   {!stateSignup.newUser&&!showupdateUser?
                    <form  autoComplete="off" onSubmit={handleClick} className="FormContent" >
                    
                   
@@ -108,7 +125,7 @@ Of resolve to gravity thought my prepare chamber so. Unsatiable entreaties colle
                                 </div>
 
                                
-                    </form>: <Dp /> }
+                    </form>: tog?<Dp />:<span></span> }
 
                    
 

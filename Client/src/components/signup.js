@@ -27,17 +27,7 @@ export default class Signup extends Component {
 
     }
     componentDidMount() {
-        let token = window.localStorage.getItem("token")
        
-       
-        
-        if(!token)
-        {
-           
-         
-            // window.location = '/'
-          
-        }
     }
 
 

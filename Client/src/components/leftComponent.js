@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ChatBrief from './chatComponents/chatBrief';
 import SimpleChatBrief from './chatComponents/SimplechatBrief';
-import jwt_decode from "jwt-decode";
+
 import axios from 'axios';
-import {UserContext} from '../contexts/userContext';
+
+import  { UserContext } from '../contexts/userContext'
 var FontAwesome = require('react-fontawesome');
 
 
@@ -11,19 +12,19 @@ class LeftComponent extends Component {
     static contextType = UserContext;
    constructor(props)
    {  super(props);
-     this.state = { searchResults:[],isPressed:false,id:"",searchQuery:""};
+     this.state = { searchResults:[],isPressed:false,id:"",searchQuery:"",profileToggle:false,  fileInfo: null,statusUpdateButton:false,
+     loaded: '',
+     path: '/images/nodp.png',
+     k:0,
+     status: '',};
 
       this.cancel="";
+      this.handleClick = this.handleClick.bind(this);
+      this.handleChange = this.handleChange.bind(this);
    }
-   
-  componentDidMount()
-  { 
-   let token = window.localStorage.getItem("token")
-   const decode = jwt_decode(token);
-   this.id = decode._id;
-    this.setState({...this.state,id:this.id});
+  
+ 
 
-  }
   toggle = () =>{
            this.setState({
             isPressed:!this.state.isPressed,
@@ -32,8 +33,13 @@ class LeftComponent extends Component {
         })
     }
 
+   profileToggle = () =>
+   {
+      this.setState({profileToggle:!this.state.profileToggle})
+      this.setState({statusUpdateButton:false})
+   }
    search = (e) =>
-   {     
+   {     const {id} = this.context
       var value = e.target.value
       this.setState({...this.state,searchQuery:value})
       if (this.cancel) {
@@ -41,7 +47,7 @@ class LeftComponent extends Component {
      }
      this.cancel = axios.CancelToken.source();
 
-     axios.get(`/${this.state.id}/search/` + value, {
+     axios.get(`/${id}/search/` + value, {
          cancelToken: this.cancel.token
      }).then(res => {
        if(res.data.status==="success")
@@ -54,27 +60,159 @@ class LeftComponent extends Component {
         }
       
    })
-
-
+  
    }
-     render() { 
-      const { messages } = this.context;     
-       if(!this.state.isPressed)
-     { 
-            return(
-               <div className="leftHome" id="left">
-             <div className="searchBar">
-                  <button className="plusButton" onClick={this.toggle} >  <FontAwesome
-       name="plus" className="plusIcon"/></button>  
-          <h2 >Chats</h2>
+   handleChange = (e) => {
+      const {id,user, updateUserDetail} = this.context
+      if (e.target.type === 'file') {
+          if(e.target.files.length===0)
+          { 
+              return null
+          }
+
          
-         </div>
+          const file = e.target.files[0];
+          let ls = file.name.split('.');
+          let extension = ls[ls.length-1]
          
-        <ChatBrief messages={messages}/>  
-    
+          if(extension==='png' || extension==='jpg' || extension==='jpeg' || extension==='jpe' || extension==='jif' || extension==='jfif' || extension==='jfi' || extension==='.webp'){ 
+
+              const formData = new FormData();
+
+              formData.append('image', file);
+              formData.append('name', user.username);
+              formData.append('id', id);
+
+      
+      
+              axios.post('/dp', formData, {
+                  onUploadProgress: ProgressEvent => {
+                      this.setState({
+                          loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
+                      })
+                  },
+              })
+                  .then((res) => {
+                     
+                    
+                    updateUserDetail({...user,path:res.data})
+                   
+                  })
+                  .catch((err) => console.log(err));
+
+          }
+          else{
+              alert("choose an image file")
+          }
           
-         </div>
-         );
+      }
+      
+      else
+     {
+          const status = e.target.value;
+          
+          updateUserDetail({...user,status:status})
+      }
+
+
+
+  }
+handlestatus = (e) =>
+{
+   this.setState({statusUpdateButton:true})
+   
+}
+
+  handleClick = (e) => {
+      e.preventDefault();
+  
+      this.setState({statusUpdateButton:false})        
+         const {user} = this.context
+         axios.post("/status",{status:user.status,username:user.username}).then(res =>{
+             if(res.data.status==="success")
+             {       
+                return null
+             }
+             
+             else
+             {
+                 alert("unknown  error");
+             }
+         })
+      
+     
+
+      
+
+  }
+
+     render() { 
+      const { messages,user} = this.context;     
+       if(!this.state.isPressed)
+
+     {   if(this.state.profileToggle)
+      {
+              return (<div className="leftHome" id="left" >
+                
+                  <button className="ProfileCloseButton" onClick={this.profileToggle}>  <FontAwesome
+          name="close" className="plusIcon"/></button>  
+           
+                       <div className="profile-page">
+                
+                       <h4 className="profile-name">{user.username}</h4>
+                          
+               <div className="inputFrom">
+                
+                
+              <form  onSubmit={this.handleClick}>
+                  <div className="dp-setting">
+                    <img className="dp"  src={user.path||this.state.path} alt="#" /> 
+                    <label for="file-upload"   className="dp-input">
+                    change profile
+                 </label>
+                    <input
+                      id="file-upload"
+                      type="file" onChange={this.handleChange}
+                      placeholder=""
+                      />
+                  </div>
+                 
+
+                  
+            
+                  
+                  
+                  
+                  {!this.state.statusUpdateButton? <div><div className="contact-status">{user.status?user.status:"no status"}</div><br/><div  class="button-signup skip-button" name='statuschange' onClick={this.handlestatus}>change</div></div>:
+                  
+                  <div><input type='text' className="status-input " name="status" value={user.status} onChange={this.handleChange} placeholder='Status' /><br/><button type="submit" class="btn btn-light" name='status' onClick={this.handleClick}>Update</button></div>
+      
+               }
+                  
+              </form>
+              </div>
+          </div>
+          <div className="logout" onClick={()=>{ window.localStorage.clear();window.location='/'}}>logout</div>
+              </div>)
+      }
+      else
+      {
+         return(
+            <div className="leftHome" id="left">
+          <div className="searchBar">
+               <button className="plusButton" title="Add new Friends" onClick={this.toggle} >  <FontAwesome
+    name="plus" className="plusIcon"/></button>  
+       <h2 >Chats</h2>
+       <button className="ProfileButton" onClick={this.profileToggle} title="Your Profile" ><FontAwesome name="user" className="plusIcon" ></FontAwesome> </button>  
+      </div>
+      
+     <ChatBrief messages={messages}/>  
+ 
+       
+      </div>
+      );
+      }
+           
 
             
       }
