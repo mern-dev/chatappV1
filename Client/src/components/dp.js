@@ -37,8 +37,9 @@ class Dp extends Component {
             const file = e.target.files[0];
             let ls = file.name.split('.');
             let extension = ls[ls.length-1]
-            console.log(extension);
+           
             if(extension==='png' || extension==='jpg' || extension==='jpeg' || extension==='jpe' || extension==='jif' || extension==='jfif' || extension==='jfi' || extension==='.webp'){ 
+
                 const formData = new FormData();
 
                 formData.append('image', file);
@@ -59,6 +60,7 @@ class Dp extends Component {
                 
                     })
                     .catch((err) => console.log(err));
+
             }
             else{
                 alert("choose an image file")

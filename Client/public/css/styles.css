@@ -910,19 +910,22 @@ h2 {
 }
 .contact-status
 {
-  font-size: 1.4em;
-  margin-top: 6px;
+  font-size: 1.2em;
+  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
   max-width: 60%;
   height: auto;
   overflow-wrap: break-word;
-  color: black;
+  color: #b2ebf2;
   text-align: left;
+  font-weight: 400;
+  font-family: 'Kanit', sans-serif;
+  text-align: center;
 }
 .contact-name
 {
-  font-size: 2.3em;
+  font-size: 2.9em;
   color: silver;
   text-align: center;
   display: flex;
@@ -933,7 +936,7 @@ h2 {
  margin-left: auto;
  margin-right: auto;
   margin-top: 20px;
-  font-weight:bold;
+  
 }
 .chat-search-button
 {

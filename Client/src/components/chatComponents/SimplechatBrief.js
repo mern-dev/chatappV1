@@ -24,17 +24,31 @@ class SimpleChatBrief extends Component {
            document.querySelector(".middleHome").style.display="flex";
            document.querySelector(".leftHome").style.display="none";
          }
+         if(width>60&&width<90)
+   {
+         const middle = document.querySelector(".middleHome").style.display;
+         if(middle==="none")
+         {
+          document.querySelector(".middleHome").style.display="flex";
+          document.querySelector(".rightHome").style.display='none';
+
+         }
+
+   }
+         
   }
   render() { 
    
-   
+  
     return ( 
       <div className='left-c' >
       <ul className="img-ul">
     {this.props.users.map( (user) =>{ 
       
     return (
-    <li className='img-li' key={user._id} onClick={e => this.openChat(user)}>
+    <li className='img-li' key={user._id} onClick={e =>{ this.openChat(user)
+                                                              
+    }}>
  
     {user.isOnline?<div className="img-chat"> <Avatar alt="Cindy Baker" src={user.path} /><div className="online-color"></div></div>:<Avatar alt="Cindy Baker" src={user.path} />}
   
