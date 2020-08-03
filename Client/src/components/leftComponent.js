@@ -83,7 +83,7 @@ class LeftComponent extends Component {
               formData.append('name', user.username);
               formData.append('id', id);
 
-      
+              updateUserDetail({...user,path:this.state.path});
       
               axios.post('/dp', formData, {
                   onUploadProgress: ProgressEvent => {
@@ -94,7 +94,7 @@ class LeftComponent extends Component {
               })
                   .then((res) => {
                      
-                    
+                  
                     updateUserDetail({...user,path:res.data})
                    
                   })
@@ -127,11 +127,11 @@ handlestatus = (e) =>
       e.preventDefault();
   
       this.setState({statusUpdateButton:false})        
-         const {user} = this.context
+         const {user,updateUserDetail} = this.context
          axios.post("/status",{status:user.status,username:user.username}).then(res =>{
              if(res.data.status==="success")
              {       
-                return null
+                updateUserDetail({...user,status:user.status})
              }
              
              else
@@ -185,7 +185,7 @@ handlestatus = (e) =>
                   
                   {!this.state.statusUpdateButton? <div><div className="contact-status">{user.status?user.status:"no status"}</div><br/><div  class="button-signup skip-button" name='statuschange' onClick={this.handlestatus}>change</div></div>:
                   
-                  <div><input type='text' className="status-input " name="status" value={user.status} onChange={this.handleChange} placeholder='Status' /><br/><button type="submit" class="btn btn-light" name='status' onClick={this.handleClick}>Update</button></div>
+                  <div><input type='text' className="status-input" maxlength="30" name="status" value={user.status} onChange={this.handleChange} placeholder='Status' /><br/><button type="submit" class="btn btn-light" name='status' onClick={this.handleClick}>Update</button></div>
       
                }
                   

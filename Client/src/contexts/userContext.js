@@ -66,7 +66,7 @@ updateTog = () =>{
    }
 
    updateBottom = value =>
-   {  console.log("p",value)
+   { 
            this.setState({Bottom:value})
    }
  onlineBottomUpdate = (value) =>
@@ -85,7 +85,7 @@ scrollUpdate =(messagesw)=>
      var  messages = state.messages.map(chat=>{
         if(chat.Id===state.receiver._id)
         {  
-          return {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline,messages:[...messagesw,...chat.messages]}
+          return {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:chat.status,isTyping:chat.isTyping,messages:[...messagesw,...chat.messages]}
         }
         else{
           return chat
@@ -100,7 +100,9 @@ scrollUpdate =(messagesw)=>
   {
     
     
-    this.setState({user:detail})
+    this.setState({user:detail});
+   
+    this.socket.emit("detailUpdate",this.state.user);
   
    
   }
@@ -125,11 +127,94 @@ scrollUpdate =(messagesw)=>
        
     }
   
-    const point = "http://192.168.1.4:3000/";
+    const point = "http://localhost:3000/";
     this.socket = io(point);
+  this.socket.on("isTypingUpdate",function(data){
+    isTypingUpdate(data,true);
+  })
+  this.socket.on("isTypingEndUpdate",function(data){
+    isTypingUpdate(data,false);
+  })
+  const isTypingUpdate = (data,value) =>
+  {
+           
+    var messages = [];
+    if(this.state.receiver._id===data.id)
+    { 
+     
+      this.setState({receiver:{_id:this.state.receiver._id,isTyping:value,username:this.state.receiver.username,path:data.path,isOnline:this.state.receiver.isOnline,status:data.status,lastSeen:this.state.receiver.lastSeen}})
+    }
   
+    this.setState(state =>{
+      
+      messages = state.messages.map(chat =>{
+        if(chat.Id === data.id)
+        {
+          return  {Id:chat.Id,username:chat.username,isTyping:value,path:data.path, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:data.status,messages:chat.messages}  
+         }
+        
+        else{
+          return {...chat}
+        }
+      })
+      
+        return {messages,}
+      
+    })
+  }
+    
+    this.socket.on("isOnline",function(data){
+       onlineUpdate(data)
+    })
 
-  
+ 
+    this.socket.on("addDetailUpdate",function(data)
+    {
+      
+        addDetailUpdate(data);
+      
+    })
+  const addDetailUpdate = (data) =>
+  {
+    var messages = [];
+    if(this.state.receiver._id===data._id)
+    { 
+      this.setState({...this.state.receiver,path:""})
+      this.setState({receiver:{_id:this.state.receiver._id,isTyping:this.state.receiver.isTyping,username:this.state.receiver.username,path:data.path,isOnline:this.state.receiver.isOnline,status:data.status,lastSeen:this.state.receiver.lastSeen}})
+    }
+    this.setState(state =>{
+      
+      messages = state.messages.map(chat =>{
+        if(chat.Id === data._id)
+        {
+          return  {Id:chat.Id,username:chat.username,isTyping:chat.isTyping,path:"", isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:data.status,messages:chat.messages}  
+         }
+        
+        else{
+          return {...chat}
+        }
+      })
+      
+        return {messages,}
+      
+    })
+    this.setState(state =>{
+      
+      messages = state.messages.map(chat =>{
+        if(chat.Id === data._id)
+        {
+          return  {Id:chat.Id,username:chat.username,isTyping:chat.isTyping,path:data.path, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:data.status,messages:chat.messages}  
+         }
+        
+        else{
+          return {...chat}
+        }
+      })
+      
+        return {messages,}
+      
+    })
+  }
     
     this.socket.on("isOnline",function(data){
        onlineUpdate(data)
@@ -139,14 +224,14 @@ scrollUpdate =(messagesw)=>
     var messages = [];
     if(this.state.receiver._id===data.id)
     {
-      this.setState({receiver:{_id:this.state.receiver._id,username:this.state.receiver.username,path:this.state.receiver.path,isOnline:true,status:this.state.receiver.status,lastSeen:this.state.receiver.lastSeen}})
+      this.setState({receiver:{_id:this.state.receiver._id,isTyping:this.state.receiver.isTyping,username:this.state.receiver.username,path:this.state.receiver.path,isOnline:true,status:this.state.receiver.status,lastSeen:this.state.receiver.lastSeen}})
     }
     this.setState(state =>{
       
       messages = state.messages.map(chat =>{
         if(chat.Id === data.id)
         {
-          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:true,messages:chat.messages}  
+          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:true,lastSeen:chat.lastSeen,status:chat.status,messages:chat.messages,isTyping:chat.isTyping}  
          }
         
         else{
@@ -171,7 +256,7 @@ scrollUpdate =(messagesw)=>
   {  var messages = [];
     if(this.state.receiver._id===data.id)
     {
-      this.setState({receiver:{_id:this.state.receiver._id,username:this.state.receiver.username,path:this.state.receiver.path,isOnline:false,status:this.state.receiver.status,lastSeen:data.lastSeen}})
+      this.setState({receiver:{_id:this.state.receiver._id,username:this.state.receiver.username,isTyping:this.state.receiver.isTyping,path:this.state.receiver.path,isOnline:false,status:this.state.receiver.status,lastSeen:data.lastSeen}})
     }
     this.setState(state =>{
       
@@ -179,7 +264,7 @@ scrollUpdate =(messagesw)=>
 
         if(chat.Id === data.id)
         {
-          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:false,messages:chat.messages}  
+          return  {Id:chat.Id,username:chat.username,path:chat.path,isTyping:chat.isTyping, isOnline:false,lastSeen:chat.lastSeen,status:chat.status,messages:chat.messages}  
          }
         
         else{
@@ -215,7 +300,7 @@ scrollUpdate =(messagesw)=>
 
         
     
-      this.setState({messages:[...this.state.messages,chat]})
+      this.setState({messages:[...this.state.messages,{...chat,isTyping:false}]})
     }
     this.socket.on("receivingMessage",function(newmsg){
      addmessage(newmsg);
@@ -248,7 +333,7 @@ scrollUpdate =(messagesw)=>
           if(chat.messages[chat.messages.length-1].id!==msg.id)
           {
              flag = true;
-             t = {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:[...chat.messages,msg]}
+             t = {Id:chat.Id,username:chat.username,path:chat.path,isTyping:chat.isTyping, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:chat.status, messages:[...chat.messages,msg]}
           }
     
         }
@@ -273,7 +358,7 @@ scrollUpdate =(messagesw)=>
       messages = state.messages.map(chat =>{
         if(chat.Id === msg.receiverId)
         {
-          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:chat.messages.map(message=>{
+          return  {Id:chat.Id,username:chat.username,path:chat.path,isTyping:chat.isTyping, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:chat.status,messages:chat.messages.map(message=>{
              if(msg.id===message.id)
              {
                return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -304,7 +389,7 @@ scrollUpdate =(messagesw)=>
       messages = state.messages.map(chat =>{
         if(chat.Id === msg.receiverId)
         {
-          return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline,messages:chat.messages.map(message=>{
+          return  {Id:chat.Id,username:chat.username,path:chat.path,isTyping:chat.isTyping, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:chat.status,messages:chat.messages.map(message=>{
              if(msg.id===message.id)
              {
                return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:true,seen:message.seen,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -333,7 +418,7 @@ scrollUpdate =(messagesw)=>
           messages = state.messages.map(chat =>{
             if(chat.Id === msg.receiverId)
             {
-              return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline,messages:chat.messages.map(message=>{
+              return  {Id:chat.Id,username:chat.username,path:chat.path,isTyping:chat.isTyping, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:chat.status,messages:chat.messages.map(message=>{
                  if(msg.id===message.id)
                  {
                    return {sentTime:message.sentTime,id:message.id,sent:true,delivered:message.delivered,seen:message.seen,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -364,7 +449,7 @@ scrollUpdate =(messagesw)=>
         if(state.messages.length===0)
         {
           newmsg.msg.delivered=true;
-          messages = [{Id:newmsg.msg.senderId,username:newmsg.username,path:newmsg.path,isOnline:newmsg.isOnline,messages:[newmsg.msg]},...state.messages]
+          messages = [{Id:newmsg.msg.senderId,username:newmsg.username,isTyping:false,path:newmsg.path,isOnline:newmsg.isOnline,status:newmsg.status,lastSeen:newmsg.lastSeen,messages:[newmsg.msg]},...state.messages]
            this.socket.emit("deliverUpdate", newmsg.msg);
           
         }
@@ -394,7 +479,7 @@ scrollUpdate =(messagesw)=>
                   
               }
 
-               temp = {Id:item.Id,username:item.username,path:item.path,isOnline:newmsg.isOnline,messages:[...item.messages,newmsg.msg]}
+               temp = {Id:item.Id,username:item.username,path:item.path,isOnline:newmsg.isOnline,lastSeen:item.lastSeen,isTyping:item.isTyping,status:item.status,messages:[...item.messages,newmsg.msg]}
               
 
             }
@@ -407,7 +492,7 @@ scrollUpdate =(messagesw)=>
           if(flag)
           {
             newmsg.msg.delivered=true;
-            messages = [{Id:newmsg.msg.senderId,username:newmsg.username,path:newmsg.path,isOnline:newmsg.isOnline,messages:[newmsg.msg]},...state.messages]
+            messages = [{Id:newmsg.msg.senderId,username:newmsg.username,path:newmsg.path,isTyping:false,isOnline:newmsg.isOnline,lastSeen:newmsg.lastSeen,status:newmsg.status,messages:[newmsg.msg]},...state.messages]
             this.socket.emit("deliverUpdate", newmsg.msg);
           }
           else
@@ -448,6 +533,8 @@ scrollUpdate =(messagesw)=>
         msgBody:this.state.msgBody,
         senderUsername:this.state.user.username,
         senderPath:this.state.user.path, 
+        senderLastSeen:this.state.user.lastSeen,
+        senderStatus:this.state.user.status,
         senderisOnline:true,
         sentTime :sentTime,
         sent:false,
@@ -462,7 +549,7 @@ scrollUpdate =(messagesw)=>
     var temp={}
      if(state.messages.length===0)
      {
-       messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,isOnline:state.receiver.isOnline,messages:[newMessage],}]
+       messages = [{Id:newMessage.receiverId,username:state.receiver.username,path:state.receiver.path,isTyping:this.state.receiver.isTyping,isOnline:state.receiver.isOnline,status:state.receiver.status,lastSeen:state.receiver.lastSeen,messages:[newMessage],}]
      }
      else
      {
@@ -472,7 +559,7 @@ scrollUpdate =(messagesw)=>
         if(item.Id===newMessage.receiverId)
          { 
             flag = false;
-            temp = {Id:item.Id,username:item.username,path:item.path,isOnline:item.isOnline,messages:[...item.messages,newMessage]}
+            temp = {Id:item.Id,username:item.username,path:item.path,isTyping:item.isTyping,isOnline:item.isOnline,status:item.status,lastSeen:item.lastSeen,messages:[...item.messages,newMessage]}
          }
          else{
            
@@ -483,7 +570,7 @@ scrollUpdate =(messagesw)=>
        });
        if(flag)
        {
-        messages = [{Id:newMessage.receiverId,username:state.receiver.username,isOnline:state.receiver.isOnline,path:state.receiver.path,messages:[newMessage]},...state.messages]
+        messages = [{Id:newMessage.receiverId,username:state.receiver.username,isTyping:false,isOnline:state.receiver.isOnline,path:state.receiver.path,status:state.receiver.status,lastSeen:state.receiver.lastSeen,messages:[newMessage]},...state.messages]
        }
        else{
          messages.unshift(temp)
@@ -502,6 +589,7 @@ scrollUpdate =(messagesw)=>
  changeMsgBody = (newmsgBody) =>
  {
    this.setState({msgBody:newmsgBody})
+   this.socket.emit("isTyping",{rid:this.state.receiver._id,uid:this.state.user._id});
  }
 seenInContext = (id) =>
 {
@@ -511,7 +599,7 @@ seenInContext = (id) =>
     messages = state.messages.map(chat =>{
       if(chat.Id === id)
       {
-        return  {Id:chat.Id,username:chat.username,path:chat.path, isOnline:chat.isOnline, messages:chat.messages.map(message=>{
+        return  {Id:chat.Id,username:chat.username,path:chat.path,isTyping:chat.isTyping, isOnline:chat.isOnline,status:chat.status,lastSeen:chat.lastSeen, messages:chat.messages.map(message=>{
            if(!message.seen&&message.senderId===id)
            { 
              return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
@@ -547,9 +635,10 @@ seenInContext = (id) =>
           messages = state.messages.map(chat =>{
             if(chat.Id === state.receiver._id)
             {
-              return  {Id:chat.Id,username:chat.username,path:chat.path,  isOnline:chat.isOnline,messages:chat.messages.map(message=>{
+              return  {Id:chat.Id,username:chat.username,path:chat.path,isTyping:chat.isTyping,isOnline:chat.isOnline,status:chat.status,lastSeen:chat.lastSeen,messages:chat.messages.map(message=>{
                  if(!message.seen&&message.senderId===state.receiver._id)
                  { 
+                  
                    return {sentTime:message.sentTime,id:message.id,sent:message.sent,delivered:message.delivered,seen:true,msgBody:message.msgBody,receiverId:message.receiverId,senderId:message.senderId}
                  }  
                  else
@@ -573,11 +662,14 @@ seenInContext = (id) =>
         
     
       
-      this.setState({...this.state,receiver:details,middleFlag:true,msgBody:""})
+      this.setState({receiver:details,middleFlag:true,msgBody:""})
     
    
  }
-
+typingEnd = () =>
+{
+  this.socket.emit("isTypingEnd",{rid:this.state.receiver._id,uid:this.state.user._id})
+}
 
 
   render() {
@@ -585,7 +677,7 @@ seenInContext = (id) =>
     
     return (
 
-      <UserContext.Provider value={{...this.state,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
+      <UserContext.Provider value={{...this.state,typingEnd:this.typingEnd,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
         seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
 
   

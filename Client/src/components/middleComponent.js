@@ -4,7 +4,7 @@ import SendMessage from './chatComponents/sendmessage';
 import { UserContext } from '../contexts/userContext';
 import Avatar from '@material-ui/core/Avatar';
 import axios from 'axios';
-
+var FontAwesome = require('react-fontawesome');
 class MiddleComponent extends Component {
   static contextType = UserContext;
   
@@ -169,14 +169,14 @@ const {updatecnt,seenInContext,receiver, onlineBottomUpdate} = this.context
   seenInContext(receiver._id);
   updatecnt(0);
   
-  document.querySelector(".middleHome").style.animation="close-chat-anime 0.15s linear 1"
+  document.querySelector(".middleHome").style.animation="close-chat-anime 0.25s linear 1"
   document.querySelector(".leftHome").style.display="flex";
  
   setTimeout(function(){
     
     document.querySelector(".middleHome").style.display="none"
     
-  },90)
+  },100)
  
 
   
@@ -193,11 +193,12 @@ openSearch = () =>{
     {
       if(container.scrollHeight-container.scrollTop!==container.offsetHeight)
                 document.getElementById("myBtn").style.display="grid";
+             
+                document.querySelector(".rightHome").style.animation="open-chat-anime 0.25s linear 1"
                 document.querySelector(".rightHome").style.display="flex";
-                document.querySelector(".rightHome").style.animation="open-chat-anime 0.15s linear 1"
                 setTimeout(function(){
                   document.querySelector(".middleHome").style.display="none";
-                },90)
+                },100)
    
 
       
@@ -379,7 +380,8 @@ handleScroll = e =>{
      
     }
     hideSoftKeyboardView = () =>
-    {
+    { const {typingEnd} = this.context;
+       typingEnd();
       let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
       let width = window.innerWidth / em
       let height = window.innerHeight/ em
@@ -427,7 +429,8 @@ handleScroll = e =>{
               <div className="middleHomeHeader" >
                
            
-              <img src="images/back-button.png" alt="#"  id="back-button"  onClick={this.backtoleft} className="back-button"/>
+             
+              <button className="back-button" id="back-button" onClick={this.backtoleft}  ><FontAwesome name="backward" className="BackwardIcon" ></FontAwesome> </button>  
               <Avatar alt="Cindy Baker" src={receiver.path}  />
        
             
@@ -435,7 +438,7 @@ handleScroll = e =>{
                 <div className="receiverName" >{receiver.username} </div>
           
               
-        <div className="lastSeen">{receiver.isOnline? "Online" : this.formatSeen(new Date(receiver.lastSeen))  }</div>
+        <div className="lastSeen">{receiver.isOnline?receiver.isTyping? "Typing....": "Online" : this.formatSeen(new Date(receiver.lastSeen))  }</div>
   
                 </div>
   

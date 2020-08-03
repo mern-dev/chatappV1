@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
 import { UserContext } from '../../contexts/userContext';
-import axios from 'axios';
+
 
 
 class ChatBrief extends Component {
@@ -69,9 +69,10 @@ class ChatBrief extends Component {
   }
   unseenMsgForRoom = (newmsg) =>{
     var cnt = 0;
+ 
     newmsg.messages.map(m =>{
       if(!m.seen && m.senderId === newmsg.Id)
-      {
+      { 
         cnt=cnt+1;
       }
       return 0;
@@ -82,7 +83,7 @@ class ChatBrief extends Component {
 
   }
   openChat = (user) =>
- { const {currentUserUpdate} = this.context
+ { const {currentUserUpdate,messages} = this.context
    
     let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
     let width = window.innerWidth / em
@@ -91,12 +92,16 @@ class ChatBrief extends Component {
  
     if(width<60||height<41)
     { 
-      document.querySelector(".middleHome").style.display="flex";
+
+     document.querySelector(".middleHome").style.animation="open-chat-anime 0.25s  linear 1"
+      
+     document.querySelector(".middleHome").style.display="flex";
      
-      document.querySelector(".middleHome").style.animation="open-chat-anime 0.15s linear 1"
+      
+    
       setTimeout(function(){
-        document.querySelector(".leftHome").style.display="none";
-      },90)
+        document.querySelector(".leftHome").style.display="none"; 
+      },100)
       
     }
 
@@ -114,15 +119,24 @@ class ChatBrief extends Component {
   
 
   
-   axios.get("/getDetail/"+user.id).then(res=>{
-   
-    currentUserUpdate(res.data.detail)
-      })
+ 
+  for(let i=0;i<messages.length;i++)
+  {
+    if(user.id===messages[i].Id)
+    {
+      let chat = messages[i];
+     
+      currentUserUpdate({_id:chat.Id,username:chat.username,path:chat.path,isOnline:chat.isOnline,status:chat.status,lastSeen:chat.lastSeen})
+      break;
+    }
+    
+  }
   
      
   }
   lastMessage = (newmsg) =>
-  {
+  { 
+     
     if(newmsg.Id===newmsg.messages[newmsg.messages.length-1].senderId)
      return newmsg.messages[newmsg.messages.length-1].msgBody
     else
@@ -155,10 +169,10 @@ class ChatBrief extends Component {
     <div className='img-div '>
 <h6 className="img-h">{newmsg.username} </h6>
       
-   <p className="img-p">  {this.lastMessage(newmsg)}</p>
+  {newmsg.isTyping?<p className="typing">Typing ....</p>:<p className="img-p">  {this.lastMessage(newmsg)}</p>} 
     </div>
     <div>
-<span className='time'>{this.formatAMPM(new Date(newmsg.messages[newmsg.messages.length-1].sentTime))}</span>
+    {newmsg.isTyping?<span></span>:<span className='time'>{this.formatAMPM(new Date(newmsg.messages[newmsg.messages.length-1].sentTime))}</span>}
 {this.unseenMsg(newmsg)}
      </div>
         

@@ -3,7 +3,7 @@ import { UserContext } from '../contexts/userContext'
 import ReceiveMessage from "./chatComponents/receivemessage"
 import SendMessage from './chatComponents/sendmessage';
 import axios from 'axios';
-
+var FontAwesome = require('react-fontawesome');
 
 
 
@@ -460,7 +460,7 @@ class RightComponent extends Component {
 
         document.querySelector(".middleHome").style.animation = "none" 
         
-        document.querySelector(".rightHome").style.animation="close-chat-anime 0.15s linear 1";
+        document.querySelector(".rightHome").style.animation="close-chat-anime 0.25s linear 1";
        
         document.querySelector(".middleHome").style.display = "flex";
  
@@ -468,7 +468,7 @@ class RightComponent extends Component {
     
     document.querySelector(".rightHome").style.display = "none";
     
-  },90)
+  },100)
 
 
     }
@@ -504,9 +504,8 @@ class RightComponent extends Component {
                 <div className='rightHome' id='right' >
 
                     <div className="rc-header">
-                        <div className="back-button-right">
-                            <img alt="#" src="images/back-button.png" id="back-button-right" className="back-button-right" onClick={this.backtomiddle} />
-                        </div>
+                      
+                        <button className="back-button-right" id="back-button-right" onClick={this.backtomiddle}  ><FontAwesome name="backward" className="BackwardIcon" ></FontAwesome> </button>
 
                     </div>
 
@@ -519,7 +518,10 @@ class RightComponent extends Component {
 
                         <h4 className="contact-name">{receiver.username}</h4>
                         {receiver.status && <div className="contact-status">{receiver.status}</div>}
-                        <div onClick={updateTog} className="chat-search-button"><span><img alt="#" src="images/chat-search.png" className="chat-search-png" /></span>Chat Search</div>
+                      
+     
+                        <div onClick={updateTog} className="chat-search-button"><span><FontAwesome
+          name="search" className="searchIcon"/>  </span>Chat Search</div>
 
                     </div>
 
@@ -533,11 +535,16 @@ class RightComponent extends Component {
             return (
 
                 <div className='rightHome' >
+                          
                     <div class="search-bar-header">
-
+                  
+                    <button className="closeButton" onClick={updateTog}>  <FontAwesome
+          name="close" className="closeIcon"/></button> 
                         <div className='rc-header header-search'>
 
-                            <img src="images/back-button.png" alt='a' className='rc-button' onClick={updateTog} />
+                          
+                     
+
                             <input type="text" className='rc-searchBar' name="word" value={word} onChange={(e) => {
                                 updateRight(e
 
@@ -545,7 +552,8 @@ class RightComponent extends Component {
                             }} />
 
 
-                            <button type='submit' onClick={this.handleSubmit}> <i class="fa fa-search" aria-hidden="true"></i>Search</button>
+                            <button type='submit' className="searchbutton-rc" onClick={this.handleSubmit}><FontAwesome
+          name="search" className="searchIcon"/> </button>
                         </div>
 
                         <div className="date-picker-section">
@@ -588,9 +596,9 @@ class RightComponent extends Component {
                                             return (
 
                                                 <li key={m.id} id="sendTop" className="search-message" >
-                                                    <br />
+                                                
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
-                                                    <br />
+                                                  
                                                     <SendMessage msgBody={m.msgBody} msgid={m.id} sentTime={m.sentTime} status={{ sent: m.sent, delivered: m.delivered, seen: m.seen }} />
                                                 </li>
                                             )
@@ -620,7 +628,7 @@ class RightComponent extends Component {
                                                 <li key={m.id} id="receiveTop" className="search-message">
 
                                                     <p className="date-main">{this.formatDisplay(m)}</p>
-                                                    <br />
+                                                
 
                                                     <ReceiveMessage msgBody={m.msgBody} msgid={m.id} sentTime={m.sentTime} />
                                                 </li>

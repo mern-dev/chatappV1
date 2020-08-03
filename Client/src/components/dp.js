@@ -128,8 +128,9 @@ class Dp extends Component {
                     
               
                     
-                    <input type='text' className="status-input" name="status" value={this.state.status} onChange={this.handleChange} placeholder='Status' />
-                    <br/>
+                    <input type='text' 
+                    className="status-input" maxlength="30" name="status" value={this.state.status} onChange={this.handleChange} placeholder='Status' />
+                  
                     <button type="submit" class="btn btn-light" name='status' onClick={this.handleClick}>Update</button>
                     
                 </form>

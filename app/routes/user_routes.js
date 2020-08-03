@@ -96,7 +96,7 @@ module.exports=function(io,socket){
                             var chats = [];
                           res.forEach(item =>
                               { 
-                                 User.findOne({_id:item.chats.Id},{_id:0,username:1,path:1,isOnline:1}).then(detail=>{
+                                 User.findOne({_id:item.chats.Id},{password:0}).then(detail=>{
                                              let len=item.chats.messages.length;
                                             
                                              var latestmsg=[]
@@ -123,7 +123,7 @@ module.exports=function(io,socket){
 
                                                  
                                               }
-                                              let chat  = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,messages:latestmsg}
+                                              let chat  = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,lastSeen:detail.lastSeen,status:detail.status,messages:latestmsg}
                                                                     
                                               io.to(`${socket.id}`).emit("chat",chat); 
                                             })
@@ -205,6 +205,8 @@ module.exports=function(io,socket){
                                     senderUsername:newMessage.senderUsername,
                                     senderPath:newMessage.senderPath,
                                     isOnline:newMessage.senderisOnline,
+                                    status:newMessage.senderStatus,
+                                    lastSeen:newMessage.senderLastSeen,
                                      msg:msgOnline
                                    }
                                    console.log("message-sent")
@@ -243,6 +245,8 @@ module.exports=function(io,socket){
                                                      username:newMessage.senderUsername,
                                                      path:newMessage.senderPath,
                                                      isOnline:newMessage.senderisOnline,
+                                                     status:newMessage.senderStatus,
+                                                     lastSeen:newMessage.senderLastSeen,
                                                      msg:msgOnline
                                                    }
                                                    console.log("message-sent")
@@ -307,15 +311,37 @@ module.exports=function(io,socket){
         })
       })
 
-   
+  //=====================================
+ // ====Updating  dp and status==========
+ // =====================================
+
+ socket.on("detailUpdate",function(data){
+
+  io.to("commonRoom").emit("addDetailUpdate",data);
+             })
+
+  //=======================================
+ // ======Typing online update=============
+ // =======================================
 
 
-  
+             socket.on("isTyping",function(data){
+
+              io.to(`${data.rid}`).emit("isTypingUpdate",{id:data.uid});
+                         
+              
+             })
+             socket.on("isTypingEnd",function(data){
+
+              io.to(`${data.rid}`).emit("isTypingEndUpdate",{id:data.uid});
+                         
+              
+             })
           
  }
 
-
   
+ 
 
 
 

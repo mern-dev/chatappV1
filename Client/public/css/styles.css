@@ -104,6 +104,18 @@ html {
   
   white-space: nowrap;
 }
+.typing
+{
+  font-size: 0.8em;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 100;
+  color: #27be8b;
+ 
+  overflow: hidden;
+  width: 60%;
+  
+  white-space: nowrap;
+}
 
 .time {
   position: absolute;
@@ -346,23 +358,38 @@ span[id="right"] {
 }
 .back-button-right {
   width: 2em;
-  margin: 0.5em;
+  margin-top: 2em;
+  margin-left: 1em;
   display: none;
-  flex:1;
+  
+  outline: none;
+  border: none;
+  background-color:transparent ;
 }
 .back-button {
   width: 2em;
-  margin-right: 10px;
+  margin-right: 1em;
   display: none;
+  outline: none;
+  border: none;
+  background-color:transparent ;
+}
+.back-button:focus
+{
+  outline: none;
+}
+.back-button-right:focus
+{
+  outline: none;
 }
  .back-button:active
 {
     
-    transform: translateX(-8px);
+    transform: translateX(-2px);
 } 
 .back-button-right:active
 {
-    transform: translateX(-5px);
+    transform: translateX(-2px);
 }
 @media only screen and (max-width: 90em) {
   #right {
@@ -685,14 +712,7 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
   display: none;
 }
 
-/* #sendTop + #send 
-{
-  margin-top: 2px;
-}
-#receiveTop + #receive
-{
-  margin-top: 2px;
-} */
+
 
 #send + #receive
 {
@@ -799,6 +819,21 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
 }
 .searchIcon {
   color: rgb(161, 136, 136);
+  font-size: 2em;
+}
+.searchbutton-rc
+{
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+.searchbutton-rc:focus
+{
+  outline: none;
+}
+.searchbutton-rc:active
+{
+  transform: translateY(0.5em);
 }
 .ProfileButton
 {
@@ -816,6 +851,25 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
 }
 .ProfileButton:active {
   transform: translateY(0.2em);
+}
+.closeButton
+{
+  background-color: transparent;
+  outline: none;
+  border: none;
+position:absolute;
+top:0;
+left: 0;
+margin: 0.5em;
+}
+.closeButton:focus
+{
+  outline: none;
+}
+.closeIcon
+{
+  font-size: 2em;
+  color: rgb(161, 136, 136);
 }
 .plusButton {
   background-color: inherit;
@@ -835,6 +889,11 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
 .plusIcon {
   color: rgb(161, 136, 136);
   font-size: 1.5em;
+}
+.BackwardIcon
+{
+  color: rgb(161, 136, 136);
+  font-size: 2em;
 }
 
 h2 {
@@ -892,6 +951,7 @@ h2 {
  
 
 }
+
 .search-message
 {
   width: 100%;
@@ -991,7 +1051,7 @@ h2 {
   color: white;
   background-color: inherit;
   outline: none;
-  margin: 0;
+
   border-top: none;
   border-left: none;
   border-right: none;
@@ -1064,6 +1124,14 @@ h2 {
   flex:2;
   align-items: center;
   justify-content: center;
+
+
+  position: relative;
+  min-height: 4em;
+ 
+  margin-left: 1em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
 }
 .date-picker
 {
@@ -1117,7 +1185,7 @@ flex:1;
 }
 .heading-form
 {
-  color:rgb(216, 118, 118);
+  color: rgb(161, 136, 136);
   width: 70%;
   height: fit-content;
   margin-bottom: 1em;
@@ -1259,7 +1327,7 @@ flex:1;
  animation-name:unlock-anime;
  animation-duration: 10s;
  animation-iteration-count:infinite;
-
+ animation-fill-mode:forwards;
   
 }
 #scroll
@@ -1268,6 +1336,7 @@ flex:1;
   animation-name:scroll-anime;
   animation-duration: 10s;
   animation-iteration-count: infinite;
+  animation-fill-mode:forwards;
 }
 #cloud
 {
@@ -1275,6 +1344,7 @@ flex:1;
  animation-name:cloud-anime;
  animation-duration: 10s;
  animation-iteration-count: infinite;
+ animation-fill-mode:forwards;
 }
 #all-devices
 {
@@ -1282,6 +1352,7 @@ flex:1;
   animation-name:all-devices-anime;
   animation-duration: 10s;
   animation-iteration-count: infinite;
+  animation-fill-mode:forwards;
   
 }
 #chat
@@ -1290,7 +1361,7 @@ flex:1;
   animation-name:chat-anime;
   animation-duration: 10s;
   animation-iteration-count: infinite;
-  
+  animation-fill-mode:forwards;
 
   
   
@@ -1416,6 +1487,7 @@ input[type="file"] {
 {
 
  text-align: center;
+ margin-top: 1em;
 
 }
 .profile-input-status
@@ -1473,4 +1545,11 @@ input[type="file"] {
   
   
   100% {transform:translateX(100vw);}
+}
+@keyframes chat-away-anime {
+  0%   {transform:translateX(0vw)}
+ 
+  
+  
+  100% {transform:translateX(-100vw);}
 }
