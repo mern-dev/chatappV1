@@ -4,7 +4,7 @@ var app = express();
 var port = process.env.PORT || 3000;
 var path = require('path')
 var mongoose = require('mongoose');
- 
+require("dotenv").config();
 var bodyParser   = require('body-parser');
 
 
@@ -21,10 +21,10 @@ if(process.env.NODE_ENV === "production")
    });  
 }
 // configuration ===============================================================
-mongoose.connect("", {
+mongoose.connect(process.env.MONGO_URL,{
   useUnifiedTopology: true,
   useNewUrlParser: true, useFindAndModify: false 
-}); // connect to our database
+}); // connect to database
 
 
 app.use(fileUpload());
@@ -62,27 +62,26 @@ app.post('/dp',(req,res)=>{
    let ls = file.name.split('.');
 
  
-   file.mv(`uploads/${req.body.username}/${file.name}`,(err)=>{
+   file.mv(`uploads/${req.body.name+file.name}`,(err)=>{
      if(err){
        console.log(err)
       
      }
      else{
       User.findOneAndUpdate({username:req.body.name},  
-        {path:`uploads/${req.body.username}/${file.name}`}, null, function (err, docs) { 
+        {path:`uploads/${req.body.name+file.name}`}, null, function (err, docs) { 
         if (err){ 
             console.log(err) 
         } 
        
     }); 
-       res.send(`uploads/${req.body.username}/${file.name}`);
+       res.send(`uploads/${req.body.name+file.name}`);
      }
    })
  })
 
 // routes ======================================================================
 require('./app/routes/login_routes.js')(app); // load routes and pass in our app 
-
 
 // launch ======================================================================
 var server = app.listen(port);

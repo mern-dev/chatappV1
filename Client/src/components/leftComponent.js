@@ -83,7 +83,7 @@ class LeftComponent extends Component {
               formData.append('id', id);
 
               
-      
+             
               axios.post('/dp', formData, {
                   onUploadProgress: ProgressEvent => {
                       this.setState({
