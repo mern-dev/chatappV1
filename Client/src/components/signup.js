@@ -32,11 +32,12 @@ export default class Signup extends Component {
 
 
     validateForm() {
+
         
-      //  return this.state.username.length > 5 && this.state.password.length > 4 && this.state.password === this.state.confirmPassword;
+        return this.state.username.length >= 5 && this.state.username.length <= 10 && this.state.password.length >=6 && this.state.password === this.state.confirmPassword;
     //=======commented for testing purpose ===================//
     
-     return true;
+     //return true;
     }
 
     handleChange(e) {

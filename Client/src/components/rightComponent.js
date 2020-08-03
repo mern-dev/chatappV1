@@ -14,12 +14,6 @@ class RightComponent extends Component {
         super(props);
         this.state = {
 
-            startDate: false,
-            endDate: false,
-            start: '',
-            end: '',
-
-
             lastmsg: null,
 
             i: 0,
@@ -39,29 +33,7 @@ class RightComponent extends Component {
 
     }
 
-    // componentDidUpdate() {
-    //     for (var j = 0; j < arrId.length; j++)
-
-    //         document.getElementById(`${res.data.arrId[j]}`).innerHTML = hightlight(document.getElementById(`${res.data.arrId[j]}`).textContent);
-    //     const uparrow = document.getElementById("up-arrow");
-    //     const downarrow = document.getElementById("down-arrow");
-    //     if (uparrow && downarrow) {
-    //         uparrow.style.opacity = "0.5";
-    //         uparrow.style.pointerEvents = "none";
-    //         downarrow.style.opacity = "1";
-    //         downarrow.style.pointerEvents = "auto";
-
-    //     }
-
-    //     const container = document.getElementById('searchChatScroll'); if (container) {
-    //         const t = container.querySelectorAll(".search-message");
-    //         if (t) {
-    //             t[arrPos[0]].style.backgroundColor = "#f4f6ff17"
-    //             container.scrollTop = t[arrPos[0]].offsetTop - container.offsetTop - container.clientHeight / 2;
-    //         }
-    //     }
-
-    // }
+  
 
 
     formatDisplay = (msg) => {
@@ -181,22 +153,17 @@ class RightComponent extends Component {
 
 
 
-        const { receiver, id, word, updateRes, updateData } = this.context;
+        const { receiver, id, word, updateRes, updateData , withDate , start , end} = this.context;
 
         updateRes({ arrId: [], arrMsg: [], arrPos: [] })
-        if (!(this.state.startDate && this.state.endDate)) {
+        if (!(withDate)) {
 
             console.log("without date");
 
             axios.get(`/getWord/${id}/${receiver._id}/${word.trim()}`)
                 .then(res => {
 
-                    this.setState({
-                        ...this.state, startDate: false,
-                        endDate: false,
-                        start: '',
-                        end: '',
-                    })
+                  
                     this.i = 0;
 
                     const hightlight = (str) => {
@@ -307,15 +274,10 @@ class RightComponent extends Component {
         else {
 
             console.log('with date');
-            axios.get(`/getWord/${id}/${receiver._id}/${word}/${this.state.start}/${this.state.end}`)
+            axios.get(`/getWord/${id}/${receiver._id}/${word}/${start}/${end}`)
                 .then(res => {
                     this.i = 0;
-                    this.setState({
-                        ...this.state, startDate: false,
-                        endDate: false,
-                        start: '',
-                        end: '',
-                    })
+                
 
                     const hightlight = (str) => {
                         var resdata = str.split(" ");
@@ -498,7 +460,7 @@ class RightComponent extends Component {
     render() {
         var lastmsg = 'null'
 
-        const { receiver, updateRight, word, arrMsg, arrId, tog, updateTog, data } = this.context;
+        const { receiver, updateRight, word, handleDate, arrMsg, arrId, tog, updateTog, withDate, data , updateDate } = this.context;
         if (tog) {
             return (
                 <div className='rightHome' id='right' >
@@ -555,15 +517,12 @@ class RightComponent extends Component {
                             <button type='submit' className="searchbutton-rc" onClick={this.handleSubmit}><FontAwesome
           name="search" className="searchIcon"/> </button>
                         </div>
-
-                        <div className="date-picker-section">
-                            <input type='date' className="date-picker" name='start' onChange={(e) => {
-                                this.setState({ ...this.state, start: e.target.value })
-
-                            }} onClick={(e) => { this.setState({ ...this.state, startDate: true }) }} />
-                            <input type='date' className="date-picker" name='end' onChange={(e) => {
-                                this.setState({ ...this.state, end: e.target.value })
-                            }} onClick={(e) => { this.setState({ ...this.state, endDate: true }) }} />
+                        <h3 style={{display:'flex'}}>Date Search <input type='checkbox' onClick={updateDate} /></h3>
+                       
+                        <div className="date-picker-section" style={{visibility:withDate?'visible':"hidden"}}>
+                            
+                            <input type='date' className="date-picker"  name='start' onChange={(e)=>handleDate(e.target.name,e.target.value)}  />
+                            <input type='date' className="date-picker" name='end' onChange={(e)=>handleDate(e.target.name,e.target.value)}  />
                         </div>
 
 

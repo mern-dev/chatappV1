@@ -30,11 +30,19 @@ class UserContextProvider extends Component {
       tog:true,
       data:true,
       cntifup:0,
+      withDate:false,
+      start:'',
+      end:''
    }
 
   
 
    }
+handleDate=(nam,val)=>{
+  this.setState({[nam]:val});
+}
+
+
   updatecntifup = () =>
   {
     this.setState({cntifup:0});
@@ -42,9 +50,12 @@ class UserContextProvider extends Component {
 updateData = (val)=>{
   this.setState({ data:val})
 }
+updateDate = ()=>{
+  this.setState({ withDate:!this.state.withDate})
+}
 updateSearch=()=>{
   
-  this.setState({ tog:true,arrId:[],arrMsg:[],arrPos:[],word:''})
+  this.setState({ tog:true,arrId:[],arrMsg:[],arrPos:[],word:'',withDate:false})
 }
 
 updateTog = () =>{
@@ -678,7 +689,7 @@ typingEnd = () =>
     return (
 
       <UserContext.Provider value={{...this.state,typingEnd:this.typingEnd,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
+        seenOnRoom:this.seenOnRoom,handleDate:this.handleDate,updateDate:this.updateDate,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
 
   
         {this.props.children}
