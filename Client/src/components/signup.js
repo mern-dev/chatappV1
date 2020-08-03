@@ -43,7 +43,7 @@ export default class Signup extends Component {
     handleChange(e) {
         var value = e.target.value;
         var name = e.target.name;
-
+         
         this.setState({
             ...this.state,
             [name]: value

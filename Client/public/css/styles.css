@@ -803,7 +803,8 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
   align-items: center;
   width: 80%;
   display: block;
-  padding:1em
+  padding-top:1em;
+  padding-bottom: 1em;
 }
 .searchInputBar {
   border: none;

@@ -517,7 +517,7 @@ class RightComponent extends Component {
                             <button type='submit' className="searchbutton-rc" onClick={this.handleSubmit}><FontAwesome
           name="search" className="searchIcon"/> </button>
                         </div>
-                        <h3 style={{display:'flex'}}>Date Search <input type='checkbox' onClick={updateDate} /></h3>
+                        <h3 style={{display:'flex',color:"pink",fontSize:"1.2em"}}>Date Search <input style={{margin:"0.3em"}} type='checkbox' onClick={updateDate} /></h3>
                        
                         <div className="date-picker-section" style={{visibility:withDate?'visible':"hidden"}}>
                             

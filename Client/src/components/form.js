@@ -11,17 +11,17 @@ import PropTypes from "prop-types";
 const styles = {
   root: {
     '& label.Mui-focused': {
-      color: 'green',
+      color: 'rgb(197, 157, 157)',
     },
     '& .MuiInput-underline:after': {
       borderBottomColor: 'white',
     },
     "& .MuiFormLabel-root": {
-      color: '#3797a4' 
+      color: 'white' 
     },
     
     "& .MuiFormHelperText-root":{
-      color: 'white'
+      color: 'red'
     },
    
   },
@@ -159,17 +159,22 @@ Of resolve to gravity thought my prepare chamber so. Unsatiable entreaties colle
 
 
               <div className="form-group">
-                {tog ? <TextField id="standard-basic" className={classes.root } InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} helperText={stateSignup.username.length > 4 ? stateSignup.usererror ? "Invalid username" : "valid username" : ( stateSignup.username.length > 0) ? 'invalid' :'' } autoComplete="off" onChange={handleChange} /> :
+                {tog ? <TextField id="standard-basic" className={classes.root } InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} helperText={stateSignup.username.length > 4 ? stateSignup.usererror ? "existing username" : "valid username" : ( stateSignup.username.length > 0) ? 'invalid' :'' } autoComplete="off" onChange={handleChange} /> :
                   <TextField id="standard-basic" className={classes.root} InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} autoComplete="off" onChange={handleChange} />}
               </div>
               <div className="form-group ">
-                <TextField id="standard-basic"    className={classes.root} InputProps={{className: classes.input}} label="Password" type="password" name="password" value={stateSignup.password}   FormHelperTextProps={{
+               {tog?<TextField id="standard-basic"    className={classes.root} InputProps={{className: classes.input}} label="Password" type="password" name="password" value={stateSignup.password}   FormHelperTextProps={{
     className: classes.helperText
-  }} helperText={stateSignup.passerror && "username or password is incorrect"} onChange={handleChange}  />
+  }} helperText={stateSignup.password < 6 && stateSignup.password > 0 && "minimum 6 characters"} onChange={handleChange}  />
+                :<TextField id="standard-basic"    className={classes.root} InputProps={{className: classes.input}} label="Password" type="password" name="password" value={stateSignup.password}   FormHelperTextProps={{
+    className: classes.helperText
+  }} helperText={stateSignup.passerror && "username or password is incorrect"} onChange={handleChange}  />}
               </div>
 
               {tog && <div className="form-group">
-                <TextField id="standard-basic" className={classes.root} InputProps={{className: classes.input}} label="ConfirmPassword" type="password" name="confirmPassword" value={stateSignup.confirmPassword} onChange={handleChange} />
+                <TextField id="standard-basic" className={classes.root} InputProps={{className: classes.input}}  label="ConfirmPassword" type="password" name="confirmPassword" value={stateSignup.confirmPassword} onChange={handleChange}  FormHelperTextProps={{
+    className: classes.helperText
+  }} helperText={stateSignup.password !== stateSignup.confirmPassword&&stateSignup.password > 0 && "password not matching"} />
   
               </div>}
             

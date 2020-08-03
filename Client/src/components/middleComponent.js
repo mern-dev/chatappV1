@@ -367,31 +367,31 @@ handleScroll = e =>{
     }
     softKeyboardView = () =>
     {
-      let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
-      let width = window.innerWidth / em
-      let height = window.innerHeight/ em
-      if(width<60||height<41)
-      {
+      // let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+      // let width = window.innerWidth / em
+      // let height = window.innerHeight/ em
+      // if(width<60||height<41)
+      // {
        
-        document.querySelector(".home").style.height ="50vh";
-        document.body.style.overflow = "hidden";
+      //   document.querySelector(".home").style.height ="50vh";
+      //   document.body.style.overflow = "hidden";
        
-      }
+      // }
      
     }
     hideSoftKeyboardView = () =>
-    { const {typingEnd} = this.context;
-       typingEnd();
-      let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
-      let width = window.innerWidth / em
-      let height = window.innerHeight/ em
-      if(width<60||height<41)
-      {
+     {// const {typingEnd} = this.context;
+    //    typingEnd();
+    //   let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+    //   let width = window.innerWidth / em
+    //   let height = window.innerHeight/ em
+    //   if(width<60||height<41)
+    //   {
        
-        document.querySelector(".home").style.height ="100%"
+    //     document.querySelector(".home").style.height ="100%"
         
        
-      }
+    //   }
     }
 
    scrollButtonPress = () =>
