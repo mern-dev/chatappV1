@@ -25,25 +25,18 @@ export default class Login extends Component {
     }
 componentDidMount ( )
 {
-    let token = window.localStorage.getItem("token")
-    const { updatemainLoading } = this.context
-    if(token)
-    {
+    // let token = window.localStorage.getItem("token")
+    // const { updatemainLoading } = this.context
+    // if(token)
+    // {
 
-        
-           
-        
-        
-        window.location="/home"
-         
-        
-       
+    //     window.location="/home"
+     
+    // }
+    // else{
+    //     updatemainLoading(false);
 
-    }
-    else{
-        updatemainLoading(false);
-
-    }
+    // }
   
 }
    stopAnime = () =>
@@ -99,7 +92,7 @@ componentDidMount ( )
                     const decode = jwt_decode(res.data.token);
                     updateId({id:decode._id,username:decode.username});
                   
-                    window.location = '/Home'
+                    window.location = '/home'
 
                
 

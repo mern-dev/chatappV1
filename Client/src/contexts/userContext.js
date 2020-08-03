@@ -147,11 +147,16 @@ scrollUpdate =(messagesw)=>
         {  
             res.data.detail.isOnline=true;
           this.setState({id:decode._id,user:res.data.detail})
+          window.location ="/home"
          return true
-         
+    
         }
         else
-         return false
+        {
+          window.location="/"
+          return false
+        }
+         
        }).then(result=>{
 
         if(result)
