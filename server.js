@@ -2,9 +2,9 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
-
+var path = require('path')
 var mongoose = require('mongoose');
-
+ 
 var bodyParser   = require('body-parser');
 
 
@@ -12,7 +12,14 @@ const router   = express.Router();
 const fileUpload = require('express-fileupload')
 const User = require('./app/models/user_model');
 
+if(process.env.NODE_ENV === "production")
+{
+   app.use(express.static("Client/build"));
 
+   app.get("*",(req,res) => {
+           res.sendFile(path.resolve(__dirname,"Client","build","index.html"))
+   });  
+}
 // configuration ===============================================================
 mongoose.connect("", {
   useUnifiedTopology: true,
