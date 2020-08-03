@@ -258,25 +258,10 @@ scrollUpdate =(messagesw)=>
     var messages = [];
     if(this.state.receiver._id===data._id)
     { 
-      this.setState({...this.state.receiver,path:""})
+      
       this.setState({receiver:{_id:this.state.receiver._id,isTyping:this.state.receiver.isTyping,username:this.state.receiver.username,path:data.path,isOnline:this.state.receiver.isOnline,status:data.status,lastSeen:this.state.receiver.lastSeen}})
     }
-    this.setState(state =>{
-      
-      messages = state.messages.map(chat =>{
-        if(chat.Id === data._id)
-        {
-          return  {Id:chat.Id,username:chat.username,isTyping:chat.isTyping,path:"", isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:data.status,messages:chat.messages}  
-         }
-        
-        else{
-          return {...chat}
-        }
-      })
-      
-        return {messages,}
-      
-    })
+   
     this.setState(state =>{
       
       messages = state.messages.map(chat =>{

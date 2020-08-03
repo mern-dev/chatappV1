@@ -77,13 +77,13 @@ module.exports = function (app) {
   // =====================================
 
   app.post('/signup', function (req, res) {
-    console.log(req.body);
+ 
 
     const newUser = {
       username: req.body.username,
       password: req.body.password
     }
-    console.log(newUser.username);
+    
 
     User.findOne({ username: newUser.username }).then(user => {
       if (!user) {
@@ -94,8 +94,7 @@ module.exports = function (app) {
           User.create(newUser).then(usr => {
             Room.create({ _id: usr._id }).then(room => {
 
-              // console.log(room._id,"roomid");
-              // console.log(usr._id,"userid");
+           
               const payload = {
                 _id: usr._id,
                 username: newUser.username
@@ -139,7 +138,7 @@ module.exports = function (app) {
   // =====================================
   app.get('/checkusername/:username', function (req, res) {
     User.findOne({ username: req.params.username }).then(user => {
-      console.log('ss');
+     
       if (user) {
         res.json({
           status: "error",
@@ -237,7 +236,7 @@ module.exports = function (app) {
     })
   })
   app.get('/getWord/:sid/:rid/:word', function (req, res) {
-    console.log('yyyyy', req.params.sid, req.params.rid, 'yyyy');
+  
     Room.find({ _id: req.params.sid, 'chats.Id': req.params.rid }, { 'chats.$.messages': 1, _id: 0 }).then(
       (info) => {
 
@@ -255,7 +254,7 @@ module.exports = function (app) {
           if (val[0] != ' ')
             return val;
         })
-        console.log(xArray);
+      
 
         info.map((i) => {
           i.chats.map(chat => {
@@ -267,7 +266,7 @@ module.exports = function (app) {
                 if (val[0] != ' ')
                   return val;
               })
-              console.log(yArray);
+            
 
               arrNo.push(msg)
 
@@ -327,7 +326,7 @@ module.exports = function (app) {
   })
 
   app.get('/getWord/:sid/:rid/:word/:start/:end', function (req, res) {
-    console.log( 'with');
+  
     Room.find({ _id: req.params.sid, 'chats.Id': req.params.rid }, { 'chats.$.messages': 1, _id: 0 }).then(
       (info) => {
 
@@ -343,19 +342,19 @@ module.exports = function (app) {
         var ZS = new Date(req.params.start);
         var ZE = new Date(req.params.end);
         var k;
-        console.log('before ', ZS, ZE);
+      
 
         if (ZS > ZE) {
           t = ZS;
           ZS = ZE;
           ZE = t;
         }
-        console.log('after', ZS, ZE);
+        
         k = new Date(ZE.getTime())
         k.setDate(k.getDate() + 1);
 
         ZE = k;
-        console.log('k', ZE, k);
+  
         var x = req.params.word.split(" ")
 
         const xArray = x.filter((val) => {
@@ -372,7 +371,7 @@ module.exports = function (app) {
                 if (val[0] != ' ')
                   return val;
               })
-              console.log(yArray);
+         
               
               z = msg.sentTime;
 
@@ -387,7 +386,7 @@ module.exports = function (app) {
               SS = z.getSeconds()
               var ZD = new Date(Y, M, D, HH, MM, SS);
 
-              console.log(ZD, ZS, ZE);
+          
 
               if (ZD >= ZS && ZD <= ZE) {
                 

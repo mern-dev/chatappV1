@@ -11,11 +11,11 @@ module.exports=function(io,socket){
   //  User is offline ====================
   // =====================================
   socket.on('disconnect', () => {
-    console.log("offline",users[socket.id]);
+    
     
   
     let id = users[socket.id]
-    console.log("off",userTab[id]);
+  
     if(userTab[id]>1)
     {
       userTab[id] = userTab[id] - 1;
@@ -44,8 +44,7 @@ module.exports=function(io,socket){
   //  User is online =====================
   // =====================================
         socket.on("join",function(data)
-        { console.log(data);
-          
+        {
            users[socket.id] = data.id;
            
            if(userTab[data.id])
@@ -63,7 +62,7 @@ module.exports=function(io,socket){
            
           socket.join("commonRoom");
           socket.join(`${data.id}`,() => {
-            console.log("into chat room")
+           
             
            
            User.updateOne({
@@ -228,7 +227,7 @@ module.exports=function(io,socket){
                                     lastSeen:newMessage.senderLastSeen,
                                      msg:msgOnline
                                    }
-                                   console.log("message-sent")
+                                 
                                    io.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})   //===============sent success to sender ===============//
                                   io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
                         
@@ -268,7 +267,7 @@ module.exports=function(io,socket){
                                                      lastSeen:newMessage.senderLastSeen,
                                                      msg:msgOnline
                                                    }
-                                                   console.log("message-sent")
+                                                
                                                 io.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})  //===============sent success to sender ===============//
                                                 io.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============
                                          

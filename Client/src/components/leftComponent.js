@@ -15,7 +15,6 @@ class LeftComponent extends Component {
      this.state = { searchResults:[],isPressed:false,id:"",searchQuery:"",profileToggle:false,  fileInfo: null,statusUpdateButton:false,
      loaded: '',
      path: '/images/nodp.png',
-     k:0,
      status: '',};
 
       this.cancel="";
@@ -83,7 +82,7 @@ class LeftComponent extends Component {
               formData.append('name', user.username);
               formData.append('id', id);
 
-              updateUserDetail({...user,path:this.state.path});
+              
       
               axios.post('/dp', formData, {
                   onUploadProgress: ProgressEvent => {

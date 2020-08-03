@@ -14,18 +14,18 @@ const User = require('./app/models/user_model');
 
 
 // configuration ===============================================================
-mongoose.connect('mongodb://localhost:27017/testchatappV1', {
+mongoose.connect("", {
   useUnifiedTopology: true,
-  useNewUrlParser: true,
+  useNewUrlParser: true, useFindAndModify: false 
 }); // connect to our database
 
 
 app.use(fileUpload());
 app.use(express.static('uploads'))
 app.use('/uploads', express.static('uploads'));
-app.use(bodyParser.urlencoded())
 
-    app.use(bodyParser.urlencoded())
+
+
 
 
 app.use(bodyParser.json());
@@ -51,26 +51,24 @@ app.post("/status",(req,res)=>
 app.post('/dp',(req,res)=>{
 
    let file = req.files.image;
-
+  
    let ls = file.name.split('.');
-   let extension = ls[ls.length-1]
-   console.log(extension);
-   file.mv(`uploads/${req.body.name}.${extension}`,(err)=>{
+
+ 
+   file.mv(`uploads/${file.name}`,(err)=>{
      if(err){
        console.log(err)
       
      }
      else{
       User.findOneAndUpdate({username:req.body.name},  
-        {path:`uploads/${req.body.name}.${extension}`}, null, function (err, docs) { 
+        {path:`uploads/${file.name}`}, null, function (err, docs) { 
         if (err){ 
             console.log(err) 
         } 
-        else{ 
-            console.log("Original Doc : ",docs); 
-        } 
+       
     }); 
-       res.send(`uploads/${req.body.name}.${extension}`);
+       res.send(`uploads/${file.name}`);
      }
    })
  })

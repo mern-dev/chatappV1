@@ -17,7 +17,7 @@ const styles = {
       borderBottomColor: 'white',
     },
     "& .MuiFormLabel-root": {
-      color: 'white' 
+      color: 'rgb(197, 157, 157)' 
     },
     
     "& .MuiFormHelperText-root":{
@@ -30,7 +30,7 @@ const styles = {
     
   },
   helperText:{
-    color:'red'
+    color:'green'
   },
   // underline: {
   //   color: 'red' ,
@@ -105,7 +105,7 @@ const Form = (props) => {
    return (<div className="home">
 
 <div className="chatBox FrontPage">
-<img className="loading-main" alt="#"src="./images/main-loading-gif"/>
+<img className="loading-main" alt="#"src="images/main-loading.gif"/>
   </div>
 
    </div>)
@@ -159,7 +159,7 @@ Of resolve to gravity thought my prepare chamber so. Unsatiable entreaties colle
 
 
               <div className="form-group">
-                {tog ? <TextField id="standard-basic" className={classes.root } InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} helperText={stateSignup.username.length > 4 ? stateSignup.usererror ? "existing username" : "valid username" : ( stateSignup.username.length > 0) ? 'invalid' :'' } autoComplete="off" onChange={handleChange} /> :
+                {tog ? <TextField id="standard-basic" className={classes.root } InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} helperText={stateSignup.username.length > 4 ? stateSignup.usererror ? "existing username" : "" : ( stateSignup.username.length > 0) ? 'invalid' :'' } autoComplete="off" onChange={handleChange} /> :
                   <TextField id="standard-basic" className={classes.root} InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} autoComplete="off" onChange={handleChange} />}
               </div>
               <div className="form-group ">

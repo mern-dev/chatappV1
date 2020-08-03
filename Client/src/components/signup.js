@@ -86,11 +86,12 @@ export default class Signup extends Component {
             username: this.state.username,
             password: this.state.password
         }
- 
-     const {updateId} = this.context;
+        const { updatemainLoading,updateId } = this.context
+          updatemainLoading(true);
 
         axios.post('/signup', user)
             .then(res => {
+                updatemainLoading(false)
                 console.log(res.data.token);
 
                 if (res.data.status === 'error') {
