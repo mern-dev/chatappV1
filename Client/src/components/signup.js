@@ -119,9 +119,19 @@ export default class Signup extends Component {
 
     }
     render() {
+
+        const {mainLoading} = this.context
+        if(mainLoading)
+        {
+         return <div>
+             <Form loading={mainLoading}/>
+         </div>
+
+        }
+        else
         return (
             <div>
-                < Form tog={this.props.tog} stateSignup={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
+                < Form tog={this.props.tog} laoading={mainLoading} stateSignup={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
 
         );

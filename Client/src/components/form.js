@@ -43,59 +43,86 @@ const styles = {
 
 
 const Form = (props) => {
+
   const { classes } = props;
 
   
   var showupdateUser = false;
 
-  const token = window.localStorage.getItem('token');
 
-  if (token) {
-    showupdateUser = true;
-  }
+     
+    const token = window.localStorage.getItem('token');
+   
+    if (token) {
+       showupdateUser=true;
+    }
+   
+   
+    const { stateSignup, handleChange,handleClick, validateForm, toggle, tog,stopAnime,loading } = props;
+    const mq_ht = window.matchMedia( "(min-height:  0em) and (max-height: 45em)" );
+    const HeightChange = (mq_ht)=>
+    {  
+       if(mq_ht.matches)
+       { 
+           
+          if(showupdateUser)
+          {
+              if(document.getElementById("Header-text"))
+            document.getElementById("Header-text").style.display="none"
+          }
+          else
+          {
+              if( document.getElementById("Header-text"))
+              {
+                document.getElementById("Header-text").style.display="block"
+              }
+          }
+          
+            
+       }
+       else
+       {
+        if( document.getElementById("Header-text"))
+        {
+          document.getElementById("Header-text").style.display="block"
 
-
-  const { stateSignup, handleChange, handleClick, validateForm, toggle, tog, stopAnime } = props;
-  const mq_ht = window.matchMedia("(min-height:  0em) and (max-height: 45em)");
-  const HeightChange = (mq_ht) => {
-    if (mq_ht.matches) {
-
-      if (showupdateUser) {
-        if (document.getElementById("Header-text"))
-          document.getElementById("Header-text").style.display = "none"
-      }
-      else {
-        if (document.getElementById("Header-text")) {
-          document.getElementById("Header-text").style.display = "block"
         }
       }
 
 
-    }
-    else {
-      if (document.getElementById("Header-text")) {
-        document.getElementById("Header-text").style.display = "block"
-      }
-    }
 
-
-  }
+    }
+    
   if (mq_ht) {
     mq_ht.addListener(HeightChange);
     HeightChange(mq_ht);
 
   }
 
-  return (
-    <div className="home" id="formApp">
+  if(loading)
+{
 
+   return (<div className="home">
 
+<div className="chatBox FrontPage">
+<img className="loading-main" alt="#"src="./images/main-loading-gif"/>
+  </div>
 
+   </div>)
 
-      <div className="chatBox FrontPage">
+  }
+else
+    return (
+        <div className="home" id="formApp">
+       
+           
+          
 
-        <div id="Header-text">
-          Chat app
+                <div className="chatBox FrontPage">
+                
+                <div id="Header-text">
+                          Chat app
+
                       </div>
         <div id="app-feature" className="app-feature-content">
 

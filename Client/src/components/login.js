@@ -26,9 +26,22 @@ export default class Login extends Component {
 componentDidMount ( )
 {
     let token = window.localStorage.getItem("token")
+    const { updatemainLoading } = this.context
     if(token)
     {
+
+        
+           
+        
+        
         window.location="/home"
+         
+        
+       
+
+    }
+    else{
+        updatemainLoading(false);
 
     }
   
@@ -62,7 +75,8 @@ componentDidMount ( )
 
     handleClick(e) {
         e.preventDefault();
-
+        const { updatemainLoading } = this.context
+        updatemainLoading(true);
         const userr = {
             username: this.state.username,
             password: this.state.password
@@ -75,6 +89,7 @@ componentDidMount ( )
 
                 if (res.data.status === 'error') {
                     this.setState({ passerror: true });
+                    updatemainLoading(false);
 
                 }
                 else {
@@ -83,6 +98,7 @@ componentDidMount ( )
                     window.localStorage.setItem("token",res.data.token)
                     const decode = jwt_decode(res.data.token);
                     updateId({id:decode._id,username:decode.username});
+                  
                     window.location = '/Home'
 
                
@@ -103,11 +119,21 @@ componentDidMount ( )
 
     }
     render() {
+        const {mainLoading} = this.context
+        if(mainLoading)
+        {
+         return <div>
+             <Form loading={mainLoading}/>
+         </div>
+
+        }
+        else{
         return (
 
             <div>
-                < Form tog={this.props.tog} stateSignup={this.state} stopAnime={this.stopAnime} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
+                < Form loading={mainLoading} tog={this.props.tog} stateSignup={this.state} stopAnime={this.stopAnime} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
         );
+        }
     }
 }

@@ -94,42 +94,61 @@ module.exports=function(io,socket){
                              
                          ]).then(res=>{
                             var chats = [];
-                          res.forEach(item =>
-                              { 
-                                 User.findOne({_id:item.chats.Id},{password:0}).then(detail=>{
-                                             let len=item.chats.messages.length;
-                                            
-                                             var latestmsg=[]
-                                             if(len<10)
-                                             {
-                                               latestmsg= item.chats.messages;
-                                             }
-                                             else{
-                                              latestmsg = item.chats.messages.slice(-10);
-                                               if(!latestmsg[0].seen)
-                                               { let temp=[]
-                                                 for(let i=0;item.chats.messages[i].id!=latestmsg[0].id;i++)
-                                                    {
-                                                      if(!item.chats.messages[i].seen)
-                                                      {
-                                                         temp.push(item.chats.messages[i])
-                                                      }
-                                                    }
-                                                    if(temp.length)
-                                                    {
-                                                      latestmsg=[...temp,...latestmsg]
-                                                    }
+                          
+                            if(res.length===0)
+                            {
+                              
+                              io.to(`${socket.id}`).emit("chat",null,false); 
+                            }
+                            else
+                            {
+                                 var cnt = 0;
+                              res.forEach(item =>
+                                { 
+                                   User.findOne({_id:item.chats.Id},{password:0}).then(detail=>{
+                                               let len=item.chats.messages.length;
+                                              
+                                               var latestmsg=[]
+                                               if(len<10)
+                                               {
+                                                 latestmsg= item.chats.messages;
                                                }
-
-                                                 
-                                              }
-                                              let chat  = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,lastSeen:detail.lastSeen,status:detail.status,messages:latestmsg}
-                                                                    
-                                              io.to(`${socket.id}`).emit("chat",chat); 
-                                            })
-                                           
+                                               else{
+                                                latestmsg = item.chats.messages.slice(-10);
+                                                 if(!latestmsg[0].seen)
+                                                 { let temp=[]
+                                                   for(let i=0;item.chats.messages[i].id!=latestmsg[0].id;i++)
+                                                      {
+                                                        if(!item.chats.messages[i].seen)
+                                                        {
+                                                           temp.push(item.chats.messages[i])
+                                                        }
+                                                      }
+                                                      if(temp.length)
+                                                      {
+                                                        latestmsg=[...temp,...latestmsg]
+                                                      }
+                                                 }
+  
+                                                   
+                                                }
+                                                let chat  = {Id:item.chats.Id,username:detail.username,path:detail.path,isOnline:detail.isOnline,lastSeen:detail.lastSeen,status:detail.status,messages:latestmsg}
+                                                                      if(res.length===cnt)
+                                                                      {
+                                                                        io.to(`${socket.id}`).emit("chat",chat,true); 
+                                                                      }
+                                                                      else
+                                                                      {
+                                                                        io.to(`${socket.id}`).emit("chat",chat,false); 
+                                                                      }
+                                               
+                                              })
                                              
-                                   })
+                                               
+                                     })
+
+                            }
+                          
                                    
                                    
                                    

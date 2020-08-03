@@ -42,7 +42,8 @@ module.exports = function (app) {
               token: token,
               message:
                 user.username +
-                " is successfully logged in"
+                " is successfully logged in",
+                detail:{_id:user.id,path:user.path,isOnline:true,status:user.status,lastSeen:user.lastSeen,username:user.username}
             });
 
           }
