@@ -121,7 +121,7 @@ else
                 <div className="chatBox FrontPage">
                 
                 <div id="Header-text">
-                          Chat app
+                          Textin'
 
                       </div>
         <div id="app-feature" className="app-feature-content">
