@@ -206,7 +206,7 @@ handlestatus = (e) =>
        <button className="ProfileButton" onClick={this.profileToggle} title="Your Profile" ><FontAwesome name="user" className="plusIcon" ></FontAwesome> </button>  
       </div>
       
-     <ChatBrief messages={messages}/>  
+     {messages.length?<ChatBrief messages={messages}/>:<div className="left-c"><h4 className="text-color-left-empty">Click the plus to add friends</h4></div>}  
  
        
       </div>

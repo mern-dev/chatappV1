@@ -94,7 +94,7 @@ componentDidUpdate()
   
   
   const {middleFlag,cnt, onlineBottom,Bottom,updateBottom} = this.context;
-  console.log("ooo",middleFlag,cnt,onlineBottom,Bottom)
+ 
   const container = document.getElementById("chatScroll");
   if(cnt&&container&&middleFlag)
   {
@@ -236,7 +236,7 @@ handleScroll = e =>{
      
        if(container.scrollHeight-container.scrollTop===container.offsetHeight)
        {
-        console.log("bottom")
+       
         
         document.querySelector(".date").style.display="none"
         

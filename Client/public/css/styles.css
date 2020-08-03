@@ -301,6 +301,17 @@ html {
 .middle-img {
   width: 45%;
   height: 40%;
+  
+}
+.loading-main
+{
+  width:fit-content;
+  height: fit-content;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 .middleEmpty {
   align-items: center;
@@ -767,7 +778,15 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
 }
 
 /* =============================================================== Left-component styles ========================================================================= */
-
+.text-color-left-empty
+{
+  margin-top: 50%;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  color:rgb(161, 136, 136) ;
+}
 .searchBar {
   width: 85%;
 
@@ -784,6 +803,7 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
   align-items: center;
   width: 80%;
   display: block;
+  padding:1em
 }
 .searchInputBar {
   border: none;

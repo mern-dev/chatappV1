@@ -1,8 +1,9 @@
 import React, { Component,createContext } from 'react'
-import jwt_decode from "jwt-decode";
-import axios from 'axios';
+
 import io from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 export const UserContext = createContext()
 
@@ -30,10 +31,20 @@ class UserContextProvider extends Component {
       tog:true,
       data:true,
       cntifup:0,
+      mainLoading:true,
    }
 
   
 
+   }
+   updateDetail = (user) =>
+   {
+     console.log("hhhhh",user);     this.setState({id:user._id,user:user})
+     
+   }   
+   updatemainLoading = (value) =>
+   {
+          this.setState({mainLoading:value})
    }
   updatecntifup = () =>
   {
@@ -106,29 +117,84 @@ scrollUpdate =(messagesw)=>
   
    
   }
-  componentDidMount ()
-  {
-    let token = window.localStorage.getItem("token")
-     
-    
-    if(token)
-    {
-        const decode = jwt_decode(token);
-       this.id = decode._id;
-        this.setState({id:this.id});
-        
-        axios.get('/getDetail/'+this.id).then(res =>{
-          console.log(res.data.detail)
-         res.data.detail.isOnline=true
-          this.setState({user:res.data.detail})
-        })
-     
-        
-       
-    }
   
-    const point = "http://localhost:3000/";
-    this.socket = io(point);
+  componentDidMount ()
+{
+  let token = window.localStorage.getItem("token")
+
+
+  if(token)
+  {
+    const decode = jwt_decode(token);
+    
+    axios.get('/getDetail/'+decode._id).then(res => {
+        if(res.data.status==="success")
+        {  
+            res.data.detail.isOnline=true;
+          this.setState({id:decode._id,user:res.data.detail})
+         return true
+         
+        }
+        else
+         return false
+       }).then(result=>{
+
+        if(result)
+        {
+          const point = "http://localhost:3000/";
+          this.socket = io(point);
+          this.socket.emit("join",{id:decode._id})
+        
+ 
+   
+    
+  
+ 
+
+    this.socket.on("chat",function(chat,loading){
+     
+      if(chat!==null)
+      {
+        addChats(chat);
+         
+
+      }
+       if(!loading)
+      {
+        loadingDone()
+        
+
+      }
+   
+     });
+     const loadingDone = () =>
+     {
+      this.setState({mainLoading:false})
+     }
+
+    const addChats =(chat) =>{
+      
+      
+            chat.messages.map(msg=>{
+              if(!msg.delivered&&msg.senderId!==this.state.user._id)
+
+              {
+                msg.delivered=true;
+                this.socket.emit("deliverUpdate", msg);
+              }
+              return 0;
+            })
+
+        
+    
+      this.setState({messages:[...this.state.messages,{...chat,isTyping:false}]})
+    }
+
+
+
+
+
+   
   this.socket.on("isTypingUpdate",function(data){
     isTypingUpdate(data,true);
   })
@@ -163,9 +229,7 @@ scrollUpdate =(messagesw)=>
     })
   }
     
-    this.socket.on("isOnline",function(data){
-       onlineUpdate(data)
-    })
+  
 
  
     this.socket.on("addDetailUpdate",function(data)
@@ -276,32 +340,7 @@ scrollUpdate =(messagesw)=>
       
     })
   }
-    this.socket.emit("join",{id:this.id})
-    this.socket.on("chat",function(chat){
-     
-      addChats(chat);
-     
-      
-     
-     });
-
-    const addChats =(chat) =>{
-      
-      
-            chat.messages.map(msg=>{
-              if(!msg.delivered&&msg.senderId!==this.state.user._id)
-
-              {
-                msg.delivered=true;
-                this.socket.emit("deliverUpdate", msg);
-              }
-              return 0;
-            })
-
-        
     
-      this.setState({messages:[...this.state.messages,{...chat,isTyping:false}]})
-    }
     this.socket.on("receivingMessage",function(newmsg){
      addmessage(newmsg);
       
@@ -512,6 +551,14 @@ scrollUpdate =(messagesw)=>
 }
 
 
+})
+
+}
+   }
+
+
+
+
  postmessage = () =>
  {   let msgid = uuidv4();
  const sentTime =  new Date();
@@ -677,7 +724,7 @@ typingEnd = () =>
     
     return (
 
-      <UserContext.Provider value={{...this.state,typingEnd:this.typingEnd,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
+      <UserContext.Provider value={{...this.state, updateDetail:this.updateDetail,updatemainLoading:this.updatemainLoading,typingEnd:this.typingEnd,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
         seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
 
   

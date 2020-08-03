@@ -8,6 +8,8 @@ import  { UserContext } from '../contexts/userContext'
 import LeftComponent from './leftComponent';
 import MiddleComponent from './middleComponent';
 import RightComponent from './rightComponent';
+import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 
 
@@ -30,12 +32,36 @@ class Home extends Component {
    
     
     componentDidMount() {
-       
-       
+      let token = window.localStorage.getItem("token")
+      const { updatemainLoading } = this.context
+
+      if(token)
+      {
+        const decode = jwt_decode(token);
+        
+        axios.get('/getDetail/'+decode._id).then(res => {
+            if(res.data.status==="success")
+            {  
+                
+             
+            }
+            else
+            {
+              updatemainLoading(false);
+                window.location="/"
+                
+            }})
+
+      }
+      else{
+        
+        window.location="/"
+
+      }
+     
       
-       
-       
-       
+       if(document.querySelector(".leftHome")&&  document.querySelector(".middleHome")&& document.querySelector(".rightHome"))   {
+
         const mq_wt = window.matchMedia( "(min-width: 0em) and (max-width: 59em)" );
         const mq_wt2 = window.matchMedia( "(min-width: 61em) and (max-width: 89em)" );
         const mq_wt3 = window.matchMedia( "(min-width: 90em) and (max-width: 200em)" );
@@ -121,6 +147,9 @@ class Home extends Component {
 
          }
 
+       }
+       
+        
  
  }
 
@@ -148,7 +177,21 @@ class Home extends Component {
     }
 
     render() {
-        const {messages,middleFlag} = this.context 
+        const {messages,middleFlag,mainLoading} = this.context 
+        if(mainLoading)
+        {
+
+   return (<div className="home">
+
+<div className="chatBox FrontPage">
+<img className="loading-main" alt="#"src="./images/main-loading.gif"/>
+  </div>
+
+   </div>)
+
+  }
+  
+  else
                return (
               
             
@@ -159,8 +202,7 @@ class Home extends Component {
 
                 
                 
-                        
-                          <LeftComponent messages={messages}/>
+                        <LeftComponent messages={messages}/>
                 
                  
                     

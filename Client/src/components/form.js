@@ -20,7 +20,7 @@ const Form = (props) => {
     }
    
    
-    const { stateSignup, handleChange,handleClick, validateForm, toggle, tog,stopAnime } = props;
+    const { stateSignup, handleChange,handleClick, validateForm, toggle, tog,stopAnime,loading } = props;
     const mq_ht = window.matchMedia( "(min-height:  0em) and (max-height: 45em)" );
     const HeightChange = (mq_ht)=>
     {  
@@ -58,7 +58,19 @@ const Form = (props) => {
        HeightChange(mq_ht);
 
          }
-   
+  if(loading)
+{
+
+   return (<div className="home">
+
+<div className="chatBox FrontPage">
+<img className="loading-main" alt="#"src="./images/main-loading-gif"/>
+  </div>
+
+   </div>)
+
+  }
+else
     return (
         <div className="home" id="formApp">
        
