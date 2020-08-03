@@ -21,7 +21,7 @@ if(process.env.NODE_ENV === "production")
    });  
 }
 // configuration ===============================================================
-mongoose.connect(`${process.env.MONGO_URL}`,{
+mongoose.connect(process.env.MONGO_URL,{
   useUnifiedTopology: true,
   useNewUrlParser: true, useFindAndModify: false 
 }); // connect to database

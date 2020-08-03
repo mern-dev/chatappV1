@@ -156,7 +156,7 @@ scrollUpdate =(messagesw)=>
 
         if(result)
         {
-          const point = "http://192.168.1.4:3000/";
+          const point = "https://textin.herokuapp.com";
           this.socket = io(point);
           this.socket.emit("join",{id:decode._id})
         
