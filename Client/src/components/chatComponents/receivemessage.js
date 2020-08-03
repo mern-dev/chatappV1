@@ -26,8 +26,8 @@ class ReceiveMessage extends Component {
          {this.props.msgBody}
 
             </div>
-            <br/>
-            <div className="msgSentTime">
+          
+            <div className="msgSentTime-receive">
            
                 {this.formatAMPM(new Date(this.props.sentTime))}
               

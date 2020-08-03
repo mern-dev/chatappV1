@@ -413,6 +413,10 @@ span[id="right"] {
   {
     display: none;
   }
+  .form-pg
+  {
+    display: none;
+  }
  #app-feature
  {
    flex: 1;
@@ -746,7 +750,7 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
   color: rgba(255, 255, 255, 0.692);
 
   display: inline;
-
+  
   overflow-wrap: break-word;
   font-size: 1em;
 }
@@ -758,12 +762,25 @@ li#sendTop + li#send .sendmsg .bubble-arrow-right {
   display: inline;
   overflow-wrap: break-word;
   font-size: 1em;
+  
 }
 .msgSentTime {
   display: inline;
   float: right;
   font-size: 0.7em;
-  margin-top: 0.1em;
+ 
+  padding: 0.3em;
+  opacity: 0.9;
+  color: grey;
+}
+.msgSentTime-receive
+{
+  display: inline;
+  float: right;
+  font-size: 0.7em;
+  padding: 0.3em;
+  margin-top:1em;
+   
 
   opacity: 0.9;
   color: grey;
@@ -1297,13 +1314,32 @@ flex:1;
   font-family: "Montserrat", sans-serif;
   
  
-  top:30%;
+  top:25%;
   right: 8%;
    position: absolute;
    width: 50%;
    height: 70%;
   
   font-size: 1.2em;
+
+}
+.form-pg
+{
+  
+  
+
+
+
+ position: absolute;
+ top:15em;
+ right: 7em;
+
+ 
+
+
+
+ 
+ 
 
 }
 
@@ -1573,4 +1609,9 @@ input[type="file"] {
   
   
   100% {transform:translateX(-100vw);}
+}
+
+.form-img
+{
+  width: 25vw;
 }

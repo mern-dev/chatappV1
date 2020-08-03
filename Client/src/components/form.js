@@ -134,13 +134,9 @@ else
             <div onClick={stopAnime} className="features" id="scroll"><img src="images/cloud.gif" alt="#" className="feature-scroll" /></div>
             <div onClick={stopAnime} className="features" id="chat"><img src="images/chat.gif" alt="#" className="feature-rest" /></div>
           </div>
-
-          <p className="text-color-first-pg">Chat messenger, No space worry, Scalable,At ourselves direction believing do he departure. Celebrated her had sentiments understood are projection set. Possession ye no mr unaffected remarkably at. Wrote house in never fruit up. Pasture imagine my garrets an he. However distant she request behaved see nothing. Talking settled at pleased an of me brother weather.
-
-Of resolve to gravity thought my prepare chamber so. Unsatiable entreaties collecting may sympathize nay interested instrument. If continue building numerous of at relation in margaret. Lasted engage roused mother an am at. Other early while if by do to. Missed living excuse as be. Cause heard fat above first shall for. My smiling to he removal weather on anxious. </p>
-
-
-
+           <p className="text-color-first-pg">Messaging web app ,mobile + tablet + pc compatible and cloud follows you.  </p>
+          <div className="form-pg"><img src="images/form.png" alt="#" className="form-img"/></div>
+     
         </div>
         {!stateSignup.newUser && !showupdateUser ?
           <form autoComplete="off" onSubmit={handleClick} className="FormContent" >

@@ -156,7 +156,7 @@ scrollUpdate =(messagesw)=>
 
         if(result)
         {
-          const point = "http://localhost:3000/";
+          const point = "http://192.168.1.4:3000/";
           this.socket = io(point);
           this.socket.emit("join",{id:decode._id})
         
@@ -223,7 +223,7 @@ scrollUpdate =(messagesw)=>
     if(this.state.receiver._id===data.id)
     { 
      
-      this.setState({receiver:{_id:this.state.receiver._id,isTyping:value,username:this.state.receiver.username,path:data.path,isOnline:this.state.receiver.isOnline,status:data.status,lastSeen:this.state.receiver.lastSeen}})
+      this.setState({receiver:{_id:this.state.receiver._id,isTyping:value,username:this.state.receiver.username,path:this.state.receiver.path,isOnline:this.state.receiver.isOnline,status:this.state.receiver.status,lastSeen:this.state.receiver.lastSeen}})
     }
   
     this.setState(state =>{
@@ -231,7 +231,7 @@ scrollUpdate =(messagesw)=>
       messages = state.messages.map(chat =>{
         if(chat.Id === data.id)
         {
-          return  {Id:chat.Id,username:chat.username,isTyping:value,path:data.path, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:data.status,messages:chat.messages}  
+          return  {Id:chat.Id,username:chat.username,isTyping:value,path:chat.path, isOnline:chat.isOnline,lastSeen:chat.lastSeen,status:chat.status,messages:chat.messages}  
          }
         
         else{

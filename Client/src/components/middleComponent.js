@@ -380,8 +380,8 @@ handleScroll = e =>{
      
     }
     hideSoftKeyboardView = () =>
-     {// const {typingEnd} = this.context;
-    //    typingEnd();
+     { const {typingEnd} = this.context;
+         typingEnd();
     //   let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
     //   let width = window.innerWidth / em
     //   let height = window.innerHeight/ em
