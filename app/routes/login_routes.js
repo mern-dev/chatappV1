@@ -139,7 +139,7 @@ module.exports = function (app) {
   // =====================================
   app.get('/checkusername/:username', function (req, res) {
     User.findOne({ username: req.params.username }).then(user => {
-
+      console.log('ss');
       if (user) {
         res.json({
           status: "error",
@@ -327,7 +327,7 @@ module.exports = function (app) {
   })
 
   app.get('/getWord/:sid/:rid/:word/:start/:end', function (req, res) {
-    console.log('yyyyy', req.params.sid, req.params.rid, 'yyyy');
+    console.log( 'with');
     Room.find({ _id: req.params.sid, 'chats.Id': req.params.rid }, { 'chats.$.messages': 1, _id: 0 }).then(
       (info) => {
 

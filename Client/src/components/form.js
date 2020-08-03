@@ -1,17 +1,55 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
-
+import { withStyles } from '@material-ui/core/styles';
 import Dp from "./dp";
+import PropTypes from "prop-types";
 
 
 
 
 
+const styles = {
+  root: {
+    '& label.Mui-focused': {
+      color: 'green',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white',
+    },
+    "& .MuiFormLabel-root": {
+      color: '#3797a4' 
+    },
+    
+    "& .MuiFormHelperText-root":{
+      color: 'white'
+    },
+   
+  },
+  input: {
+    color: "white"
+    
+  },
+  helperText:{
+    color:'red'
+  },
+  // underline: {
+  //   color: 'red' ,
+  //   '&::after': {
+  //     border: '2px solid red'
+  //   }
+  // }
+ 
+};
 
 
 const Form = (props) => {
- 
-      var showupdateUser = false;
+
+  const { classes } = props;
+
+  
+  var showupdateUser = false;
+
+
      
     const token = window.localStorage.getItem('token');
    
@@ -47,17 +85,20 @@ const Form = (props) => {
         if( document.getElementById("Header-text"))
         {
           document.getElementById("Header-text").style.display="block"
-        }
-       }
-     
-    
-     }
-     if(mq_ht)
-         {
-         mq_ht.addListener(HeightChange);
-       HeightChange(mq_ht);
 
-         }
+        }
+      }
+
+
+
+    }
+    
+  if (mq_ht) {
+    mq_ht.addListener(HeightChange);
+    HeightChange(mq_ht);
+
+  }
+
   if(loading)
 {
 
@@ -81,76 +122,83 @@ else
                 
                 <div id="Header-text">
                           Chat app
+
                       </div>
-                   <div id="app-feature" className="app-feature-content">
-               
-                  <div  className="circular-section" >
-                    
-                <div onClick={stopAnime} className="features"  id="unlock"><img src="images/unlock.gif" alt="#" className="feature-unlock"/></div> 
-                   <div onClick={stopAnime} className="features"id="all-devices" ><img src="images/all-devices.gif" alt="#" className="feature-rest"/></div> 
-                   <div  onClick={stopAnime} className="features" id="cloud"><img src="images/scroll.gif" alt="#"  className="feature-cloud"/></div> 
-                 <div  onClick={stopAnime}className="features" id="scroll"><img src="images/cloud.gif" alt="#"  className="feature-scroll"/></div> 
-                  <div  onClick={stopAnime} className="features" id="chat"><img src="images/chat.gif" alt="#"  className="feature-rest"/></div> 
-                  </div> 
-                 
-                 <p className="text-color-first-pg">Chat messenger, No space worry, Scalable,At ourselves direction believing do he departure. Celebrated her had sentiments understood are projection set. Possession ye no mr unaffected remarkably at. Wrote house in never fruit up. Pasture imagine my garrets an he. However distant she request behaved see nothing. Talking settled at pleased an of me brother weather. 
+        <div id="app-feature" className="app-feature-content">
+
+          <div className="circular-section" >
+
+            <div onClick={stopAnime} className="features" id="unlock"><img src="images/unlock.gif" alt="#" className="feature-unlock" /></div>
+            <div onClick={stopAnime} className="features" id="all-devices" ><img src="images/all-devices.gif" alt="#" className="feature-rest" /></div>
+            <div onClick={stopAnime} className="features" id="cloud"><img src="images/scroll.gif" alt="#" className="feature-cloud" /></div>
+            <div onClick={stopAnime} className="features" id="scroll"><img src="images/cloud.gif" alt="#" className="feature-scroll" /></div>
+            <div onClick={stopAnime} className="features" id="chat"><img src="images/chat.gif" alt="#" className="feature-rest" /></div>
+          </div>
+
+          <p className="text-color-first-pg">Chat messenger, No space worry, Scalable,At ourselves direction believing do he departure. Celebrated her had sentiments understood are projection set. Possession ye no mr unaffected remarkably at. Wrote house in never fruit up. Pasture imagine my garrets an he. However distant she request behaved see nothing. Talking settled at pleased an of me brother weather.
 
 Of resolve to gravity thought my prepare chamber so. Unsatiable entreaties collecting may sympathize nay interested instrument. If continue building numerous of at relation in margaret. Lasted engage roused mother an am at. Other early while if by do to. Missed living excuse as be. Cause heard fat above first shall for. My smiling to he removal weather on anxious. </p>
-                
-                  
-                  
-                   </div>
-                   {!stateSignup.newUser&&!showupdateUser?
-                   <form  autoComplete="off" onSubmit={handleClick} className="FormContent" >
-                   
-                  
 
-                            
-                                <div className="heading-form" >
-                            {tog ? "Sign up" : "Log in"}
-                              </div>
 
-                         
 
-                 <div className="inputFrom">
-
-                 
-
-                        <div  className="form-group">
-                            {tog ? <TextField id="standard-basic" label="Username" type="text" name="username" value={stateSignup.username} helperText={stateSignup.username.length > 4? stateSignup.usererror ? "Invalid username" : "valid username" : ""} autoComplete="off" onChange={handleChange} /> :
-                                <TextField id="standard-basic"  label="Username" type="text" name="username" value={stateSignup.username} autoComplete="off" onChange={handleChange} />}
-                        </div>
-                        <div className="form-group ">
-                            <TextField id="standard-basic"  label="Password" type="password" name="password" value={stateSignup.password} helperText={stateSignup.passerror && "username or password is incorrect"} onChange={handleChange} />
-                        </div>
-
-                        {tog && <div className="form-group">
-                            <TextField id="standard-basic"label="ConfirmPassword" type="password" name="confirmPassword" value={stateSignup.confirmPassword} onChange={handleChange}  />
-                            
-                        </div>}
-                      
-                        </div>    
-                                <button type="button" onClick={handleClick} disabled={!(validateForm())} class="btn btn-light">Submit</button>
-
-                        <div className="button-signup" onClick={toggle}>
-                                    {tog ? "Existing User ?" : "New User ?"}
-                                </div>
-
-                               
-                    </form>: tog?<Dp />:<span></span> }
-
-                   
+        </div>
+        {!stateSignup.newUser && !showupdateUser ?
+          <form autoComplete="off" onSubmit={handleClick} className="FormContent" >
 
 
 
 
-                </div>
+            <div className="heading-form" >
+              {tog ? "Sign up" : "Log in"}
+            </div>
 
-                </div>
-                    
-       
-       
-    );
+
+
+            <div className="inputFrom">
+
+
+
+              <div className="form-group">
+                {tog ? <TextField id="standard-basic" className={classes.root } InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} helperText={stateSignup.username.length > 4 ? stateSignup.usererror ? "Invalid username" : "valid username" : ( stateSignup.username.length > 0) ? 'invalid' :'' } autoComplete="off" onChange={handleChange} /> :
+                  <TextField id="standard-basic" className={classes.root} InputProps={{className: classes.input}} label="Username" type="text" name="username" value={stateSignup.username} autoComplete="off" onChange={handleChange} />}
+              </div>
+              <div className="form-group ">
+                <TextField id="standard-basic"    className={classes.root} InputProps={{className: classes.input}} label="Password" type="password" name="password" value={stateSignup.password}   FormHelperTextProps={{
+    className: classes.helperText
+  }} helperText={stateSignup.passerror && "username or password is incorrect"} onChange={handleChange}  />
+              </div>
+
+              {tog && <div className="form-group">
+                <TextField id="standard-basic" className={classes.root} InputProps={{className: classes.input}} label="ConfirmPassword" type="password" name="confirmPassword" value={stateSignup.confirmPassword} onChange={handleChange} />
+  
+              </div>}
+            
+
+            </div>
+            <button type="button" onClick={handleClick} disabled={!(validateForm())} class="btn btn-light">Submit</button>
+
+            <div className="button-signup" onClick={toggle}>
+              {tog ? "Existing User ?" : "New User ?"}
+            </div>
+
+
+          </form> : tog ? <Dp /> : <span></span>}
+
+
+
+
+
+
+      </div>
+
+    </div>
+
+
+
+  );
 }
+Form.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
-export default Form;
+export default withStyles(styles)(Form);
