@@ -19,6 +19,33 @@ class Home extends Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        let token = window.localStorage.getItem("token")
+        const { updatemainLoading } = this.context
+  
+        if(token)
+        {
+          const decode = jwt_decode(token);
+          
+          axios.get('/getDetail/'+decode._id).then(res => {
+              if(res.data.status==="success")
+              {  
+                  
+               
+              }
+              else
+              {
+                updatemainLoading(false);
+                  window.location="/"
+                  
+              }})
+  
+        }
+        else
+        {
+          
+          window.location="/"
+  
+        }
         
       
    }
@@ -32,32 +59,7 @@ class Home extends Component {
    
     
     componentDidMount() {
-      let token = window.localStorage.getItem("token")
-      const { updatemainLoading } = this.context
-
-      if(token)
-      {
-        const decode = jwt_decode(token);
-        
-        axios.get('/getDetail/'+decode._id).then(res => {
-            if(res.data.status==="success")
-            {  
-                
-             
-            }
-            else
-            {
-              updatemainLoading(false);
-                window.location="/"
-                
-            }})
-
-      }
-      else{
-        
-        window.location="/"
-
-      }
+     
      
       
        if(document.querySelector(".leftHome")&&  document.querySelector(".middleHome")&& document.querySelector(".rightHome"))   {

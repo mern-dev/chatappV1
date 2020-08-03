@@ -20,32 +20,13 @@ export default class Login extends Component {
             token: "",
             passerror: false
         }
-
+       
         
     }
-componentDidMount ( )
-{
-    // let token = window.localStorage.getItem("token")
-    // const { updatemainLoading } = this.context
-    // if(token)
-    // {
 
-    //     window.location="/home"
-     
-    // }
-    // else{
-    //     updatemainLoading(false);
-
-    // }
-  
-}
    stopAnime = () =>
     {  
-    //    document.getElementById("unlock").style.animationPlayState="paused"   
-    //    document.getElementById("scroll").style.animationPlayState="paused"   
-    //    document.getElementById("all-devices").style.animationPlayState="paused"   
-    //    document.getElementById("chat").style.animationPlayState="paused"   
-    //    document.getElementById("cloud").style.animationPlayState="paused"  
+    
         
     }
 

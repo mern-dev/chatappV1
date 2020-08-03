@@ -39,9 +39,44 @@ class UserContextProvider extends Component {
 
    }
 
-  
+   let token = window.localStorage.getItem("token")
 
+
+   if(token)
+   {
+     const decode = jwt_decode(token);
+     
+     axios.get('/getDetail/'+decode._id).then(res => {
+         if(res.data.status==="success")
+         {  
+             res.data.detail.isOnline=true;
+           this.setState({id:decode._id,user:res.data.detail})
+           window.location ="/home"
+          return true
+     
+         }
+         else
+         {
+           window.location="/"
+           this.setState({mainLoading:false});
+           return false
+         }
+          
+        }).then(result=>{
+ 
+         if(result)
+         {
+           const point = "https://textin.herokuapp.com";
+           this.socket = io(point);
+           this.socket.emit("join",{id:decode._id})
+         } })
+    }
+   else
+   {
+    this.setState({mainLoading:false});
+    window.location="/";
    }
+}
 handleDate=(nam,val)=>{
   this.setState({[nam]:val});
 }
@@ -135,37 +170,7 @@ scrollUpdate =(messagesw)=>
   
   componentDidMount ()
 {
-  let token = window.localStorage.getItem("token")
-
-
-  if(token)
-  {
-    const decode = jwt_decode(token);
-    
-    axios.get('/getDetail/'+decode._id).then(res => {
-        if(res.data.status==="success")
-        {  
-            res.data.detail.isOnline=true;
-          this.setState({id:decode._id,user:res.data.detail})
-          window.location ="/home"
-         return true
-    
-        }
-        else
-        {
-          window.location="/"
-          return false
-        }
-         
-       }).then(result=>{
-
-        if(result)
-        {
-          const point = "https://textin.herokuapp.com";
-          this.socket = io(point);
-          this.socket.emit("join",{id:decode._id})
-        
- 
+  
    
     
   
@@ -556,10 +561,7 @@ scrollUpdate =(messagesw)=>
 }
 
 
-})
 
-}
-   }
 
 
 
