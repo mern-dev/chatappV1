@@ -55,20 +55,20 @@ app.post('/dp',(req,res)=>{
    let ls = file.name.split('.');
 
  
-   file.mv(`uploads/${file.name}`,(err)=>{
+   file.mv(`uploads/${req.body.username}/${file.name}`,(err)=>{
      if(err){
        console.log(err)
       
      }
      else{
       User.findOneAndUpdate({username:req.body.name},  
-        {path:`uploads/${file.name}`}, null, function (err, docs) { 
+        {path:`uploads/${req.body.username}/${file.name}`}, null, function (err, docs) { 
         if (err){ 
             console.log(err) 
         } 
        
     }); 
-       res.send(`uploads/${file.name}`);
+       res.send(`uploads/${req.body.username}/${file.name}`);
      }
    })
  })
