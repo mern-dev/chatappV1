@@ -35,14 +35,14 @@ class Home extends Component {
           
           axios.get('/getDetail/'+decode._id).then(res => {
               if(res.data.status==="success")
-              {  
+              {  console.log("hh")
                   res.data.detail.isOnline = "true";
                updateDetail(res.data.detail)
                socketOn();
               }
               else
               {
-                this.props.history.push("/")
+               // this.props.history.push("/")
                
                 
                   
