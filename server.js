@@ -2,15 +2,22 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
+const fileUpload = require('express-fileupload')
 var path = require('path')
 var mongoose = require('mongoose');
 require("dotenv").config();
 var bodyParser   = require('body-parser');
 
+app.use(bodyParser.json());
 
-const router   = express.Router();
-const fileUpload = require('express-fileupload')
-const User = require('./app/models/user_model');
+
+app.use(fileUpload());
+app.use(express.static('uploads'))
+app.use('/uploads', express.static('uploads'));
+
+// routes ======================================================================
+var login = require('./app/routes/login_routes.js') // load routes and pass in our app 
+app.use("/api/",login);
 
 if(process.env.NODE_ENV === "production")
 {
@@ -28,21 +35,9 @@ mongoose.connect(process.env.MONGO_URL,{
 }); // connect to database
 
 
-app.use(fileUpload());
-app.use(express.static('uploads'))
-app.use('/uploads', express.static('uploads'));
 
 
 
-
-
-app.use(bodyParser.json());
-
-
-
-// routes ======================================================================
-var login = require('./app/routes/login_routes.js')(app) // load routes and pass in our app 
-app.use("/api/",login);
 // launch ======================================================================
 var server = app.listen(port);
 console.log('The magic happens on port ' + port);

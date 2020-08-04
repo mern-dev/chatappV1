@@ -1,27 +1,25 @@
 var User = require('../models/user_model.js');
 var Room = require('../models/room_model.js');
 const isLoggedIn = require("./middleware.js");
+
 const jwt = require("jsonwebtoken");
 const secret = "dingdingsjdfkdsvbdsvs8v9sdvhnksdjnvkjdsnvkjdv";
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
+const express = require("express");
+const router = express.Router();
 
 
 
-//  use it in the client side to decode the token    ==================================================================
-//      import jwt_decode from "jwt-decode";    ====== use this package for decoding
-//     const decode = jwt_decode(c);
-//     const id = decode._id,
-//        ========================================
 
-module.exports = function (app) {
+
 
 
 
   // =====================================
   // LOGIN ===============================
   // =====================================
-  app.post('/login', function (req, res) {
+  router.post('/login', function (req, res) {
 
 
     User.findOne({ username: req.body.username }).then(user => {
@@ -77,7 +75,7 @@ module.exports = function (app) {
   // SIGNUP ==============================
   // =====================================
 
-  app.post('/signup', function (req, res) {
+  router.post('/signup', function (req, res) {
  
 
     const newUser = {
@@ -137,7 +135,7 @@ module.exports = function (app) {
   // =====================================
   // CHECK USER ROUTE =====================
   // =====================================
-  app.get('/checkusername/:username', function (req, res) {
+  router.get('/checkusername/:username', function (req, res) {
     User.findOne({ username: req.params.username }).then(user => {
      
       if (user) {
@@ -163,7 +161,7 @@ module.exports = function (app) {
   // CHAT LIST ROUTE =====================
   // =====================================
 
-  app.get("/:id/search/:username", isLoggedIn, function (req, res) {
+  router.get("/:id/search/:username", isLoggedIn, function (req, res) {
     User.find({ 'username': { '$regex': new RegExp('^' + req.params.username, "i") }, _id: { $ne: req.params.id } }, { password: 0 })
       .then(docs => {
         if (docs.length > 0) {
@@ -188,7 +186,7 @@ module.exports = function (app) {
   // USER DETAIL =====================
   // =====================================
 
-  app.get('/getDetail/:id', function (req, res) {
+  router.get('/getDetail/:id', function (req, res) {
     console.log("ppp",req.params.id)
     User.findOne({ _id: req.params.id }, { password: 0, messagesActive: 0, }).then(user => {
       console.log("ppp1",user)
@@ -215,7 +213,7 @@ module.exports = function (app) {
   // last 10 messages ======================
   // =======================================
 
-  app.get('/:id/getmsg/:rid/:msgid', function (req, resp) {
+  router.get('/:id/getmsg/:rid/:msgid', function (req, resp) {
 
     Room.find({ _id: req.params.id, "chats.Id": req.params.rid }, { "chats.$.messages": 1, _id: 0 }).then(res => {
 
@@ -238,7 +236,7 @@ module.exports = function (app) {
 
     })
   })
-  app.get('/getWord/:sid/:rid/:word', function (req, res) {
+  router.get('/getWord/:sid/:rid/:word', function (req, res) {
   
     Room.find({ _id: req.params.sid, 'chats.Id': req.params.rid }, { 'chats.$.messages': 1, _id: 0 }).then(
       (info) => {
@@ -328,7 +326,7 @@ module.exports = function (app) {
     )
   })
 
-  app.get('/getWord/:sid/:rid/:word/:start/:end', function (req, res) {
+  router.get('/getWord/:sid/:rid/:word/:start/:end', function (req, res) {
   
     Room.find({ _id: req.params.sid, 'chats.Id': req.params.rid }, { 'chats.$.messages': 1, _id: 0 }).then(
       (info) => {
@@ -447,7 +445,7 @@ module.exports = function (app) {
       }
     )
   })
-  app.post("/status",(req,res)=>
+  router.post("/status",(req,res)=>
 {
      User.findOneAndUpdate({username:req.body.username},{status:req.body.status},null,function(err,docs){
 
@@ -465,7 +463,7 @@ module.exports = function (app) {
      })
 })
 
-app.post('/dp',(req,res)=>{
+router.post('/dp',(req,res)=>{
 
    let file = req.files.image;
   
@@ -490,4 +488,4 @@ app.post('/dp',(req,res)=>{
    })
  })
 
-}    
+module.exports =  router;
