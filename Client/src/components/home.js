@@ -26,24 +26,25 @@ class Home extends Component {
    }
    check = (context) =>
    {
-     const { updateDetail,socketOn} = context
+     const { updateDetail,socketOn,updatemainLoading} = context
      
     let token = window.localStorage.getItem("token")
         if(token)
         {
           const decode = jwt_decode(token);
-          console.log(decode._id,"pppp")
+         
           axios.get('/api/getDetail/'+decode._id).then(res => {
               if(res.data.status==="success")
-              {  console.log("hh")
+              {  
                   res.data.detail.isOnline = "true";
                updateDetail(res.data.detail)
                socketOn();
               }
               else
               {
+
                 this.props.history.push("/")
-               
+                updatemainLoading(false)
                 
                   
               }})
@@ -53,6 +54,7 @@ class Home extends Component {
         {
          
           this.props.history.push("/")
+          updatemainLoading(false)
          
          
   

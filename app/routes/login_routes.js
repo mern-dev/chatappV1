@@ -187,9 +187,9 @@ const router = express.Router();
   // =====================================
 
   router.get('/getDetail/:id', function (req, res) {
-    console.log("ppp",req.params.id)
+   
     User.findOne({ _id: req.params.id }, { password: 0, messagesActive: 0, }).then(user => {
-      console.log("ppp1",user)
+     
       if (user) {
 
         res.json({

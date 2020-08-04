@@ -93,7 +93,7 @@ module.exports=function(io,socket){
                              
                          ]).then(res=>{
                             var chats = [];
-                          
+                          console.log(res,"p")
                             if(res.length===0)
                             {
                               

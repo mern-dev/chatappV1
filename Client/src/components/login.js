@@ -38,7 +38,7 @@ export default class Login extends Component {
          {
            updatemainLoading(false)
           
-           this.props.history.push("/")
+           
          }
          
     }
