@@ -32,13 +32,13 @@ export default class Login extends Component {
          if(token)
          {
            
-           window.location = "/home"
+         this.props.history.push("/home")
          }
          else
          {
            updatemainLoading(false)
           
-   
+           this.props.history.push("/")
          }
          
     }
@@ -94,7 +94,7 @@ export default class Login extends Component {
                     const decode = jwt_decode(res.data.token);
                     updateId({id:decode._id,username:decode.username});
                   
-                    window.location = '/home'
+                    this.props.history.push("/home")
 
                
 

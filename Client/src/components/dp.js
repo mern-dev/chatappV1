@@ -85,7 +85,7 @@ class Dp extends Component {
         axios.post("/status",{status:this.state.status,username:username}).then(res =>{
             if(res.data.status==="success")
             {       this.setState({updateUser:true})
-                window.location='/home';
+            this.props.history.push("/home")
             }
             
             else

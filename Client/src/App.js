@@ -21,26 +21,34 @@ function App() {
 
 
 
-    <Router>
+   
   
 
 
         
 
 
-<UserContextProvider>
-<Route exact path="/" >
-  {(toggle) ? <Signup tog={toggle} toggle={onToggle} /> : <Login  toggle={onToggle} tog={toggle}/>}
-</Route>
-<Route path="/home" component={Home} />
-</UserContextProvider>
+    <UserContextProvider>
+    <Router>
+      <Route
+        exact path="/"
+        render={(props) =>
+          (toggle) ?
+            (<Signup {...props} tog={toggle} toggle={onToggle} />)
+            :
+            (<Login {...props} toggle={onToggle} tog={toggle} />)
+        }
+      />
+      <Route path="/home"  component={Home} />
+    </Router>
+  </UserContextProvider>
       
     
 
        
      
 
-    </Router>
+  
   
   );
 }

@@ -61,6 +61,10 @@ class LeftComponent extends Component {
    })
   
    }
+   logout = () =>
+   {
+    window.localStorage.clear();this.props.history.push("/");
+   }
    handleChange = (e) => {
       const {id,user, updateUserDetail} = this.context
       if (e.target.type === 'file') {
@@ -191,7 +195,7 @@ handlestatus = (e) =>
               </form>
               </div>
           </div>
-          <div className="logout" onClick={()=>{ window.localStorage.clear();window.location='/'}}>logout</div>
+          <div className="logout" onClick={this.logout}>logout</div>
               </div>)
       }
       else

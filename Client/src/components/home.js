@@ -42,7 +42,7 @@ class Home extends Component {
               }
               else
               {
-                window.location="/"
+                this.props.history.push("/")
                
                 
                   
@@ -52,7 +52,7 @@ class Home extends Component {
         else
         {
          
-          window.location="/"
+          this.props.history.push("/")
          
          
   
@@ -223,7 +223,7 @@ class Home extends Component {
 
                 
                 
-                        <LeftComponent messages={messages}/>
+                        <LeftComponent {...this.props} messages={messages}/>
                 
                  
                     
