@@ -103,7 +103,7 @@ module.exports=function(io,socket){
                             {
                                  var cnt = 0;
                               res.forEach(item =>
-                                { 
+                                { console.log(item.chats.messages,"cccccccccccc")
                                    User.findOne({_id:item.chats.Id},{password:0}).then(detail=>{
                                                let len=item.chats.messages.length;
                                               
