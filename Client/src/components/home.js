@@ -33,7 +33,7 @@ class Home extends Component {
         {
           const decode = jwt_decode(token);
           console.log(decode._id,"pppp")
-          axios.get('/getDetail/'+decode._id).then(res => {
+          axios.get('/api/getDetail/'+decode._id).then(res => {
               if(res.data.status==="success")
               {  console.log("hh")
                   res.data.detail.isOnline = "true";
@@ -42,7 +42,7 @@ class Home extends Component {
               }
               else
               {
-               // this.props.history.push("/")
+                this.props.history.push("/")
                
                 
                   
