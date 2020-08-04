@@ -28,8 +28,9 @@ function App() {
         
 
 
-    <UserContextProvider>
+    
     <Router>
+      <UserContextProvider>
       <Route
         exact path="/"
         render={(props) =>
@@ -40,8 +41,9 @@ function App() {
         }
       />
       <Route path="/home"  component={Home} />
+      </UserContextProvider>
     </Router>
-  </UserContextProvider>
+ 
       
     
 
