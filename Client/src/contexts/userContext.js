@@ -165,7 +165,7 @@ scrollUpdate =(messagesw)=>
 
     const addChats =(chat) =>{
       
-      
+        console.log(chat,"---------------------------")
             chat.messages.map(msg=>{
               if(!msg.delivered&&msg.senderId!==this.state.user._id)
 
