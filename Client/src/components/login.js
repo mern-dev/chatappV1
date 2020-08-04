@@ -77,7 +77,7 @@ export default class Login extends Component {
             password: this.state.password
         }
        const {updateId} = this.context
-        axios.post('/login', userr)
+        axios.post('/api/login', userr)
             .then(res => {
 
                     

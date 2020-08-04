@@ -57,7 +57,7 @@ export default class Signup extends Component {
             }
             this.cancel = axios.CancelToken.source();
 
-            axios.get('/checkusername/' + value, {
+            axios.get('/api/checkusername/' + value, {
                 cancelToken: this.cancel.token
             }).then(res => {
 
@@ -87,7 +87,7 @@ export default class Signup extends Component {
         const { updatemainLoading,updateId } = this.context
           updatemainLoading(true);
 
-        axios.post('/signup', user)
+        axios.post('/api/signup', user)
             .then(res => {
                 updatemainLoading(false)
                 console.log(res.data.token);

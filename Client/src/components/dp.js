@@ -48,7 +48,7 @@ class Dp extends Component {
 
         
         
-                axios.post('/dp', formData, {
+                axios.post('/api/dp', formData, {
                     onUploadProgress: ProgressEvent => {
                         this.setState({
                             loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
@@ -82,7 +82,7 @@ class Dp extends Component {
     handleClick = (e) => {
         e.preventDefault();
         const {username} = this.context
-        axios.post("/status",{status:this.state.status,username:username}).then(res =>{
+        axios.post("/api/status",{status:this.state.status,username:username}).then(res =>{
             if(res.data.status==="success")
             {       this.setState({updateUser:true})
             this.props.history.push("/home")

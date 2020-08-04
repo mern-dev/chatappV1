@@ -269,7 +269,7 @@ handleScroll = e =>{
     { this.setState({scrollUpdate:true})
      document.querySelector(".date").style.display="none";
 
-      axios.get("/"+id+"/getmsg/"+receiver._id+"/"+msg.id).then(res=>
+      axios.get("/api/"+id+"/getmsg/"+receiver._id+"/"+msg.id).then(res=>
          { this.setState({scrollUpdate:false}) 
           const {scrollUpdate} = this.context
           if(res.data.messages.length)

@@ -160,7 +160,7 @@ class RightComponent extends Component {
 
             console.log("without date");
 
-            axios.get(`/getWord/${id}/${receiver._id}/${word.trim()}`)
+            axios.get(`/api/getWord/${id}/${receiver._id}/${word.trim()}`)
                 .then(res => {
 
                   
@@ -274,7 +274,7 @@ class RightComponent extends Component {
         else {
 
             console.log('with date');
-            axios.get(`/getWord/${id}/${receiver._id}/${word}/${start}/${end}`)
+            axios.get(`/api/getWord/${id}/${receiver._id}/${word}/${start}/${end}`)
                 .then(res => {
                     this.i = 0;
                 

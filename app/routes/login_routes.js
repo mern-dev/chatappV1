@@ -7,6 +7,7 @@ var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 
+
 //  use it in the client side to decode the token    ==================================================================
 //      import jwt_decode from "jwt-decode";    ====== use this package for decoding
 //     const decode = jwt_decode(c);
@@ -446,5 +447,47 @@ module.exports = function (app) {
       }
     )
   })
+  app.post("/status",(req,res)=>
+{
+     User.findOneAndUpdate({username:req.body.username},{status:req.body.status},null,function(err,docs){
+
+       if(err)
+       {
+         console.log(err);
+         res.json({status:"error"})
+       }
+       else{
+         res.json({
+           status:"success"
+
+         })
+       }
+     })
+})
+
+app.post('/dp',(req,res)=>{
+
+   let file = req.files.image;
+  
+   let ls = file.name.split('.');
+
+ 
+   file.mv(`uploads/${req.body.name+file.name}`,(err)=>{
+     if(err){
+       console.log(err)
+      
+     }
+     else{
+      User.findOneAndUpdate({username:req.body.name},  
+        {path:`uploads/${req.body.name+file.name}`}, null, function (err, docs) { 
+        if (err){ 
+            console.log(err) 
+        } 
+       
+    }); 
+       res.send(`uploads/${req.body.name+file.name}`);
+     }
+   })
+ })
 
 }    

@@ -46,7 +46,7 @@ class LeftComponent extends Component {
      }
      this.cancel = axios.CancelToken.source();
 
-     axios.get(`/${id}/search/` + value, {
+     axios.get(`/api/${id}/search/` + value, {
          cancelToken: this.cancel.token
      }).then(res => {
        if(res.data.status==="success")
@@ -88,7 +88,7 @@ class LeftComponent extends Component {
 
               
              
-              axios.post('/dp', formData, {
+              axios.post('/api/dp', formData, {
                   onUploadProgress: ProgressEvent => {
                       this.setState({
                           loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
@@ -131,7 +131,7 @@ handlestatus = (e) =>
   
       this.setState({statusUpdateButton:false})        
          const {user,updateUserDetail} = this.context
-         axios.post("/status",{status:user.status,username:user.username}).then(res =>{
+         axios.post("/api/status",{status:user.status,username:user.username}).then(res =>{
              if(res.data.status==="success")
              {       
                 updateUserDetail({...user,status:user.status})

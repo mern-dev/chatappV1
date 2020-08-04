@@ -38,52 +38,11 @@ app.use('/uploads', express.static('uploads'));
 
 app.use(bodyParser.json());
 
-app.post("/status",(req,res)=>
-{
-     User.findOneAndUpdate({username:req.body.username},{status:req.body.status},null,function(err,docs){
 
-       if(err)
-       {
-         console.log(err);
-         res.json({status:"error"})
-       }
-       else{
-         res.json({
-           status:"success"
-
-         })
-       }
-     })
-})
-
-app.post('/dp',(req,res)=>{
-
-   let file = req.files.image;
-  
-   let ls = file.name.split('.');
-
- 
-   file.mv(`uploads/${req.body.name+file.name}`,(err)=>{
-     if(err){
-       console.log(err)
-      
-     }
-     else{
-      User.findOneAndUpdate({username:req.body.name},  
-        {path:`uploads/${req.body.name+file.name}`}, null, function (err, docs) { 
-        if (err){ 
-            console.log(err) 
-        } 
-       
-    }); 
-       res.send(`uploads/${req.body.name+file.name}`);
-     }
-   })
- })
 
 // routes ======================================================================
-require('./app/routes/login_routes.js')(app); // load routes and pass in our app 
-
+var login = require('./app/routes/login_routes.js')(app) // load routes and pass in our app 
+app.use("/api/",login);
 // launch ======================================================================
 var server = app.listen(port);
 console.log('The magic happens on port ' + port);
@@ -94,7 +53,7 @@ var io = require("socket.io")(server);
 
 io.on("connection", (socket) =>{
   
-  require("./app/routes/user_routes")(io,socket) ;
+  require("./app/routes/user_routes")(io,socket)
    
   })
 
