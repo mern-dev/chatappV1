@@ -4,24 +4,31 @@ import React, { Component } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import  { UserContext } from '../contexts/userContext'
 import LeftComponent from './leftComponent';
 import MiddleComponent from './middleComponent';
 import RightComponent from './rightComponent';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+import  { UserContext } from '../contexts/userContext'
 
 
 
 class Home extends Component {
-     static contextType = UserContext
-    constructor(props) {
-        super(props);
+  static contextType = UserContext
+    constructor(props,context) {
+        super(props,context);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        let token = window.localStorage.getItem("token")
-        const { updatemainLoading } = this.context
-  
+       
+      this.check(context)
+       
+      
+   }
+   check = (context) =>
+   {
+     const { updateDetail,socketOn} = context
+     
+    let token = window.localStorage.getItem("token")
         if(token)
         {
           const decode = jwt_decode(token);
@@ -29,25 +36,28 @@ class Home extends Component {
           axios.get('/getDetail/'+decode._id).then(res => {
               if(res.data.status==="success")
               {  
-                  
-               
+                  res.data.detail.isOnline = "true";
+               updateDetail(res.data.detail)
+               socketOn();
               }
               else
               {
-                updatemainLoading(false);
-                  window.location="/"
+                window.location="/"
+               
+                
                   
               }})
   
         }
         else
         {
-          
+         
           window.location="/"
+         
+         
   
         }
         
-      
    }
     backtomiddle = ()=>
     {
@@ -62,7 +72,7 @@ class Home extends Component {
      
      
       
-       if(document.querySelector(".leftHome")&&  document.querySelector(".middleHome")&& document.querySelector(".rightHome"))   {
+     
 
         const mq_wt = window.matchMedia( "(min-width: 0em) and (max-width: 59em)" );
         const mq_wt2 = window.matchMedia( "(min-width: 61em) and (max-width: 89em)" );
@@ -78,10 +88,12 @@ class Home extends Component {
                    
             if(mq_wt.matches)
             { 
-                console.log("inside-mobile-view",mq_wt.matches)
+              
+              
               document.querySelector(".leftHome").style.display="flex"
               document.querySelector(".middleHome").style.display="none"
               document.querySelector(".rightHome").style.display="none"
+     
              
             }
           
@@ -91,7 +103,7 @@ class Home extends Component {
             if(mq_wt2.matches)
             { 
              
-                console.log("inside-tab-view",mq_wt2.matches)
+             
               document.querySelector(".leftHome").style.display="flex"
               document.querySelector(".middleHome").style.display="flex"
               document.querySelector(".rightHome").style.display="none"
@@ -104,8 +116,9 @@ class Home extends Component {
          {   
             if(mq_wt3.matches)
             { 
-                console.log("inside-web-view",mq_wt3.matches)
-               
+                
+              
+             
               document.querySelector(".leftHome").style.display="flex"
               document.querySelector(".middleHome").style.display="flex"
               
@@ -149,7 +162,7 @@ class Home extends Component {
 
          }
 
-       }
+       
        
         
  
@@ -180,10 +193,16 @@ class Home extends Component {
 
     render() {
         const {messages,middleFlag,mainLoading} = this.context 
+     
         if(mainLoading)
         {
 
    return (<div className="home">
+     <span style={{width:0,height:0}}>
+     <span className="leftHome" id="left"></span>
+ <span className="middleHome" id="middle"></span>
+ <span className="rightHome" id="right"></span>
+     </span>
 
 <div className="chatBox FrontPage">
 <img className="loading-main" alt="#"src="./images/main-loading.gif"/>

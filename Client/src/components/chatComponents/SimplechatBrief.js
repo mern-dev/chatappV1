@@ -21,18 +21,16 @@ class SimpleChatBrief extends Component {
      
          if(width<60||height<41)
          { 
-          document.querySelector(".middleHome").style.animation="open-chat-anime 0.25s  linear 1"
+         
       
      document.querySelector(".middleHome").style.display="flex";
-     
+     document.querySelector(".leftHome").style.display="none"; 
       
     
-      setTimeout(function(){
-        document.querySelector(".leftHome").style.display="none"; 
-      },100)
+     
          }
          if(width>60&&width<90)
-   {
+        {
          const middle = document.querySelector(".middleHome").style.display;
          if(middle==="none")
          {

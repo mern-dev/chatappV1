@@ -4,6 +4,7 @@ import SendMessage from './chatComponents/sendmessage';
 import { UserContext } from '../contexts/userContext';
 import Avatar from '@material-ui/core/Avatar';
 import axios from 'axios';
+
 var FontAwesome = require('react-fontawesome');
 class MiddleComponent extends Component {
   static contextType = UserContext;
@@ -169,14 +170,14 @@ const {updatecnt,seenInContext,receiver, onlineBottomUpdate} = this.context
   seenInContext(receiver._id);
   updatecnt(0);
   
-  document.querySelector(".middleHome").style.animation="close-chat-anime 0.25s linear 1"
+  
   document.querySelector(".leftHome").style.display="flex";
  
-  setTimeout(function(){
+ 
     
     document.querySelector(".middleHome").style.display="none"
     
-  },100)
+ 
  
 
   
@@ -194,11 +195,11 @@ openSearch = () =>{
       if(container.scrollHeight-container.scrollTop!==container.offsetHeight)
                 document.getElementById("myBtn").style.display="grid";
              
-                document.querySelector(".rightHome").style.animation="open-chat-anime 0.25s linear 1"
+               
                 document.querySelector(".rightHome").style.display="flex";
-                setTimeout(function(){
+           
                   document.querySelector(".middleHome").style.display="none";
-                },100)
+                
    
 
       
@@ -366,17 +367,17 @@ handleScroll = e =>{
       return strTime;
     }
     softKeyboardView = () =>
-    {
-      // let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
-      // let width = window.innerWidth / em
-      // let height = window.innerHeight/ em
-      // if(width<60||height<41)
-      // {
+    { 
+      let em = parseFloat( getComputedStyle( document.querySelector('body'))['font-size'])
+      let width = window.innerWidth / em
+      let height = window.innerHeight/ em
+      if(width<60||height<41)
+      {
        
-      //   document.querySelector(".home").style.height ="50vh";
-      //   document.body.style.overflow = "hidden";
+        document.getElementById("chatInputBox").scrollIntoView();
+        
+      }
        
-      // }
      
     }
     hideSoftKeyboardView = () =>
@@ -426,7 +427,8 @@ handleScroll = e =>{
         
         return( 
             middleFlag? <div className="middleHome"  id="middle" >
-              <div className="middleHomeHeader" >
+             
+              <div className="middleHomeHeader" id="middleHomeHeader">
                
            
              
@@ -538,16 +540,22 @@ handleScroll = e =>{
                      )} 
                </ul>
                
-                    <div onClick={this.scrollButtonPress} id="myBtn" title="press to go down"><img src="images/down-arrow.png"alt="#" className="down-arrow"/>{cntifup?<div className='unseen-msg'><p className="center-cnt">{cntifup}</p></div>:<span></span>}</div>
-                   
+                    
                  </div >
-                 <div onBlur={this.hideSoftKeyboardView} id="chatInputBox" >
+                 <div onClick={this.scrollButtonPress} id="myBtn" title="press to go down"><img src="images/down-arrow.png"alt="#" className="down-arrow"/>{cntifup?<div className='unseen-msg'><p className="center-cnt">{cntifup}</p></div>:<span></span>}</div>
+          
+                  
+             <div onBlur={this.hideSoftKeyboardView} id="chatInputBox" >
                  <input onClick={this.softKeyboardView}  onChange={ e => {changeMsgBody(e.target.value);}} placeholder="Type Something..." className="messageInput" value = {msgBody} />
                 
             
               
                   <button onClick={e=>{this.send()}}  className="messageButton">Send</button>
-             </div>
+             </div> 
+
+           
+                    
+                
              
     </div>:
             <div className="middleHome middleEmpty"  id="middle"> 

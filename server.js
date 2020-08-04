@@ -12,14 +12,14 @@ const router   = express.Router();
 const fileUpload = require('express-fileupload')
 const User = require('./app/models/user_model');
 
-if(process.env.NODE_ENV === "production")
-{
-   app.use(express.static("Client/build"));
+// if(process.env.NODE_ENV === "production")
+// {
+//    app.use(express.static("Client/build"));
 
-   app.get("*",(req,res) => {
-           res.sendFile(path.resolve(__dirname,"Client","build","index.html"))
-   });  
-}
+//    app.get("*",(req,res) => {
+//            res.sendFile(path.resolve(__dirname,"Client","build","index.html"))
+//    });  
+// }
 // configuration ===============================================================
 mongoose.connect(process.env.MONGO_URL,{
   useUnifiedTopology: true,
@@ -92,6 +92,7 @@ var io = require("socket.io")(server);
 
 
 io.on("connection", (socket) =>{
+  
   require("./app/routes/user_routes")(io,socket) ;
    
   })

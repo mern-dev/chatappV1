@@ -2,8 +2,7 @@ import React, { Component,createContext } from 'react'
 
 import io from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
-import jwt_decode from "jwt-decode";
+
 
 export const UserContext = createContext()
 
@@ -36,46 +35,11 @@ class UserContextProvider extends Component {
       start:'',
       end:'',
       mainLoading:true,
+      socket:"",
 
    }
 
-   let token = window.localStorage.getItem("token")
-
-
-   if(token)
-   {
-     const decode = jwt_decode(token);
-     
-     axios.get('/getDetail/'+decode._id).then(res => {
-         if(res.data.status==="success")
-         {  
-             res.data.detail.isOnline=true;
-           this.setState({id:decode._id,user:res.data.detail})
-           window.location ="/home"
-          return true
-     
-         }
-         else
-         {
-           window.location="/"
-           this.setState({mainLoading:false});
-           return false
-         }
-          
-        }).then(result=>{
  
-         if(result)
-         {
-           const point = "https://textin.herokuapp.com";
-           this.socket = io(point);
-           this.socket.emit("join",{id:decode._id})
-         } })
-    }
-   else
-   {
-    this.setState({mainLoading:false});
-    window.location="/";
-   }
 }
 handleDate=(nam,val)=>{
   this.setState({[nam]:val});
@@ -85,7 +49,8 @@ handleDate=(nam,val)=>{
 
    updateDetail = (user) =>
    {
-     console.log("hhhhh",user);     this.setState({id:user._id,user:user})
+     
+        this.setState({id:user._id,user:user})
      
    }   
    updatemainLoading = (value) =>
@@ -167,17 +132,18 @@ scrollUpdate =(messagesw)=>
   
    
   }
-  
-  componentDidMount ()
-{
-  
-   
-    
-  
+
  
+  socketOn = () =>
+{
+   const point = "https://textin.herokuapp.com";
+  
+  this.socket =   io(point)
+   this.socket.emit("join",{id:this.state.id});
+   
 
     this.socket.on("chat",function(chat,loading){
-     
+   
       if(chat!==null)
       {
         addChats(chat);
@@ -566,6 +532,7 @@ scrollUpdate =(messagesw)=>
 
 
 
+
  postmessage = () =>
  {   let msgid = uuidv4();
  const sentTime =  new Date();
@@ -733,7 +700,7 @@ typingEnd = () =>
 
       
       <UserContext.Provider value={{...this.state,updateDate:this.updateDate,handleDate:this.handleDate, updateDetail:this.updateDetail,updatemainLoading:this.updatemainLoading,typingEnd:this.typingEnd,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
+        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,socketOn:this.socketOn,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
 
 
   

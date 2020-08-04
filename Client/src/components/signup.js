@@ -26,9 +26,7 @@ export default class Signup extends Component {
         this.cancel = '';
 
     }
-    componentDidMount() {
-       
-    }
+   
 
 
     validateForm() {

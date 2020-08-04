@@ -420,17 +420,17 @@ class RightComponent extends Component {
 
     backtomiddle = () => {
 
-        document.querySelector(".middleHome").style.animation = "none" 
+       
         
-        document.querySelector(".rightHome").style.animation="close-chat-anime 0.25s linear 1";
+       
        
         document.querySelector(".middleHome").style.display = "flex";
  
-  setTimeout(function(){
+  
     
     document.querySelector(".rightHome").style.display = "none";
     
-  },100)
+
 
 
     }
@@ -496,7 +496,7 @@ class RightComponent extends Component {
 
             return (
 
-                <div className='rightHome' >
+                <div className='rightHome' id="right" >
                           
                     <div class="search-bar-header">
                   

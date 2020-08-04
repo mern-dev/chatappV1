@@ -6,8 +6,8 @@ import jwt_decode from "jwt-decode";
 
 export default class Login extends Component {
     static contextType = UserContext
-    constructor(props) {
-        super(props);
+    constructor(props,context) {
+        super(props,context);
 
        
         this.handleChange = this.handleChange.bind(this);
@@ -20,9 +20,30 @@ export default class Login extends Component {
             token: "",
             passerror: false
         }
-       
+       this.check(context);
         
     }
+    
+    check = (context) =>
+    {
+      const { updatemainLoading} = context
+      
+     let token = window.localStorage.getItem("token")
+         if(token)
+         {
+           
+           window.location = "/home"
+         }
+         else
+         {
+           updatemainLoading(false)
+          
+   
+         }
+         
+    }
+
+
 
    stopAnime = () =>
     {  
@@ -59,7 +80,7 @@ export default class Login extends Component {
         axios.post('/login', userr)
             .then(res => {
 
-
+                    
 
                 if (res.data.status === 'error') {
                     this.setState({ passerror: true });

@@ -3,6 +3,10 @@ html {
   overflow: hidden;
   font-family: "Montserrat", sans-serif;
 }
+body{
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+}
 .fdiv {
   height: 300px;
   width: 300px;
@@ -41,8 +45,8 @@ html {
   width: 90%;
   padding-left: 16px;
   padding-right: 16px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   display: flex;
   position: relative;
   margin-left: auto;
@@ -69,7 +73,7 @@ html {
 }
 
 .img-h {
-  font-size: 1.25rem;
+  font-size: 1em;
   font-family: "Montserrat", sans-serif;
 
   font-weight: 400;
@@ -82,7 +86,7 @@ html {
 }
 .img-h-simple-brief
 {
-    font-size: 1.25rem;
+    font-size: 1em;
     font-family: "Montserrat", sans-serif;
   
     font-weight: 400;
@@ -94,19 +98,19 @@ html {
     white-space: nowrap;
 }
 .img-p {
-  font-size: 1rem;
+  font-size: 0.8em;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
   color: grey;
   text-overflow: ellipsis;
   overflow: hidden;
   width: 60%;
-  
+
   white-space: nowrap;
 }
 .typing
 {
-  font-size: 0.8em;
+  font-size: 0.9em;
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
   color: #27be8b;
@@ -217,7 +221,7 @@ html {
   background-color: rgba(0, 0, 0, 0.72);
 
   flex: 2;
-  position: relative;
+ 
   display: flex;
   flex-direction: column;
   min-width: 24em;
@@ -229,7 +233,7 @@ html {
   min-height: 4em;
   margin-top: 1em;
   margin-bottom: 0.5em;
-
+ 
   position: relative;
   display: flex;
   flex-direction: row;
@@ -293,7 +297,7 @@ html {
   display: flex;
   flex: 1;
   justify-content: space-between;
-
+  
   min-height: 3em;
 }
 
@@ -309,6 +313,7 @@ html {
   height: fit-content;
   display: table;
   margin-left: auto;
+  text-align: center;
   margin-right: auto;
   margin-top: auto;
   margin-bottom: auto;
@@ -438,6 +443,7 @@ span[id="right"] {
     border-radius: 0;
     margin: 0;
     position: absolute;
+    z-index: -99;
     bottom: 0;
   }
   .chatBox
@@ -448,6 +454,7 @@ span[id="right"] {
     position: absolute;
     bottom: 0;
     border-radius: 0;
+    z-index: -99;
   }
 
   
@@ -486,6 +493,7 @@ span[id="right"] {
     margin: 0;
     position: absolute;
     bottom: 0;
+    z-index: -99;
   }
   .chatBox
   {
@@ -495,6 +503,7 @@ span[id="right"] {
     position: absolute;
     bottom: 0;
     border-radius: 0;
+    z-index: -99;
   }
   
 }
@@ -1326,20 +1335,11 @@ flex:1;
 .form-pg
 {
   
-  
-
-
 
  position: absolute;
- top:15em;
+ top:16em;
  right: 7em;
 
- 
-
-
-
- 
- 
 
 }
 
