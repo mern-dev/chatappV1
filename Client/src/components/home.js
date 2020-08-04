@@ -32,7 +32,7 @@ class Home extends Component {
         if(token)
         {
           const decode = jwt_decode(token);
-          console.log(decode._id,"ppppp")
+          console.log(decode._id,"pppp")
           axios.get('/getDetail/'+decode._id).then(res => {
               if(res.data.status==="success")
               {  console.log("hh")
