@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import  { UserContext } from '../contexts/userContext'
-
-
+import {storage} from "../firebase/index"
 
 class Dp extends Component {
     static contextType = UserContext
@@ -13,7 +12,7 @@ class Dp extends Component {
             
             fileInfo: null,
             loaded: '',
-            path: '/images/nodp.png',
+            path: 'https://firebasestorage.googleapis.com/v0/b/texting--dp.appspot.com/o/dp%2Fnodp.png?alt=media&token=533360ed-39f7-4938-b56d-1bd945818cbe',
          
             status: '',
            
@@ -24,7 +23,51 @@ class Dp extends Component {
         
     }
  
-
+    upload = (file) =>
+    { 
+        const {username} = this.context
+    
+             const uploadTask = storage.ref(`dp/${username+file.name}`).put(file);
+             
+             uploadTask.on(
+                 "state_changed",
+                 snapshot => {},
+                 error =>
+                 {
+                     console.log(error)
+                 },
+               () =>
+                 {
+                     storage.ref('dp')
+                     .child(username+file.name)
+                     .getDownloadURL()
+                     .then(url =>
+                         {
+                             
+ 
+                             axios.post('/api/dp',{name:username,path:url})
+                                 .then((res) => {
+                                    document.querySelector(".dp-setting").style.opacity = "1";
+                                 if(res.data.status==="success")
+                                 this.setState({path:url})
+                                  
+                                 })
+                                 .catch((err) => console.log(err));
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                         })
+ 
+                 }
+             )
+ 
+ 
+    }
 
     handleChange = (e) => {
         if (e.target.type === 'file') {
@@ -33,33 +76,16 @@ class Dp extends Component {
                 return null
             }
 
-           const {id,username} = this.context
             const file = e.target.files[0];
             let ls = file.name.split('.');
             let extension = ls[ls.length-1]
            
             if(extension==='png' || extension==='jpg' || extension==='jpeg' || extension==='jpe' || extension==='jif' || extension==='jfif' || extension==='jfi' || extension==='.webp'){ 
 
-                const formData = new FormData();
-
-                formData.append('image', file);
-                formData.append('name', username);
-                formData.append('id', id);
-
-        
-        
-                axios.post('/api/dp', formData, {
-                    onUploadProgress: ProgressEvent => {
-                        this.setState({
-                            loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
-                        })
-                    },
-                })
-                    .then((res) => {
-                        this.setState({...this.state, path: res.data })
                 
-                    })
-                    .catch((err) => console.log(err));
+                document.querySelector(".dp-setting").style.opacity = "0.25";
+                this.upload(file)
+        
 
             }
             else{

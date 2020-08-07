@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import ChatBrief from './chatComponents/chatBrief';
-import SimpleChatBrief from './chatComponents/SimplechatBrief';
-
 import axios from 'axios';
-
+import {storage} from "../firebase/index"
 import  { UserContext } from '../contexts/userContext'
+import SimpleChatBrief from './chatComponents/SimplechatBrief';
 var FontAwesome = require('react-fontawesome');
+
+
+
 
 
 class LeftComponent extends Component {
@@ -14,7 +16,6 @@ class LeftComponent extends Component {
    {  super(props);
      this.state = { searchResults:[],isPressed:false,id:"",searchQuery:"",profileToggle:false,  fileInfo: null,statusUpdateButton:false,
      loaded: '',
-     path: '/images/nodp.png',
      status: '',};
 
       this.cancel="";
@@ -31,6 +32,7 @@ class LeftComponent extends Component {
             searchQuery:""
         })
     }
+    
 
    profileToggle = () =>
    {
@@ -61,12 +63,57 @@ class LeftComponent extends Component {
    })
   
    }
+   upload = (file) =>
+   {
+    const {user, updateUserDetail} = this.context
+            const uploadTask = storage.ref(`dp/${user.username+file.name}`).put(file);
+            
+            uploadTask.on(
+                "state_changed",
+                snapshot => {},
+                error =>
+                {
+                    console.log(error)
+                },
+              () =>
+                {
+                    storage.ref('dp')
+                    .child(user.username+file.name)
+                    .getDownloadURL()
+                    .then(url =>
+                        {
+                            
+
+                            axios.post('/api/dp',{name:user.username,path:url})
+                                .then((res) => {
+                                    document.querySelector(".dp-setting").style.opacity = "1";
+                                if(res.data.status==="success")
+                                
+                                 updateUserDetail({...user,path:url})
+                                 
+                                })
+                                .catch((err) => console.log(err));
+
+
+
+
+
+
+
+
+                        })
+
+                }
+            )
+
+
+   }
    logout = () =>
    {
     window.localStorage.clear();this.props.history.push("/");
    }
    handleChange = (e) => {
-      const {id,user, updateUserDetail} = this.context
+      const {user, updateUserDetail} = this.context
       if (e.target.type === 'file') {
           if(e.target.files.length===0)
           { 
@@ -80,28 +127,11 @@ class LeftComponent extends Component {
          
           if(extension==='png' || extension==='jpg' || extension==='jpeg' || extension==='jpe' || extension==='jif' || extension==='jfif' || extension==='jfi' || extension==='.webp'){ 
 
-              const formData = new FormData();
-
-              formData.append('image', file);
-              formData.append('name', user.username);
-              formData.append('id', id);
-
-              
              
-              axios.post('/api/dp', formData, {
-                  onUploadProgress: ProgressEvent => {
-                      this.setState({
-                          loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
-                      })
-                  },
-              })
-                  .then((res) => {
-                     
-                  
-                    updateUserDetail({...user,path:res.data})
-                   
-                  })
-                  .catch((err) => console.log(err));
+             document.querySelector(".dp-setting").style.opacity = "0.25";
+            this.upload(file)
+             
+              
 
           }
           else{
@@ -169,7 +199,7 @@ handlestatus = (e) =>
                 
               <form  onSubmit={this.handleClick}>
                   <div className="dp-setting">
-                    <img className="dp"  src={user.path||this.state.path} alt="#" /> 
+                    <img className="dp"  src={user.path} alt="#" /> 
                     <label for="file-upload"   className="dp-input">
                     change profile
                  </label>

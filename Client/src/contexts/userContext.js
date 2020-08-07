@@ -136,14 +136,15 @@ scrollUpdate =(messagesw)=>
  
   socketOn = () =>
 {
-   const point = "https://textin.herokuapp.com";
-  
+  // const point = "https://textin.herokuapp.com";
+  const point = "http://localhost:3000/"
   this.socket =   io(point)
+ 
    this.socket.emit("join",{id:this.state.id});
    
 
     this.socket.on("chat",function(chat,loading){
-   
+    
       if(chat!==null)
       {
         addChats(chat);
