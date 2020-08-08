@@ -128,7 +128,7 @@ scrollUpdate =(messagesw)=>
     
     this.setState({user:detail});
    
-    this.socket.emit("detailUpdate",this.state.user);
+    this.socketDp.emit("detailUpdate",this.state.user);
   
    
   }
@@ -136,13 +136,35 @@ scrollUpdate =(messagesw)=>
  
   socketOn = () =>
 {
-   const point = "https://textin.herokuapp.com";
+  // const point = "https://textin.herokuapp.com";
+
+  // const point = 'http://localhost:3000'
   
-  this.socket =   io(point)
-   this.socket.emit("join",{id:this.state.id});
+  // this.socket =   io(point)
+  const pointOnline = 'http://localhost:3000/socketOnline'
+
+  this.socketOnline = io(pointOnline) 
+
+  const pointDelivered = 'http://localhost:3000/socketDelivered' 
+
+  this.socketDelivered = io(pointDelivered) 
+
+  const pointTyping = 'http://localhost:3000/socketTyping' 
+
+  this.socketTyping = io(pointTyping) 
+
+  const pointSeen = 'http://localhost:3000/socketSeen' 
+
+  this.socketSeen = io(pointSeen)
+
+  const pointDp = 'http://localhost:3000/socketDp' 
+
+  this.socketDp =   io(pointDp)
+
+   this.socketOnline.emit("join",{id:this.state.id});
    
 
-    this.socket.on("chat",function(chat,loading){
+    this.socketOnline.on("chat",function(chat,loading){
    
       if(chat!==null)
       {
@@ -171,7 +193,7 @@ scrollUpdate =(messagesw)=>
 
               {
                 msg.delivered=true;
-                this.socket.emit("deliverUpdate", msg);
+                this.socketDelivered.emit("deliverUpdate", msg);
               }
               return 0;
             })
@@ -186,10 +208,10 @@ scrollUpdate =(messagesw)=>
 
 
    
-  this.socket.on("isTypingUpdate",function(data){
+  this.socketTyping.on("isTypingUpdate",function(data){
     isTypingUpdate(data,true);
   })
-  this.socket.on("isTypingEndUpdate",function(data){
+  this.socketTyping.on("isTypingEndUpdate",function(data){
     isTypingUpdate(data,false);
   })
   const isTypingUpdate = (data,value) =>
@@ -223,7 +245,7 @@ scrollUpdate =(messagesw)=>
   
 
  
-    this.socket.on("addDetailUpdate",function(data)
+    this.socketDp.on("addDetailUpdate",function(data)
     {
       
         addDetailUpdate(data);
@@ -256,7 +278,7 @@ scrollUpdate =(messagesw)=>
     })
   }
     
-    this.socket.on("isOnline",function(data){
+    this.socketOnline.on("isOnline",function(data){
        onlineUpdate(data)
     })
   const onlineUpdate  = (data) =>
@@ -285,7 +307,7 @@ scrollUpdate =(messagesw)=>
 
     
   } 
-  this.socket.on("lastSeen",function(data){
+  this.socketOnline.on("lastSeen",function(data){
       
     lastSeenUpdate(data)
     
@@ -317,22 +339,22 @@ scrollUpdate =(messagesw)=>
     })
   }
     
-    this.socket.on("receivingMessage",function(newmsg){
+    this.socketOnline.on("receivingMessage",function(newmsg){
      addmessage(newmsg);
       
     });
-    this.socket.on("sentMessageSuccess",function(msg){
+    this.socketOnline.on("sentMessageSuccess",function(msg){
       
        sentUpdate(msg);
     })
-    this.socket.on("deliverSuccess",function(msg){
+    this.socketDelivered.on("deliverSuccess",function(msg){
       
       deliverUpdate(msg);
    })
-   this.socket.on("seenSuccess",function(msg){
+   this.socketSeen.on("seenSuccess",function(msg){
      seenUpdate(msg)
    })
-   this.socket.on("postingMessgaeDevices",function(msg){
+   this.socketOnline.on("postingMessgaeDevices",function(msg){
     MessagePostedFromOtherDevices(msg)
   })
   const MessagePostedFromOtherDevices = (msg) =>
@@ -465,7 +487,7 @@ scrollUpdate =(messagesw)=>
         {
           newmsg.msg.delivered=true;
           messages = [{Id:newmsg.msg.senderId,username:newmsg.username,isTyping:false,path:newmsg.path,isOnline:newmsg.isOnline,status:newmsg.status,lastSeen:newmsg.lastSeen,messages:[newmsg.msg]},...state.messages]
-           this.socket.emit("deliverUpdate", newmsg.msg);
+           this.socketDelivered.emit("deliverUpdate", newmsg.msg);
           
         }
         else{
@@ -478,7 +500,7 @@ scrollUpdate =(messagesw)=>
               if(newmsg.msg.receiverId===state.id&&!newmsg.msg.delivered)
               { 
                  newmsg.msg.delivered=true;
-                 this.socket.emit("deliverUpdate", newmsg.msg);
+                 this.socketDelivered.emit("deliverUpdate", newmsg.msg);
                      if(state.receiver._id===newmsg.msg.senderId)
                       {
                         
@@ -508,7 +530,7 @@ scrollUpdate =(messagesw)=>
           {
             newmsg.msg.delivered=true;
             messages = [{Id:newmsg.msg.senderId,username:newmsg.username,path:newmsg.path,isTyping:false,isOnline:newmsg.isOnline,lastSeen:newmsg.lastSeen,status:newmsg.status,messages:[newmsg.msg]},...state.messages]
-            this.socket.emit("deliverUpdate", newmsg.msg);
+            this.socketDelivered.emit("deliverUpdate", newmsg.msg);
           }
           else
           {
@@ -562,7 +584,7 @@ scrollUpdate =(messagesw)=>
         delivered:false,
         seen:false
       }
-      this.socket.emit("postingMessage", newmsg);
+      this.socketOnline.emit("postingMessage", newmsg);
       
       
    this.setState(state =>{
@@ -610,7 +632,7 @@ scrollUpdate =(messagesw)=>
  changeMsgBody = (newmsgBody) =>
  {
    this.setState({msgBody:newmsgBody})
-   this.socket.emit("isTyping",{rid:this.state.receiver._id,uid:this.state.user._id});
+   this.socketTyping.emit("isTyping",{rid:this.state.receiver._id,uid:this.state.user._id});
  }
 seenInContext = (id) =>
 {
@@ -642,7 +664,7 @@ seenInContext = (id) =>
   })
 }
  seenOnRoom = (msg) =>
- { this.socket.emit("seenUpdate",msg);
+ { this.socketSeen.emit("seenUpdate",msg);
    
  }
  currentUserUpdate = (details) => {
@@ -689,7 +711,7 @@ seenInContext = (id) =>
  }
 typingEnd = () =>
 {
-  this.socket.emit("isTypingEnd",{rid:this.state.receiver._id,uid:this.state.user._id})
+  this.socketTyping.emit("isTypingEnd",{rid:this.state.receiver._id,uid:this.state.user._id})
 }
 
 

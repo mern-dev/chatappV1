@@ -14,7 +14,7 @@ class LeftComponent extends Component {
    {  super(props);
      this.state = { searchResults:[],isPressed:false,id:"",searchQuery:"",profileToggle:false,  fileInfo: null,statusUpdateButton:false,
      loaded: '',
-     path: '/images/nodp.png',
+     path: '/uploads/nodp.png',
      status: '',};
 
       this.cancel="";
