@@ -130,7 +130,7 @@ export default class Signup extends Component {
         else
         return (
             <div>
-                < Form tog={this.props.tog} loading={mainLoading} stateSignup={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
+                < Form rootProps={this.props} tog={this.props.tog} loading={mainLoading} stateSignup={this.state} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
 
         );

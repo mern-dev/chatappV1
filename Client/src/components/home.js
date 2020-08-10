@@ -37,6 +37,7 @@ class Home extends Component {
               if(res.data.status==="success")
               {  
                   res.data.detail.isOnline = "true";
+                
                updateDetail(res.data.detail)
                socketOn();
               }

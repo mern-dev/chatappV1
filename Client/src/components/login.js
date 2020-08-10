@@ -126,7 +126,7 @@ export default class Login extends Component {
         return (
 
             <div>
-                < Form loading={mainLoading} tog={this.props.tog} stateSignup={this.state} stopAnime={this.stopAnime} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
+                < Form rootProps={this.props} loading={mainLoading} tog={this.props.tog} stateSignup={this.state} stopAnime={this.stopAnime} handleChange={this.handleChange} handleClick={this.handleClick} validateForm={this.validateForm} toggle={this.props.toggle} />
             </div>
         );
         }

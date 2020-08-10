@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
-const fileUpload = require('express-fileupload')
+
 var path = require('path')
 var mongoose = require('mongoose');
 require("dotenv").config();
@@ -13,9 +13,6 @@ const {Onoff,Post} = require("./app/routes/onOffSocket")
 app.use(bodyParser.json());
 
 
-app.use(fileUpload());
-app.use(express.static('uploads'))
-app.use('/uploads', express.static('uploads'));
 
 // routes ======================================================================
 var login = require('./app/routes/login_routes.js') // load routes and pass in our app 
@@ -30,7 +27,9 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 // configuration ===============================================================
+
 mongoose.connect('mongodb://localhost:27017/testchatappV1', {
+
   useUnifiedTopology: true,
   useNewUrlParser: true, useFindAndModify: false
 }); // connect to database

@@ -476,7 +476,7 @@ class RightComponent extends Component {
 
 
                     <div className="contact-info">
-                        {receiver.path ? <img src={receiver.path} alt='aaa' className='rc-img' /> : <img src='uploads/nodp.png' alt='a' className='rc-img' />}
+                       <img src={receiver.path} alt='aaa' className='rc-img' /> 
 
                         <h4 className="contact-name">{receiver.username}</h4>
                         {receiver.status && <div className="contact-status">{receiver.status}</div>}

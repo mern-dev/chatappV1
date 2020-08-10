@@ -1,5 +1,7 @@
 var User = require('../models/user_model.js');
 var Room = require('../models/room_model.js');
+
+
 const isLoggedIn = require("./middleware.js");
 
 const jwt = require("jsonwebtoken");
@@ -8,8 +10,6 @@ var bcrypt = require('bcrypt');
 const saltRounds = 10;
 const express = require("express");
 const router = express.Router();
-
-
 
 
 
@@ -465,27 +465,28 @@ const router = express.Router();
 
 router.post('/dp',(req,res)=>{
 
-   let file = req.files.image;
   
-   let ls = file.name.split('.');
+   
+       User.findOneAndUpdate({username:req.body.name},  
 
- 
-   file.mv(`uploads/${req.body.name+file.name}`,(err)=>{
-     if(err){
-       console.log(err)
-      
-     }
-     else{
-      User.findOneAndUpdate({username:req.body.name},  
-        {path:`uploads/${req.body.name+file.name}`}, null, function (err, docs) { 
+        {path:req.body.path}, null, function (err, docs) { 
         if (err){ 
-            console.log(err) 
+          res.json({
+            status:"error"
+          })
+
         } 
+        else{
+         res.json({
+           status:"success"
+         })
+        }
        
     }); 
-       res.send(`uploads/${req.body.name+file.name}`);
-     }
-   })
- })
+
+      
+       
+     })
+
 
 module.exports =  router;

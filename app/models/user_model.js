@@ -9,7 +9,7 @@ var userSchema = mongoose.Schema({
         isOnline  : { type: Boolean, default:true },
         lastSeen  : { type: Date,default:0},
 
-        path : '',
+        path : {type:String,default:"https://firebasestorage.googleapis.com/v0/b/texting--dp.appspot.com/o/dp%2Fnodp.png?alt=media&token=533360ed-39f7-4938-b56d-1bd945818cbe"},
         status:{type: String},
 
 

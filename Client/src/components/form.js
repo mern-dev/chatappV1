@@ -58,7 +58,7 @@ const Form = (props) => {
     }
    
    
-    const { stateSignup, handleChange,handleClick, validateForm, toggle, tog,stopAnime,loading } = props;
+    const { stateSignup, handleChange,handleClick, validateForm, toggle, tog,stopAnime,loading,rootProps } = props;
     const mq_ht = window.matchMedia( "(min-height:  0em) and (max-height: 45em)" );
     const HeightChange = (mq_ht)=>
     {  
@@ -176,14 +176,14 @@ else
             
 
             </div>
-            <button type="button" onClick={handleClick} disabled={!(validateForm())} class="btn btn-light">Submit</button>
+            <button type="button" onClick={handleClick} disabled={!(validateForm())} className="btn btn-light">Submit</button>
 
             <div className="button-signup" onClick={toggle}>
               {tog ? "Existing User ?" : "New User ?"}
             </div>
 
 
-          </form> : tog ? <Dp /> : <span></span>}
+          </form> : tog ? <Dp {...rootProps}/> : <span></span>}
 
 
 
