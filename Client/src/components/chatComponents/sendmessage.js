@@ -19,11 +19,11 @@ class SendMessage extends Component {
       status = (msg) =>
       {  
           if(msg.seen)
-            return (<img src="images/seen-tick.png" alt="#"className="msg-status"/>)
+            return (<p className='seen'>&#x2714;&#x2714;</p>)
          else if(msg.delivered)
-          return (<img src="images/double-tick.png" alt="#"className="msg-status"/>)
+          return (<p className='delivered'>&#x2714;&#x2714;</p>)
          else if(msg.sent)
-      return (<img src="images/single-tick.png" alt="#" className="msg-status-sent"/>)
+      return (<p className='sent'>&#x2714;</p>)
        
          else
            return (<img src="images/loading-sending.gif"alt="#" className="msg-status-sent"/>)

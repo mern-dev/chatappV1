@@ -161,10 +161,26 @@ scrollUpdate =(messagesw)=>
 
   this.socketDp =   io(pointDp)
 
+  const pointPost = 'http://localhost:3000/socketPost'
+
+  this.socketPost = io(pointPost) 
+
+  this.socketPost.emit("join",{id:this.state.id});
+
+  this.socketDp.emit("join",{id:this.state.id});
+
+  this.socketSeen.emit("join",{id:this.state.id});
+
+  this.socketTyping.emit("join",{id:this.state.id});
+
+  this.socketDelivered.emit("join",{id:this.state.id});
+
    this.socketOnline.emit("join",{id:this.state.id});
-   
+   console.log('data',this.state.id);
 
     this.socketOnline.on("chat",function(chat,loading){
+
+      console.log(chat);
    
       if(chat!==null)
       {
@@ -339,12 +355,12 @@ scrollUpdate =(messagesw)=>
     })
   }
     
-    this.socketOnline.on("receivingMessage",function(newmsg){
+    this.socketPost.on("receivingMessage",function(newmsg){
      addmessage(newmsg);
       
     });
-    this.socketOnline.on("sentMessageSuccess",function(msg){
-      
+    this.socketPost.on("sentMessageSuccess",function(msg){
+      console.log('sent',msg)
        sentUpdate(msg);
     })
     this.socketDelivered.on("deliverSuccess",function(msg){
@@ -354,7 +370,7 @@ scrollUpdate =(messagesw)=>
    this.socketSeen.on("seenSuccess",function(msg){
      seenUpdate(msg)
    })
-   this.socketOnline.on("postingMessgaeDevices",function(msg){
+   this.socketPost.on("postingMessgaeDevices",function(msg){
     MessagePostedFromOtherDevices(msg)
   })
   const MessagePostedFromOtherDevices = (msg) =>
@@ -584,7 +600,7 @@ scrollUpdate =(messagesw)=>
         delivered:false,
         seen:false
       }
-      this.socketOnline.emit("postingMessage", newmsg);
+      this.socketPost.emit("postingMessage", newmsg);
       
       
    this.setState(state =>{

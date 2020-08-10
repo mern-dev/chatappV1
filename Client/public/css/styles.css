@@ -7,6 +7,22 @@ body{
   overflow: hidden;
   font-family: "Montserrat", sans-serif;
 }
+
+.seen{
+  display: inline;
+  color: #00b7c2;
+  margin-left: 5px;
+
+}
+.sent{
+  display: inline;
+  margin-left: 5px;
+  
+}
+.delivered{
+  display: inline;
+  margin-left: 5px;
+}
 .fdiv {
   height: 300px;
   width: 300px;

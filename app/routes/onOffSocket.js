@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 const users = {  }
 const userTab = {} 
 
-module.exports = function(ioOnline,socket){
+
+const Onoff = function(ioOnline,socket){
     // =====================================
   //  User is offline ====================
   // =====================================
@@ -45,7 +46,7 @@ module.exports = function(ioOnline,socket){
   // =====================================
   socket.on("join",function(data)
   { 
-      console.log('onoff');
+      console.log(data.id,'back');
      users[socket.id] = data.id;
      
      if(userTab[data.id])
@@ -93,6 +94,7 @@ module.exports = function(ioOnline,socket){
 
                        
                    ]).then(res=>{
+                     console.log(res)
                       var chats = [];
                     
                       if(res.length===0)
@@ -153,27 +155,26 @@ module.exports = function(ioOnline,socket){
                              
                              
                              
-                        })
-                       
-                  
-                    
-                
-                   
+                        })       
              
           });
         })
       })
+    }
 
+ 
+    const  Post =  function(ioPost,socket){
         // =====================================
   //  User to send a message =============
   // =====================================
           
                     
   socket.on("postingMessage",function(newMessage){
+
        
     if(userTab[newMessage.senderId]>1)
     {
-      ioOnline.to(`${newMessage.senderId}`).emit("postingMessgaeDevices",newMessage) 
+      ioPost.to(`${newMessage.senderId}`).emit("postingMessgaeDevices",newMessage) 
     }
     const msg= {
        
@@ -231,8 +232,8 @@ module.exports = function(ioOnline,socket){
                                msg:msgOnline
                              }
                            
-                             ioOnline.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})   //===============sent success to sender ===============//
-                            ioOnline.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
+                             ioPost.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})   //===============sent success to sender ===============//
+                            ioPost.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============//
                   
                  
                
@@ -271,8 +272,9 @@ module.exports = function(ioOnline,socket){
                                                msg:msgOnline
                                              }
                                           
-                                          ioOnline.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})  //===============sent success to sender ===============//
-                                          ioOnline.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============
+                                          
+                                          ioPost.to(`${newMessage.senderId}`).emit("sentMessageSuccess",{receiverId:newMessage.receiverId,id:msgOnline.id})  //===============sent success to sender ===============//
+                                          ioPost.to(`${newMessage.receiverId}`).emit("receivingMessage",newmsg) //=======Sending the message to the receiver=============
                                    
                                  
                                
@@ -295,4 +297,6 @@ module.exports = function(ioOnline,socket){
 
    })
 })
+  
 }
+module.exports = {Onoff,Post};

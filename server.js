@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 require("dotenv").config();
 var bodyParser = require('body-parser');
 
+const {Onoff,Post} = require("./app/routes/onOffSocket")
+
 app.use(bodyParser.json());
 
 
@@ -46,8 +48,8 @@ var io = require("socket.io")(server);
 
 
 io.on("connection", (socket) => {
-console.log('io--')
-//  require("./app/routes/user_routes")(io, socket)
+  console.log('io--')
+  //  require("./app/routes/user_routes")(io, socket)
 
 })
 
@@ -55,7 +57,21 @@ var ioOnline = io.of('/socketOnline')
 
 ioOnline.on("connection", (socket) => {
   console.log('ioOnline--');
-  require("./app/routes/onOffSocket")(ioOnline, socket)
+  
+  Onoff(ioOnline, socket)
+
+
+})
+
+var ioPost = io.of('/socketPost')
+
+ioPost.on("connection", (socket) => {
+  console.log('ioPost--');
+  socket.on("join",(data)=>{
+    socket.join(`${data.id}`)
+  })
+  
+  Post(ioPost, socket)
 
 })
 
@@ -64,6 +80,9 @@ var ioDelivered = io.of('/socketDelivered')
 
 ioDelivered.on("connection", (socket) => {
   console.log('ioDelivered--');
+  socket.on("join",(data)=>{
+    socket.join(`${data.id}`)
+  })
   require("./app/routes/delivered")(ioDelivered, socket)
 
 })
@@ -72,6 +91,9 @@ var ioTyping = io.of('/socketTyping')
 
 ioTyping.on("connection", (socket) => {
   console.log('ioTyping--');
+  socket.on("join",(data)=>{
+    socket.join(`${data.id}`)
+  })
   require("./app/routes/typing")(ioTyping, socket)
 
 })
@@ -80,6 +102,9 @@ var ioSeen = io.of('/socketSeen')
 
 ioSeen.on("connection", (socket) => {
   console.log('ioSeen--');
+  socket.on("join",(data)=>{
+    socket.join(`${data.id}`)
+  })
   require("./app/routes/seen")(ioSeen, socket)
 
 })
@@ -88,6 +113,9 @@ var ioDp = io.of('/socketDp')
 
 ioDp.on("connection", (socket) => {
   console.log('ioDp--');
+  socket.on("join",(data)=>{
+    socket.join(`${data.id}`)
+  })
   require("./app/routes/dp")(ioDp, socket)
 
 })
