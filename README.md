@@ -1,6 +1,6 @@
 # [Textin' 🖤 - React Chat app](https://textin.herokuapp.com/)
 
-![Project Image](images/main1.jpeg)
+![Project](images/main.png)
 
 > This is a chat app built on ⚛️.
 
