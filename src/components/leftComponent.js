@@ -181,7 +181,7 @@ handlestatus = (e) =>
   }
 
      render() { 
-      const { messages,user} = this.context;     
+      const { messages,user,clearDetail} = this.context;     
        if(!this.state.isPressed)
 
      {   if(this.state.profileToggle)
@@ -226,7 +226,7 @@ handlestatus = (e) =>
               </form>
               </div>
           </div>
-          <div className="logout" onClick={this.logout}>logout</div>
+          <div className="logout" onClick={e=>{this.logout();clearDetail();}}>logout</div>
               </div>)
       }
       else

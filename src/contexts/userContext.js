@@ -44,6 +44,30 @@ handleDate=(nam,val)=>{
   this.setState({[nam]:val});
 }
 
+clearDetail = () =>
+{
+  this.setState({id:"",user:{},messages:[],
+    middleFlag:false,
+    receiver:{},
+    cnt:0,
+    msgBody:"",
+    seenUpdateMessages:[],
+    onlineBottom:false,
+    Bottom:false,
+    word:'',
+    arrMsg:'',
+    arrPos:'',
+    arrId:'',
+    tog:true,
+    data:true,
+    cntifup:0,
+
+    withDate:false,
+    start:'',
+    end:'',
+    mainLoading:true,
+  })
+}
 
 
    updateDetail = (user) =>
@@ -750,7 +774,7 @@ typingEnd = () =>
 
       
       <UserContext.Provider value={{...this.state,updateDate:this.updateDate,handleDate:this.handleDate, updateDetail:this.updateDetail,updatemainLoading:this.updatemainLoading,typingEnd:this.typingEnd,updatecntifup:this.updatecntifup, updateUserDetail:this.updateUserDetail,updateId:this.updateId,updateSearch:this.updateSearch,currentUserUpdate:this.currentUserUpdate,changeMsgBody:this.changeMsgBody,postmessage:this.postmessage,
-        seenOnRoom:this.seenOnRoom,offline:this.offline,scrollUpdate:this.scrollUpdate,socketOn:this.socketOn,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
+        seenOnRoom:this.seenOnRoom,clearDetail:this.clearDetail,offline:this.offline,scrollUpdate:this.scrollUpdate,socketOn:this.socketOn,updateData:this.updateData,updatecnt:this.updatecnt,seenInContext:this.seenInContext,updateBottom:this.updateBottom ,onlineBottomUpdate:this.onlineBottomUpdate,updateRight:this.updateRight,updateRes:this.updateRes,updateTog:this.updateTog}}>
 
 
   
