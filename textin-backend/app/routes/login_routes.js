@@ -12,8 +12,6 @@ const saltRounds = parseInt(process.env.ROUNDS);
 
 module.exports = function(app){
 
-
-
   // =====================================
   // LOGIN ===============================
   // =====================================
