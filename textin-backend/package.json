@@ -17,7 +17,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.20",
+    "mongoose": "^5.13.15",
     "socket.io": "^2.4.0",
     "uuid-v4": "^0.1.0"
   }
